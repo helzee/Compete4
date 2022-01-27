@@ -13,11 +13,11 @@ int main(int argc, char **argv) {
    
    switch(argc) {
       
-      case 2:
-         serverName = argv[1];
-         break;
       case 3:
          serverPort = argv[2];
+         
+      case 2:
+         serverName = argv[1];
          break;
       default:
          cerr << "Invalid argument count. Requires at most 2 args: "

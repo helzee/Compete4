@@ -75,7 +75,9 @@ int main(int argc, char **argv)
             close(clientSd);
             return -1;
          }
+         // flush
          int nRead = 0;
+         // change to 1 read call?
          while (nRead < MAX_MSG_SIZE) {
             nRead += read(clientSd, sendBuffer, MAX_MSG_SIZE - nRead);
          }

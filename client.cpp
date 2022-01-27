@@ -52,12 +52,13 @@ int main(int argc, char **argv) {
       return -1;
    }
    // lose pesky "Address already in use" error message
-   // int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
-   // if (status < 0) {
-   //    cerr << "Failed to connect to the server" << errno << endl;
+   int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
+   if (status < 0) {
+      cerr << "Failed to connect to the server" << errno << endl;
 
-   //    return -1;
-   // }
+      return -1;
+   }
+   cerr << "Connected!\n";
 
    // This is the buffer that will store messages
    // This stores messages to send and recieved messages.
@@ -72,8 +73,12 @@ int main(int argc, char **argv) {
    */
    while(1) {
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
-         puts(sendBuffer);
+         if (write(clientSd, sendBuffer, MAX_MSG_SIZE) < 0) {
+            cerr << "Scenario 3: Problem with write " << errno << endl;
+            close(clientSd);
+            return -1;
+         }
       }
-      }
+   }
 }
 

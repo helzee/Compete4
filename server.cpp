@@ -9,6 +9,7 @@ using namespace std;
 // Declarations
 void* runClientSession(void* ptr);
 
+
 struct thread_data {
    
    int sd;         // socket number
@@ -116,19 +117,22 @@ int main(int argc, char **argv) {
 
 void* runClientSession(void* ptr) {
    char rcvBuffer[MAX_MSG_SIZE];
+   char sendBuffer[MAX_MSG_SIZE];
+   while (1)
+   {
+      // receive data from client
+      thread_data* data = (thread_data*)ptr;
+      int nRead = 0;
+      while (nRead < MAX_MSG_SIZE) {
+         nRead += read(data->sd, rcvBuffer, MAX_MSG_SIZE - nRead);
+      }
+      cout << rcvBuffer; //test info
 
-   // receive data from client
-   thread_data* data = (thread_data*)ptr;
-   int nRead = 0;
-   while (nRead < MAX_MSG_SIZE) {
-      nRead += read(data->sd, rcvBuffer, MAX_MSG_SIZE - nRead);
+      //determine message from client
+      
+
+      //send return msg to client
    }
-   cout << rcvBuffer; //test info
-
-   //determine message from client
-
-
-   //send return msg to client
 
    return ptr;
 }

@@ -18,11 +18,13 @@ int main(int argc, char **argv) {
          
       case 2:
          serverName = argv[1];
+         
+      case 1:
          break;
       default:
          cerr << "Invalid argument count. Requires at most 2 args: "
               << "(serverName, ServerPort)" << endl
-              << "Deafault args are csslab7.uwb.edu and 13337 respectively." 
+              << "Default args are csslab7.uwb.edu and 13337 respectively." 
               << endl;
          return -1;
    }

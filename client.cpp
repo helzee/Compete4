@@ -4,31 +4,30 @@
 
 #include "constants.h"
 
-
 using namespace std;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
    const char *serverName = DEFAULT_SERVER;
    const char *serverPort = DEFAULT_PORT;
-   
-   switch(argc) {
-      
-      case 3:
-         serverPort = argv[2];
-         
-      case 2:
-         serverName = argv[1];
-         
-      case 1:
-         break;
-      default:
-         cerr << "Invalid argument count. Requires at most 2 args: "
-              << "(serverName, ServerPort)" << endl
-              << "Default args are csslab7.uwb.edu and 13337 respectively." 
-              << endl;
-         return -1;
-   }
 
+   switch (argc) {
+
+   case 3:
+      serverPort = argv[2];
+
+   case 2:
+      serverName = argv[1];
+
+   case 1:
+      break;
+   default:
+      cerr << "Invalid argument count. Requires at most 2 args: "
+           << "(serverName, ServerPort)" << endl
+           << "Default args are csslab7.uwb.edu and 13337 respectively."
+           << endl;
+      return -1;
+   }
 
    // create server info structure
    struct addrinfo hints, *servInfo; // loaded with getaddrinfo()
@@ -64,21 +63,23 @@ int main(int argc, char **argv) {
    // This stores messages to send and recieved messages.
    char sendBuffer[MAX_MSG_SIZE];
 
-   
-
    /** Initialization is completed. Socket is ready to use
     * While loop is used until program termination.
     * The while loop simply sends messages from the server, then
     * receives and displays messages from the server.
-   */
-   while(1) {
+    */
+   while (1) {
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
          if (write(clientSd, sendBuffer, MAX_MSG_SIZE) < 0) {
             cerr << "Scenario 3: Problem with write " << errno << endl;
             close(clientSd);
             return -1;
          }
+         int nRead = 0;
+         while (nRead < MAX_MSG_SIZE) {
+            nRead += read(clientSd, sendBuffer, MAX_MSG_SIZE - nRead);
+         }
+         cout << sendBuffer; // test info
       }
    }
 }
-

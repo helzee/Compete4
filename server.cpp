@@ -132,6 +132,11 @@ void* runClientSession(void* ptr) {
       
 
       //send return msg to client
+      if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
+         cerr << "Scenario 3: Problem with write " << errno << endl;
+         close(data->sd);
+         return ptr;
+      }
    }
 
    return ptr;

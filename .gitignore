@@ -2,3 +2,4 @@ a.out
 client
 .vscode/launch.json
 .vscode/tasks.json
+server

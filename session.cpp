@@ -1,3 +1,5 @@
+#include "constants.h"
+
 int sessionCounter = 0;
 int getNewSessionID() { return sessionCounter++; }
 

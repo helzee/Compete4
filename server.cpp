@@ -2,7 +2,9 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
+#include "commandParser.cpp"
 #include "constants.h"
+#include "sessionsDB.cpp"
 
 using namespace std;
 
@@ -114,9 +116,11 @@ void throwError(const char* message, int value, int serverSd)
 void* clientSession(void* ptr)
 {
    thread_data* data = (thread_data*)ptr;
-
    char rcvBuffer[MAX_MSG_SIZE];
    char sendBuffer[MAX_MSG_SIZE];
+
+   Session* session = makeSession();
+
    while (1) {
       // receive data from client
       int nRead = 0;
@@ -126,14 +130,21 @@ void* clientSession(void* ptr)
       cout << rcvBuffer; // test info
 
       // determine message from client
+      if (parseCommand(rcvBuffer, session)) {
 
-      // send return msg to client
-      if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
-         cerr << "Scenario 3: Problem with write " << errno << endl;
-         close(data->sd);
-         return ptr;
+         // send return msg to client
+         if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
+            cerr << "Scenario 3: Problem with write " << errno << endl;
+            close(data->sd);
+            return ptr;
+         }
+      } else {
+         if (write(data->sd, "Invalid Command\n", MAX_MSG_SIZE) < 0) {
+            cerr << "Scenario 3: Problem with write " << errno << endl;
+            close(data->sd);
+            return ptr;
+         }
       }
-   }
 
-   return ptr;
-}
+      return ptr;
+   }

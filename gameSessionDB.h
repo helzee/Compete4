@@ -4,7 +4,7 @@
 #define GAMESESSIONDB_H
 
 // Game List
-gameSession gameList[MAX_GAMES];
+gameSession* gameList[MAX_GAMES];
 
 // When scalable, return gameSession* for users making games
 void makeGame();

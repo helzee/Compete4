@@ -1,6 +1,12 @@
 #include "constants.h"
 #include "session.cpp"
 
+void write(string message, int sd)
+{
+   while (write(sd, message, MAX_MSG_SIZE) != message.length())
+      ;
+}
+
 bool mainMenuCommand(char* command, Session* session);
 bool loginMenuCommand(char* command, Session* session);
 

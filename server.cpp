@@ -119,7 +119,7 @@ void* clientSession(void* ptr)
    char rcvBuffer[MAX_MSG_SIZE];
    char sendBuffer[MAX_MSG_SIZE];
 
-   Session* session = makeSession();
+   Session* session = makeSession(data->sd);
 
    while (1) {
       // receive data from client

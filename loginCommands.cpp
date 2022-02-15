@@ -28,6 +28,9 @@ bool loginMenuCommand(string command, Session* session)
          session->record = nullptr;
       } else
          send("You are not signed in.", session->clientSd);
+
+      send("Going to main menu.", session->clientSd);
+      session->currMenu = MAIN;
       return true;
    }
 
@@ -58,6 +61,7 @@ bool signInCommand(Session* session)
 
       session->record = playerRecord;
       send("Signed in successfully.", session->clientSd);
+      send("Going to main menu.", session->clientSd);
       session->currMenu = MAIN;
       return true;
    }
@@ -94,6 +98,7 @@ bool makeAccountCommand(Session* session)
 
       session->record = makeRecord(input);
       send("Signed up successfully.", session->clientSd);
+      send("Going to main menu.", session->clientSd);
       session->currMenu = MAIN;
       return true;
    }
@@ -113,6 +118,7 @@ bool signInAsGuestCommand(Session* session)
 
    session->record = new Record("G: " + input);
    send("Signed in as guest successfully.", session->clientSd);
+   send("Going to main menu.", session->clientSd);
    session->currMenu = MAIN;
    return true;
 }

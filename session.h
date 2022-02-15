@@ -3,10 +3,13 @@
  */
 #include "constants.h"
 #include "userRecord.h"
-#include "gameSession.h"
 
 #ifndef SESSION_H
 #define SESSION_H
+
+class gameSession
+{
+};
 
 using namespace std;
 

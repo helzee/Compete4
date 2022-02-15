@@ -2,42 +2,67 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
+#include "commandParser.cpp"
 #include "constants.h"
+#include "sessionsDB.cpp"
 
 using namespace std;
 
 // Declarations
-void* runClientSession(void* ptr);
-
+int establishServer(const char* serverName, const char* serverPort);
+void throwError(const char* message, int value);
+void throwError(const char* message, int value, int serverSd);
+void* clientSession(void* ptr);
 
 struct thread_data {
-   
-   int sd;         // socket number
+   int sd; // socket number
 };
 
+int main(int argc, char** argv)
+{
+   const char* serverName = DEFAULT_SERVER;
+   const char* serverPort = DEFAULT_PORT;
 
-int main(int argc, char **argv) {
-   const char *serverName = DEFAULT_SERVER;
-   const char *serverPort = DEFAULT_PORT;
-   
-   switch(argc) {
-      
-      case 3:
-         serverPort = argv[2];
-         
-      case 2:
-         serverName = argv[1];
-         
-      case 1:
-         break;
-      default:
-         cerr << "Invalid argument count. Requires at most 2 args: "
-              << "(serverName, ServerPort)" << endl
-              << "Default args are csslab7.uwb.edu and 13337 respectively." 
-              << endl;
-         return -1;
+   switch (argc) {
+   case 3:
+      serverPort = argv[2];
+   case 2:
+      serverName = argv[1];
+   case 1:
+      break;
+   default:
+      cerr << ARG_MESSAGE << endl;
+      exit(EXIT_FAILURE);
    }
 
+   int serverSd = establishServer(serverName, serverPort);
+
+   // accept incoming connections
+   struct sockaddr_storage cliAddr;
+   socklen_t cliAddrSize = sizeof(cliAddr);
+
+   while (1) {
+
+      // accept and create a new socket for communication newSd
+      int newSd = accept(serverSd, (struct sockaddr*)&cliAddr, &cliAddrSize);
+      if (newSd == -1)
+         throwError("Socket Connection Error", errno, serverSd);
+
+      // create a new thread
+      pthread_t newThread;
+      struct thread_data* data = new thread_data;
+      data->sd = newSd;
+
+      int iret = pthread_create(&newThread, NULL, clientSession, (void*)data);
+      if (iret != 0) {
+         cerr << "Thread creations error: " << iret << endl;
+         close(newSd);
+      }
+   }
+}
+
+int establishServer(const char* serverName, const char* serverPort)
+{
    struct addrinfo hints, *res;
    memset(&hints, 0, sizeof(hints));
    hints.ai_family = AF_UNSPEC;     // either v4 or v6
@@ -47,97 +72,79 @@ int main(int argc, char **argv) {
    // update res. check t his return value!
    int error = getaddrinfo(NULL, serverPort, &hints, &res);
    if (error != 0) {
-      cerr << "getaddrinfo() Error! " << gai_strerror(error) << endl;
-      return -1;
+      cerr << "getaddrinfo() Error : " << gai_strerror(error) << endl;
+      exit(EXIT_FAILURE);
    }
 
    // make a socket, bind it, and listen to it
    int serverSd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-   if (serverSd == -1) {
-      cerr << "Socket creation error!" << errno << endl;
-      freeaddrinfo(res);
-      return -1;
-   }
+   if (serverSd == -1)
+      throwError("Socket Creation Error", errno);
 
    // lose the pesky "Address already in use" error message
-   const int yes = 1;
-   error =
-       setsockopt(serverSd, SOL_SOCKET, SO_REUSEADDR, (char*)&yes, sizeof(yes));
-   if (error == -1) {
-      cerr << "Set Socket Option Error!" << endl;
-      close(serverSd);
-      freeaddrinfo(res);
-      return -1;
-   }
+   const int y = 1; // yes
+   error = setsockopt(serverSd, SOL_SOCKET, SO_REUSEADDR, (char*)&y, sizeof(y));
+   if (error == -1)
+      throwError("Set Socket Option Error", error, serverSd);
 
    // bind the socket
    error = bind(serverSd, res->ai_addr, res->ai_addrlen);
-   if (error < 0) {
-      cerr << "Binding issue. " << errno << endl;
-      close(serverSd);
-      freeaddrinfo(res);
-      return -1;
-   }
+   if (error < 0)
+      throwError("Binding Error", errno, serverSd);
 
    // listen to up to n connection requests
    error = listen(serverSd, BACKLOG);
-   if (error < 0) {
-      cerr << "Listen issue. " << errno << endl;
-      close(serverSd);
-      freeaddrinfo(res);
-      return -1;
-   }
+   if (error < 0)
+      throwError("Listen Error", errno, serverSd);
 
-   // accept incoming connections
-   struct sockaddr_storage clientAddr;
-   socklen_t clientAddrSize = sizeof(clientAddr);
-   while (1) {
-      // accept and create a new socket for communication newSd
-      int newSd =
-          accept(serverSd, (struct sockaddr*)&clientAddr, &clientAddrSize);
-      if (newSd == -1) {
-         cerr << "socket connection error!" << errno << endl;
-         close(serverSd);
-         freeaddrinfo(res);
-         return -1;
-      }
-      // create a new thread
-      pthread_t newThread;
-      struct thread_data* data = new thread_data;
-      
-      data->sd = newSd;
-      int iret1 =
-          pthread_create(&newThread, NULL, runClientSession, (void*)data);
-      if (iret1 != 0) {
-         cerr << "Thread creations error: " << iret1 << endl;
-         close(newSd);
-      }
-   }
+   return serverSd;
 }
 
-void* runClientSession(void* ptr) {
+void throwError(const char* message, int value)
+{
+   cerr << message << " : " << value << endl;
+   exit(EXIT_FAILURE);
+}
+
+void throwError(const char* message, int value, int serverSd)
+{
+   cerr << message << " : " << value << endl;
+   close(serverSd);
+   exit(EXIT_FAILURE);
+}
+
+void* clientSession(void* ptr)
+{
+   thread_data* data = (thread_data*)ptr;
    char rcvBuffer[MAX_MSG_SIZE];
    char sendBuffer[MAX_MSG_SIZE];
-   while (1)
-   {
+
+   Session* session = makeSession();
+
+   while (1) {
       // receive data from client
-      thread_data* data = (thread_data*)ptr;
       int nRead = 0;
       while (nRead < MAX_MSG_SIZE) {
          nRead += read(data->sd, rcvBuffer, MAX_MSG_SIZE - nRead);
       }
-      cout << rcvBuffer; //test info
+      cout << rcvBuffer; // test info
 
-      //determine message from client
-      
+      // determine message from client
+      if (parseCommand(rcvBuffer, session)) {
 
-      //send return msg to client
-      if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
-         cerr << "Scenario 3: Problem with write " << errno << endl;
-         close(data->sd);
-         return ptr;
+         // send return msg to client
+         if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
+            cerr << "Scenario 3: Problem with write " << errno << endl;
+            close(data->sd);
+            return ptr;
+         }
+      } else {
+         if (write(data->sd, "Invalid Command\n", MAX_MSG_SIZE) < 0) {
+            cerr << "Scenario 3: Problem with write " << errno << endl;
+            close(data->sd);
+            return ptr;
+         }
       }
-   }
 
-   return ptr;
-}
+      return ptr;
+   }

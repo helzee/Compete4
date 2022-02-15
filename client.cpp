@@ -6,10 +6,12 @@
 
 using namespace std;
 
-int main(int argc, char **argv)
+int connectToServer(const char* serverName, const char* serverPort);
+
+int main(int argc, char** argv)
 {
-   const char *serverName = DEFAULT_SERVER;
-   const char *serverPort = DEFAULT_PORT;
+   const char* serverName = DEFAULT_SERVER;
+   const char* serverPort = DEFAULT_PORT;
 
    switch (argc) {
 
@@ -26,38 +28,10 @@ int main(int argc, char **argv)
            << "(serverName, ServerPort)" << endl
            << "Default args are csslab7.uwb.edu and 13337 respectively."
            << endl;
-      return -1;
+      exit(EXIT_FAILURE);
    }
 
-   // create server info structure
-   struct addrinfo hints, *servInfo; // loaded with getaddrinfo()
-   memset(&hints, 0, sizeof(hints)); // initialize memory in struct hints
-   hints.ai_family = AF_UNSPEC;      // use IPv4 or IPv6
-   hints.ai_socktype = SOCK_STREAM;  // use TCP
-
-   // call getaddrinfo() to update servInfo
-   int error = getaddrinfo(serverName, serverPort, &hints, &servInfo);
-   if (error != 0) {
-      cerr << "getaddrinfo() Error! " << gai_strerror(error) << endl;
-      exit(1);
-   }
-
-   // make a socket
-   int clientSd = socket(servInfo->ai_family, servInfo->ai_socktype,
-                         servInfo->ai_protocol);
-   if (clientSd == -1) {
-      cerr << "Socket creation error!" << errno << endl;
-
-      return -1;
-   }
-   // lose pesky "Address already in use" error message
-   int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
-   if (status < 0) {
-      cerr << "Failed to connect to the server" << errno << endl;
-
-      return -1;
-   }
-   cerr << "Connected!\n";
+   int clientSd = connectToServer(serverName, serverPort);
 
    // This is the buffer that will store messages
    // This stores messages to send and recieved messages.
@@ -73,7 +47,7 @@ int main(int argc, char **argv)
          if (write(clientSd, sendBuffer, MAX_MSG_SIZE) < 0) {
             cerr << "Scenario 3: Problem with write " << errno << endl;
             close(clientSd);
-            return -1;
+            exit(EXIT_FAILURE);
          }
          // flush
          int nRead = 0;
@@ -84,4 +58,37 @@ int main(int argc, char **argv)
          cout << sendBuffer; // test info
       }
    }
+}
+
+int connectToServer(const char* serverName, const char* serverPort)
+{
+   // create server info structure
+   struct addrinfo hints, *servInfo; // loaded with getaddrinfo()
+   memset(&hints, 0, sizeof(hints)); // initialize memory in struct hints
+   hints.ai_family = AF_UNSPEC;      // use IPv4 or IPv6
+   hints.ai_socktype = SOCK_STREAM;  // use TCP
+
+   // call getaddrinfo() to update servInfo
+   int error = getaddrinfo(serverName, serverPort, &hints, &servInfo);
+   if (error != 0) {
+      cerr << "getaddrinfo() Error! " << gai_strerror(error) << endl;
+      exit(EXIT_FAILURE);
+   }
+
+   // make a socket
+   int clientSd = socket(servInfo->ai_family, servInfo->ai_socktype,
+                         servInfo->ai_protocol);
+   if (clientSd == -1) {
+      cerr << "Socket creation error!" << errno << endl;
+      exit(EXIT_FAILURE);
+   }
+   // lose pesky "Address already in use" error message
+   int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
+   if (status < 0) {
+      cerr << "Failed to connect to the server" << errno << endl;
+      exit(EXIT_FAILURE);
+   }
+
+   cerr << "Connected!\n";
+   return clientSd;
 }

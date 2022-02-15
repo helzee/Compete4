@@ -9,7 +9,7 @@ using namespace std;
 
 class Session {
    public:
-      char username[MAX_NAME];
+      string username;
       int currMenu;
       int currGameID;
 

@@ -14,6 +14,7 @@
 #include <sys/socket.h> // socket, bind, listen, inet_ntoa
 #include <sys/types.h>  // socket, bind
 #include <unistd.h>     // read, write, close
+#include <string>
 
 #define DEFAULT_SERVER "csslab7.uwb.edu"
 #define DEFAULT_PORT "13337"

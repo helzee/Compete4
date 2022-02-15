@@ -29,21 +29,48 @@ gameSession::gameSession()
 // Connect Player
 bool connectPlayer(Session* player) {
     // if ingame, two players already connected
-    if (inGame)
+    if (inGame) {
+        send("Error Connecting: Game Full", player->sd);
         return false;
+    } 
     // Check player one slot
-    if (players[0] != nullptr) 
+    if (players[0] != nullptr) {
         players[0] == player;
+        player.currGame = this;
+    }
     // Check player two slot, if empty, add and set ingame to true
-    if (players[1] != nullptr)
-        players[1] == player; inGame = true;
+    else if (players[1] != nullptr) {
+        players[1] == player; 
+        player.currGame = this;
+        inGame = true;
+    }
     // Just in case, inGame boolean problem and full game
-    return false;     
+    send("Error Connecting: Game Full", player->sd);
+    return false; 
 }
 
 // Disconnect Player
+// *change player currmenu in commandParser
 bool disconnectPlayer(Session* player) {
-    return true;
+    // doesn't matter if ingame
+    // check player one
+    if(players[0]->getSessionID() == player->getSessionID()) {
+        // disconnect players and player's current game
+        player.currGame == nullptr;
+        players[0] == nullptr;
+        send("Successfully disconnected from game", player->sd);
+        return true;
+    }
+    // check player two
+    else if(players[1]->getSessionID() == player->getSessionID()) {
+        // disconnect players and player's current game
+        player.currGame == nullptr;
+        players[1] == nullptr;
+        send("Successfully disconnected from game", player->sd);
+        return true;
+    }
+    send("Error Disconnecting: Not player not in target game", player->sd);
+    return false;
 }
 
 // ----------------------------------------------------------------------------

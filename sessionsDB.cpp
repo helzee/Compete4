@@ -1,11 +1,10 @@
 #include "sessionsDB.h"
 
-
 using namespace std;
 
 int sessionCounter = 0;
 
-unordered_map<int,void*> sessionMap;
+unordered_map<int, void*> sessionMap;
 
 Session* makeSession(int sd)
 {
@@ -14,8 +13,7 @@ Session* makeSession(int sd)
    return newSession;
 }
 
-bool removeSession(int sessionID) { 
-   return sessionMap.erase(sessionID) == 1; }
+bool removeSession(int sessionID) { return sessionMap.erase(sessionID) == 1; }
 
 Session* getSession(int sessionID)
 {

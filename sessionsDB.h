@@ -7,8 +7,6 @@ Session* makeSession(int);
 
 bool removeSession(int);
 
-
-
 Session* getSession(int);
 
 #endif

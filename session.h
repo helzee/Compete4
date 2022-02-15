@@ -1,11 +1,8 @@
 /** @file session.h
  *
  */
-#include "constants.h"
-
 #ifndef SESSION_H
 #define SESSION_H
-
 
 using namespace std;
 
@@ -13,17 +10,15 @@ class Session
 {
 public:
    char username[MAX_NAME];
-   int currMenu;
-   int currGameID;
+   int currMenu = 0;
+   int currGameID = 0;
    int clientSd;
 
-   Session(int sd, int id);
+   Session(int, int);
    int getSessionID();
 
 private:
    int sessionID;
-   
-   
 };
 
 #endif

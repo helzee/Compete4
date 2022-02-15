@@ -20,6 +20,9 @@
 #define MAX_MSG_SIZE 128
 #define BACKLOG 20
 
+//asdfasdfasdlkf;askd;flasdfa
+#define hello asdf
+
 #define MAX_NAME 20
 
 #define ARG_MESSAGE                                                            \

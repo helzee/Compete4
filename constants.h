@@ -20,10 +20,10 @@
 #define MAX_MSG_SIZE 128
 #define BACKLOG 20
 
-
-
 #define MAX_NAME 20
 
 #define ARG_MESSAGE                                                            \
    "Invalid argument count. Requires at most 2 args: (serverName, "            \
    "ServerPort)\nDefault args are csslab7.uwb.edu and 13337 respectively."
+
+enum MENUS { MAIN, LOGIN };

@@ -19,6 +19,8 @@ string recieve(int sd)
          break;
    }
 
+   if (nRead == 0)
+      return "exit";
    string command(rcvBuffer);
    return command;
 }

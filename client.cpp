@@ -69,7 +69,7 @@ int establishConnection(const char* serverName, const char* serverPort)
    // call getaddrinfo() to update servInfo
    int error = getaddrinfo(serverName, serverPort, &hints, &servInfo);
    if (error != 0) {
-      cerr << "getaddrinfo() Error! " << gai_strerror(error) << endl;
+      cerr << "getaddrinfo() Error!: " << gai_strerror(error) << endl;
       exit(EXIT_FAILURE);
    }
 
@@ -77,13 +77,13 @@ int establishConnection(const char* serverName, const char* serverPort)
    int clientSd = socket(servInfo->ai_family, servInfo->ai_socktype,
                          servInfo->ai_protocol);
    if (clientSd == -1) {
-      cerr << "Socket creation error!" << errno << endl;
+      cerr << "Socket creation error!: " << errno << endl;
       exit(EXIT_FAILURE);
    }
    // lose pesky "Address already in use" error message
    int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
    if (status < 0) {
-      cerr << "Failed to connect to the server" << errno << endl;
+      cerr << "Failed to connect to the server: " << errno << endl;
       exit(EXIT_FAILURE);
    }
 

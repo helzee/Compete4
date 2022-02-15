@@ -1,5 +1,6 @@
 #include "commandParser.h"
 
+// Return false if the command was quit/exit
 bool parseCommand(string command, Session* session)
 {
    // global commands

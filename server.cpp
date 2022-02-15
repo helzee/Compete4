@@ -49,6 +49,7 @@ int main(int argc, char** argv)
       data->sd = newSd;
 
       int iret = pthread_create(&newThread, NULL, clientSession, (void*)data);
+      cerr << "Connected to Client" << endl;
       if (iret != 0) {
          cerr << "Thread creations error: " << iret << endl;
          close(newSd);
@@ -72,10 +73,8 @@ void* clientSession(void* ptr)
          break;
    }
 
-   send("Closing connection.\n", sd);
-   cerr << "Closing client connection" << endl;
+   cerr << "Closing Client Connection" << endl;
    close(sd);
-   pthread_exit(NULL);
    return nullptr;
 }
 

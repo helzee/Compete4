@@ -11,7 +11,7 @@
 using namespace std;
 
 // Declarations
-int establishServer(const char* serverName, const char* serverPort);
+int establishServer(const char* serverPort);
 void throwError(const char* message, int value);
 void throwError(const char* message, int value, int serverSd);
 void* clientSession(void* ptr);
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
    const char* serverPort = DEFAULT_PORT;
    if (argc == 2)
       serverPort = argv[2];
-   else {
+   else if (argc > 2) {
       cerr << ARG_SERV_MESSAGE << endl;
       exit(EXIT_FAILURE);
    }

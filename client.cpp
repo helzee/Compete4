@@ -44,12 +44,18 @@ int main(int argc, char** argv)
 
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
          command = (string)sendBuffer;
+         command = command.substr(0, command.length() - 1);
          send(command, clientSd);
+
+         if (cmp(command, "exit") || cmp(command, "quit"))
+            break;
       } else {
          command = "print";
          send(command, clientSd);
       }
    }
+
+   close(clientSd);
 }
 
 int establishConnection(const char* serverName, const char* serverPort)

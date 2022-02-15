@@ -28,3 +28,26 @@ bool parseCommand(string command, Session* session)
 
    return true;
 }
+
+void mainMenuCommand(string command, Session* session)
+{
+   if (cmp(command, "login")) {
+      session->currMenu = LOGIN;
+      loginMenuCommand("print", session);
+      return;
+   }
+   if (cmp(command, "print")) {
+      send("You are in the Main Menu", session->clientSd);
+      return;
+   }
+   if (cmp(command, "name")) {
+      if (session->record != nullptr) {
+         string name = "Your name is " + session->record->getName();
+         send(name, session->clientSd);
+      }
+      send("You are not logged in.", session->clientSd);
+      return;
+   }
+
+   send("Not a recognized command, try again.", session->clientSd);
+}

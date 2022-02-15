@@ -10,9 +10,9 @@
 using namespace std;
 
 bool loginMenuCommand(string, Session*);
-bool signIn(Session*);
-bool makeAccount(Session*);
-bool signInAsGuest(Session*);
+bool signInCommand(Session*);
+bool makeAccountCommand(Session*);
+bool signInAsGuestCommand(Session*);
 bool checkReturn(string, Session*);
 
 #endif

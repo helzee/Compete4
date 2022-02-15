@@ -2,7 +2,7 @@
 
 
 server:
-	g++ -pthread server.cpp commandParser.cpp session.cpp sessionsDB.cpp globalFuncs.cpp userRecord.cpp -o server
+	g++ -pthread server.cpp commandParser.cpp session.cpp sessionsDB.cpp globalFuncs.cpp userRecord.cpp userRecordDB.cpp -o server
 
 client:
 	g++ client.cpp globalFuncs.cpp -o client

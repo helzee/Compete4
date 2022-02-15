@@ -11,16 +11,18 @@ using namespace std;
 class Record
 {
 public:
-   int gamesWon = 0;
-   int gamesPlayer = 0;
-   string username;
-
-   Record(int);
-   Record(int, string);
-   int getID();
+   Record(string);
+   string getName();
+   void winGame();
+   void loseGame();
+   void tieGame();
+   float getRatio();
 
 private:
-   int id;
+   int gamesWon = 0;
+   int gamesLost = 0;
+   int gamesPlayed = 0;
+   string username;
 };
 
 #endif

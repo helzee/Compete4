@@ -1,15 +1,21 @@
 #include "userRecord.h"
 
-Record::Record(int id)
+Record::Record(string username) { this->username = username; }
+
+string Record::getName() { return username; }
+
+void Record::winGame()
 {
-   this->id = id;
-   username = "G: Default Name";
+   gamesWon++;
+   gamesPlayed++;
 }
 
-Record::Record(int id, string username)
+void Record::loseGame()
 {
-   this->id = id;
-   this->username = username;
+   gamesLost++;
+   gamesPlayed++;
 }
 
-int Record::getID() { return id; }
+void Record::tieGame() { gamesPlayed++; }
+
+float Record::getRatio() { return ((float)gamesWon) / gamesLost; }

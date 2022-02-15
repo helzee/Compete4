@@ -9,7 +9,7 @@ bool loginMenuCommand(string command, Session* session)
    }
    if (cmp(command, "print")) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
-           "sign in as guest",
+           "sign in as guest, \"l\" to log out.",
            session->clientSd);
       return true;
    }
@@ -21,6 +21,14 @@ bool loginMenuCommand(string command, Session* session)
    }
    if (cmp(command, "g")) {
       return signInAsGuestCommand(session);
+   }
+   if (cmp(command, "l")) {
+      if (session->record != nullptr) {
+         send("Signed out successfully.", session->clientSd);
+         session->record = nullptr;
+      } else
+         send("You are not signed in.", session->clientSd);
+      return true;
    }
 
    send("Not a recognized command, try again.", session->clientSd);

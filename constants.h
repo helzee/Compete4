@@ -1,6 +1,7 @@
 /** @file constants.h
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
+#pragma once
 
 #include <arpa/inet.h> // inet_ntoa
 #include <cstdio>
@@ -18,6 +19,8 @@
 #define DEFAULT_PORT "13337"
 #define MAX_MSG_SIZE 128
 #define BACKLOG 20
+
+#define MAX_NAME 20
 
 #define ARG_MESSAGE                                                            \
    "Invalid argument count. Requires at most 2 args: (serverName, "            \

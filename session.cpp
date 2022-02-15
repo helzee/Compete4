@@ -1,32 +1,12 @@
 #include "constants.h"
+#include "session.h"
 
 int sessionCounter = 0;
 int getNewSessionID() { return sessionCounter++; }
 
-class Session
-{
-private:
-   int sessionID;
+Session::Session() { currMenu = 0;
+   currGameID = 0;
+}
 
-public:
-   char* name = "John Doe";
-   int currMenu = 0;
-   int currGameID = 0;
+int Session::getSessionID() { return sessionID; }
 
-   Session() { sessionID = getNewSessionID(); }
-
-   bool operator==(const Session& rhs) const
-   {
-      return sessionID == rhs.sessionID;
-   }
-   bool operator<(const Session& rhs) const
-   {
-      return sessionID < rhs.sessionID;
-   }
-   bool operator>(const Session& rhs) const
-   {
-      return sessionID > rhs.sessionID;
-   }
-
-   int getSessionID() { return sessionID; }
-};

@@ -1,7 +1,9 @@
 /** @file constants.h
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
-#pragma once
+
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 #include <arpa/inet.h> // inet_ntoa
 #include <cstdio>
@@ -15,6 +17,7 @@
 #include <sys/types.h>  // socket, bind
 #include <unistd.h>     // read, write, close
 #include <string>
+#include <unordered_map>
 
 #define DEFAULT_SERVER "csslab7.uwb.edu"
 #define DEFAULT_PORT "13337"
@@ -28,3 +31,5 @@
    "ServerPort)\nDefault args are csslab7.uwb.edu and 13337 respectively."
 
 enum MENUS { MAIN, LOGIN };
+
+#endif

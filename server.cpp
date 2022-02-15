@@ -2,9 +2,11 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
-#include "commandParser.cpp"
+
 #include "constants.h"
-#include "sessionsDB.cpp"
+#include "session.h"
+#include "sessionsDB.h"
+#include "commandParser.h"
 
 using namespace std;
 
@@ -151,3 +153,4 @@ void* clientSession(void* ptr)
 
       return ptr;
    }
+}

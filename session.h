@@ -1,9 +1,11 @@
 /** @file session.h
  *
  */
-
-#pragma once
 #include "constants.h"
+
+#ifndef SESSION_H
+#define SESSION_H
+
 
 using namespace std;
 
@@ -15,11 +17,13 @@ public:
    int currGameID;
    int clientSd;
 
-   Session(int);
+   Session(int sd, int id);
    int getSessionID();
 
 private:
    int sessionID;
-   static int sessionCounter;
-   int getNewSessionID();
+   
+   
 };
+
+#endif

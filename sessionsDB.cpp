@@ -6,9 +6,9 @@ using namespace std;
 
 auto sessionMap = new unordered_map<int, Session*>();
 
-Session* makeSession()
+Session* makeSession(int sd)
 {
-   Session* newSession = new Session();
+   Session* newSession = new Session(sd);
    sessionMap.insert(newSession->getSessionID(), newSession);
    return newSession;
 }

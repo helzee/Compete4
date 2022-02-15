@@ -1,8 +1,14 @@
 #include "constants.h"
 #include "session.cpp"
 
-bool mainMenuCommand(string command, Session* session);
-bool loginMenuCommand(string command, Session* session);
+void send(string message, int sd)
+{
+   while (write(sd, message, MAX_MSG_SIZE) != message.length())
+      ;
+}
+
+bool mainMenuCommand(char* command, Session* session);
+bool loginMenuCommand(char* command, Session* session);
 
 bool parseCommand(string command, Session* session)
 {
@@ -13,7 +19,8 @@ bool parseCommand(string command, Session* session)
    case LOGIN:
       return loginMenuCommand(command, session);
    default:
-      // Print error occured
+      send("ERROR: You are went to an invalid menu, sending back to main menu",
+           session->clientSd);
       session->currMenu = MAIN;
       mainMenuCommand("print", session);
    }
@@ -25,8 +32,8 @@ bool mainMenuCommand(string command, Session* session)
       session->currMenu = LOGIN;
       return loginMenuCommand("print", session);
    }
-   if (command.compare("print")) {
-      // write "You are in the Main Menu"
+   if (strcmp(command, "print") == 0) {
+      send("You are in the Main Menu", session->clientSd);
       return true;
    }
 
@@ -40,8 +47,9 @@ bool loginMenuCommand(string command, Session* session)
       return mainMenuCommand("print", session);
    }
    if (command.compare("print")) {
-      // Please enter "s" to sign in, "m" to make account, "g" to sign in as
-      // guest
+      send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
+           "sign in as guest",
+           session->clientSd);
       return true;
    }
    if (strcmp(command, "s") == 0) {

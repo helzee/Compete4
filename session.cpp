@@ -1,11 +1,12 @@
 #include "session.h"
 #include "constants.h"
 
-Session::Session()
+Session::Session(int sd)
 {
+   clientSd = sd;
    currMenu = 0;
    currGameID = 0;
-   
+
    // don't care about initial value of session ID, just assign this value and
    // allow other classes to use next ones
    sessionID = ++sessionCounter;

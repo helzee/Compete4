@@ -7,6 +7,8 @@
 #include "globalFuncs.h"
 #include "session.h"
 #include "sessionsDB.h"
+#include "gameSession.h"
+#include "gameSessionDB.h"
 
 using namespace std;
 
@@ -31,6 +33,11 @@ int main(int argc, char** argv)
    }
 
    int serverSd = establishServer(serverPort);
+
+   // Create static gameSessions (comment out when not working)
+   /*for(int i = 0; i < 10; i++) {
+      makeGame();
+   }*/
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;

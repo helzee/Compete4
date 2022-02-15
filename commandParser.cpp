@@ -2,6 +2,7 @@
 
 bool parseCommand(string command, Session* session)
 {
+   // global commands
    if (cmp(command, "quit") || cmp(command, "exit")) {
       return false;
    }

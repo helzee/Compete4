@@ -67,9 +67,8 @@ void* clientSession(void* ptr)
       string command = recieve(sd);
       cerr << command << endl;
 
-      if (parseCommand(command, session))
-         send("Message recieved!\n", sd);
-      else
+      // Returns false if the command was exit/quit
+      if (!parseCommand(command, session))
          break;
    }
 

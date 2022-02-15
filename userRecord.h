@@ -17,6 +17,7 @@ public:
    void loseGame();
    void tieGame();
    float getRatio();
+   int getGamesPlayed();
 
 private:
    int gamesWon = 0;

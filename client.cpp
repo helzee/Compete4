@@ -45,6 +45,9 @@ int main(int argc, char** argv)
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
          command = (string)sendBuffer;
          send(command, clientSd);
+      } else {
+         command = "print";
+         send(command, clientSd);
       }
    }
 }

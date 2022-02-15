@@ -8,7 +8,7 @@
 using namespace std;
 
 bool parseCommand(string command, Session*);
-bool mainMenuCommand(string command, Session* session);
-bool loginMenuCommand(string, Session*);
+void mainMenuCommand(string, Session*);
+void loginMenuCommand(string, Session*);
 
 #endif

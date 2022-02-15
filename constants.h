@@ -34,6 +34,6 @@
    "Invalid argument count. Requires at most 2 args: (ServerName, "            \
    "ServerPort)\nDefault args are csslab7.uwb.edu and 13337 respectively."
 
-enum MENUS { MAIN, LOGIN };
+enum MENUS { MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST };
 
 #endif

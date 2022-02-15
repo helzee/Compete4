@@ -2,63 +2,69 @@
 
 bool parseCommand(string command, Session* session)
 {
+   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
+      return false;
+   }
+   if (command.copmare("leaderboard") == 0) {
+      send("You are viewing the leaderboard\n", session->clientSd);
+      return true;
+   }
+
    switch (session->currMenu) {
    case MAIN:
-      return mainMenuCommand(command, session);
+      mainMenuCommand(command, session);
    case LOGIN:
-      return loginMenuCommand(command, session);
+      loginMenuCommand(command, session);
    default:
       send("ERROR: You are went to an invalid menu, sending back to main menu",
            session->clientSd);
       session->currMenu = MAIN;
-      return mainMenuCommand("print", session);
+      mainMenuCommand("print", session);
    }
+
+   return true;
 }
 
-bool mainMenuCommand(string command, Session* session)
+void mainMenuCommand(string command, Session* session)
 {
-   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
-      return false;
-   }
    if (command.compare("login") == 0) {
       session->currMenu = LOGIN;
-      return loginMenuCommand("print", session);
+      loginMenuCommand("print", session);
+      return;
    }
    if (command.compare("print") == 0) {
       send("You are in the Main Menu\n", session->clientSd);
-      return true;
+      return;
    }
 
-   return false;
+   send("Not a recognized command, try again.\n", session->clientSd);
 }
 
 bool loginMenuCommand(string command, Session* session)
 {
-   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
-      return false;
-   }
    if (command.compare("main") == 0 || command.compare("back") == 0) {
       session->currMenu = MAIN;
-      return mainMenuCommand("print", session);
+      mainMenuCommand("print", session);
+      return;
    }
    if (command.compare("print") == 0) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
            "sign in as guest\n",
            session->clientSd);
-      return true;
+      return;
    }
    if (command.compare("s") == 0) {
       // Sign in page
-      return true;
+      return;
    }
    if (command.compare("m") == 0) {
       // Make account page
-      return true;
+      return;
    }
    if (command.compare("g") == 0) {
       // Guest login page
-      return true;
+      return;
    }
 
-   return false;
+   send("Not a recognized command, try again.\n", session->clientSd);
 }

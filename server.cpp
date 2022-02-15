@@ -119,14 +119,13 @@ void* clientSession(void* ptr)
       string command = recieve(sd);
       cerr << command << endl;
 
-      if (parseCommand(command., session))
+      if (parseCommand(command, session))
          send("Message recieved!\n", sd);
-      else if (command[0] == 'e' || command[0] == 'q')
-         break;
       else
-         send("Invalid Command\n", sd);
+         break;
    }
 
+   send("Closing connection.\n", sd);
    cerr << "Closing client connection" << endl;
    close(sd);
    pthread_exit(NULL);

@@ -1,18 +1,7 @@
 #include "commandParser.h"
 
-
-void send(string message, int sd)
-{
-   while (write(sd, message.c_str(), MAX_MSG_SIZE) != message.length())
-      ;
-}
-
-bool mainMenuCommand(string command, Session* session);
-bool loginMenuCommand(string command, Session* session);
-
 bool parseCommand(string command, Session* session)
 {
-   
    switch (session->currMenu) {
    case MAIN:
       return mainMenuCommand(command, session);
@@ -28,12 +17,15 @@ bool parseCommand(string command, Session* session)
 
 bool mainMenuCommand(string command, Session* session)
 {
-   if (command.compare("login")) {
+   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
+      return false;
+   }
+   if (command.compare("login") == 0) {
       session->currMenu = LOGIN;
       return loginMenuCommand("print", session);
    }
-   if (command.compare("print")) {
-      send("You are in the Main Menu", session->clientSd);
+   if (command.compare("print") == 0) {
+      send("You are in the Main Menu\n", session->clientSd);
       return true;
    }
 
@@ -42,25 +34,28 @@ bool mainMenuCommand(string command, Session* session)
 
 bool loginMenuCommand(string command, Session* session)
 {
-   if (command.compare("main") || command.compare("back")) {
+   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
+      return false;
+   }
+   if (command.compare("main") == 0 || command.compare("back") == 0) {
       session->currMenu = MAIN;
       return mainMenuCommand("print", session);
    }
-   if (command.compare("print")) {
+   if (command.compare("print") == 0) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
-           "sign in as guest",
+           "sign in as guest\n",
            session->clientSd);
       return true;
    }
-   if (command.compare("s")) {
+   if (command.compare("s") == 0) {
       // Sign in page
       return true;
    }
-   if (command.compare("m")) {
+   if (command.compare("m") == 0) {
       // Make account page
       return true;
    }
-   if (command.compare("g")) {
+   if (command.compare("g") == 0) {
       // Guest login page
       return true;
    }

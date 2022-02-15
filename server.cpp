@@ -2,11 +2,11 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
-
+#include "commandParser.h"
 #include "constants.h"
+#include "globalFuncs.h"
 #include "session.h"
 #include "sessionsDB.h"
-#include "commandParser.h"
 
 using namespace std;
 
@@ -22,22 +22,15 @@ struct thread_data {
 
 int main(int argc, char** argv)
 {
-   const char* serverName = DEFAULT_SERVER;
    const char* serverPort = DEFAULT_PORT;
-
-   switch (argc) {
-   case 3:
+   if (argc == 2)
       serverPort = argv[2];
-   case 2:
-      serverName = argv[1];
-   case 1:
-      break;
-   default:
-      cerr << ARG_MESSAGE << endl;
+   else {
+      cerr << ARG_SERV_MESSAGE << endl;
       exit(EXIT_FAILURE);
    }
 
-   int serverSd = establishServer(serverName, serverPort);
+   int serverSd = establishServer(serverPort);
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;
@@ -63,7 +56,7 @@ int main(int argc, char** argv)
    }
 }
 
-int establishServer(const char* serverName, const char* serverPort)
+int establishServer(const char* serverPort)
 {
    struct addrinfo hints, *res;
    memset(&hints, 0, sizeof(hints));
@@ -117,40 +110,25 @@ void throwError(const char* message, int value, int serverSd)
 
 void* clientSession(void* ptr)
 {
-   thread_data* data = (thread_data*)ptr;
-   char rcvBuffer[MAX_MSG_SIZE];
-   char sendBuffer[MAX_MSG_SIZE];
+   int sd = ((thread_data*)ptr)->sd;
 
-   Session* session = makeSession(data->sd);
+   Session* session = makeSession(sd);
+   parseCommand("print", session);
 
    while (1) {
-      // receive data from client
-      int nRead = 0;
-      while (nRead < MAX_MSG_SIZE) {
-         nRead += read(data->sd, rcvBuffer, MAX_MSG_SIZE - nRead);
-      }
-      cout << rcvBuffer; // test info
+      string command = recieve(sd);
+      cerr << command << endl;
 
-      //turn buffer into formatted string
-      string command(rcvBuffer);
-
-      // determine message from client
-      if (parseCommand(command, session)) {
-
-         // send return msg to client
-         if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {
-            cerr << "Scenario 3: Problem with write " << errno << endl;
-            close(data->sd);
-            return ptr;
-         }
-      } else {
-         if (write(data->sd, "Invalid Command\n", MAX_MSG_SIZE) < 0) {
-            cerr << "Scenario 3: Problem with write " << errno << endl;
-            close(data->sd);
-            return ptr;
-         }
-      }
-
-      return ptr;
+      if (parseCommand(command., session))
+         send("Message recieved!\n", sd);
+      else if (command[0] == 'e' || command[0] == 'q')
+         break;
+      else
+         send("Invalid Command\n", sd);
    }
+
+   cerr << "Closing client connection" << endl;
+   close(sd);
+   pthread_exit(NULL);
+   return nullptr;
 }

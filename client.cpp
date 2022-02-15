@@ -3,10 +3,11 @@
  */
 
 #include "constants.h"
+#include "globalFuncs.h"
 
 using namespace std;
 
-int connectToServer(const char* serverName, const char* serverPort);
+int establishConnection(const char* serverName, const char* serverPort);
 
 int main(int argc, char** argv)
 {
@@ -14,28 +15,23 @@ int main(int argc, char** argv)
    const char* serverPort = DEFAULT_PORT;
 
    switch (argc) {
-
    case 3:
       serverPort = argv[2];
-
    case 2:
       serverName = argv[1];
-
    case 1:
       break;
    default:
-      cerr << "Invalid argument count. Requires at most 2 args: "
-           << "(serverName, ServerPort)" << endl
-           << "Default args are csslab7.uwb.edu and 13337 respectively."
-           << endl;
+      cerr << ARG_CLI_MESSAGE << endl;
       exit(EXIT_FAILURE);
    }
 
-   int clientSd = connectToServer(serverName, serverPort);
+   int clientSd = establishConnection(serverName, serverPort);
 
    // This is the buffer that will store messages
    // This stores messages to send and recieved messages.
    char sendBuffer[MAX_MSG_SIZE];
+   string command, response;
 
    /** Initialization is completed. Socket is ready to use
     * While loop is used until program termination.
@@ -43,24 +39,17 @@ int main(int argc, char** argv)
     * receives and displays messages from the server.
     */
    while (1) {
+      response = recieve(clientSd);
+      cout << response << endl;
+
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
-         if (write(clientSd, sendBuffer, MAX_MSG_SIZE) < 0) {
-            cerr << "Scenario 3: Problem with write " << errno << endl;
-            close(clientSd);
-            exit(EXIT_FAILURE);
-         }
-         // flush
-         int nRead = 0;
-         // change to 1 read call?
-         while (nRead < MAX_MSG_SIZE) {
-            nRead += read(clientSd, sendBuffer, MAX_MSG_SIZE - nRead);
-         }
-         cout << sendBuffer; // test info
+         command = (string)sendBuffer;
+         send(command, clientSd);
       }
    }
 }
 
-int connectToServer(const char* serverName, const char* serverPort)
+int establishConnection(const char* serverName, const char* serverPort)
 {
    // create server info structure
    struct addrinfo hints, *servInfo; // loaded with getaddrinfo()

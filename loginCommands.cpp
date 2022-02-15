@@ -70,8 +70,8 @@ bool makeAccountCommand(Session* session)
          return true;
 
       if (input.length() < 4 || (input[0] == 'G' && input[1] == ':')) {
-         send("Username invalid (must be 4 chars or longer, not " +
-                  "starting with \'G:\'):",
+         send("Username invalid (must be 4 chars or longer, not starting with "
+              "\'G:\'):",
               session->clientSd);
          input = recieve(session->clientSd);
          continue;
@@ -103,7 +103,7 @@ bool signInAsGuestCommand(Session* session)
    if (checkReturn(input, session))
       return true;
 
-   session->record = new Record("G:" + input);
+   session->record = new Record("G: " + input);
    send("Signed in as guest successfully.", session->clientSd);
    session->currMenu = MAIN;
    return true;

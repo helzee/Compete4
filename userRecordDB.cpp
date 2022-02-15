@@ -4,7 +4,7 @@ unordered_map<string, void*> recordMap;
 
 Record* makeRecord(string username)
 {
-   if (recordMap.find(username) == recordMap.end())
+   if (recordMap.find(username) != recordMap.end())
       return nullptr;
 
    Record* newRecord = new Record(username);

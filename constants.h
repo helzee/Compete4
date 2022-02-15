@@ -26,6 +26,10 @@
 
 #define MAX_NAME 20
 
+#define BOARD_ROW 6
+#define BOARD_COL 7
+#define MAX_GAMES 10
+
 #define ARG_SERV_MESSAGE                                                       \
    "Invalid argument count. Requires at most 1 arg: (ServerPort)\n"            \
    "Default arg is 13337"

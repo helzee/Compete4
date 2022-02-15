@@ -18,4 +18,7 @@ class Session {
 
    private:
       int sessionID;
+      static int sessionCounter;
+      int getNewSessionID();
 };
+

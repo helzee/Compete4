@@ -129,8 +129,11 @@ void* clientSession(void* ptr)
       }
       cout << rcvBuffer; // test info
 
+      //turn buffer into formatted string
+      string command(rcvBuffer);
+
       // determine message from client
-      if (parseCommand(rcvBuffer, session)) {
+      if (parseCommand(command, session)) {
 
          // send return msg to client
          if (write(data->sd, "Message recieved!\n", MAX_MSG_SIZE) < 0) {

@@ -7,5 +7,6 @@ using namespace std;
 
 void send(string, int);
 string recieve(int);
+bool cmp(string, string);
 
 #endif

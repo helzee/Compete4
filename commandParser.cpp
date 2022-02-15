@@ -2,10 +2,10 @@
 
 bool parseCommand(string command, Session* session)
 {
-   if (command.compare("quit") == 0 || command.compare("exit") == 0) {
+   if (cmp(command, "quit") || cmp(command, "exit")) {
       return false;
    }
-   if (command.copmare("leaderboard") == 0) {
+   if (cmp(command, "leaderboard")) {
       send("You are viewing the leaderboard\n", session->clientSd);
       return true;
    }
@@ -27,12 +27,12 @@ bool parseCommand(string command, Session* session)
 
 void mainMenuCommand(string command, Session* session)
 {
-   if (command.compare("login") == 0) {
+   if (cmp(command, "login")) {
       session->currMenu = LOGIN;
       loginMenuCommand("print", session);
       return;
    }
-   if (command.compare("print") == 0) {
+   if (cmp(command, "print")) {
       send("You are in the Main Menu\n", session->clientSd);
       return;
    }
@@ -42,26 +42,26 @@ void mainMenuCommand(string command, Session* session)
 
 bool loginMenuCommand(string command, Session* session)
 {
-   if (command.compare("main") == 0 || command.compare("back") == 0) {
+   if (cmp(command, "main") || cmp(command, "back")) {
       session->currMenu = MAIN;
       mainMenuCommand("print", session);
       return;
    }
-   if (command.compare("print") == 0) {
+   if (cmp(command, "print")) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
            "sign in as guest\n",
            session->clientSd);
       return;
    }
-   if (command.compare("s") == 0) {
+   if (cmp(command, "s")) {
       // Sign in page
       return;
    }
-   if (command.compare("m") == 0) {
+   if (cmp(command, "m")) {
       // Make account page
       return;
    }
-   if (command.compare("g") == 0) {
+   if (cmp(command, "g")) {
       // Guest login page
       return;
    }

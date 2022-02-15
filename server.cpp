@@ -56,6 +56,30 @@ int main(int argc, char** argv)
    }
 }
 
+void* clientSession(void* ptr)
+{
+   int sd = ((thread_data*)ptr)->sd;
+
+   Session* session = makeSession(sd);
+   parseCommand("print", session);
+
+   while (1) {
+      string command = recieve(sd);
+      cerr << command << endl;
+
+      if (parseCommand(command, session))
+         send("Message recieved!\n", sd);
+      else
+         break;
+   }
+
+   send("Closing connection.\n", sd);
+   cerr << "Closing client connection" << endl;
+   close(sd);
+   pthread_exit(NULL);
+   return nullptr;
+}
+
 int establishServer(const char* serverPort)
 {
    struct addrinfo hints, *res;
@@ -106,28 +130,4 @@ void throwError(const char* message, int value, int serverSd)
    cerr << message << " : " << value << endl;
    close(serverSd);
    exit(EXIT_FAILURE);
-}
-
-void* clientSession(void* ptr)
-{
-   int sd = ((thread_data*)ptr)->sd;
-
-   Session* session = makeSession(sd);
-   parseCommand("print", session);
-
-   while (1) {
-      string command = recieve(sd);
-      cerr << command << endl;
-
-      if (parseCommand(command, session))
-         send("Message recieved!\n", sd);
-      else
-         break;
-   }
-
-   send("Closing connection.\n", sd);
-   cerr << "Closing client connection" << endl;
-   close(sd);
-   pthread_exit(NULL);
-   return nullptr;
 }

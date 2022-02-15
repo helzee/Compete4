@@ -22,3 +22,5 @@ string recieve(int sd)
    string command(rcvBuffer);
    return command;
 }
+
+bool cmp(string a, string b) { return a.compare(b) == 0; }

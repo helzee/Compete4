@@ -8,6 +8,11 @@
 using namespace std;
 
 int establishConnection(const char* serverName, const char* serverPort);
+void* serverListen(void* ptr);
+
+struct thread_data {
+   int sd; // socket number
+};
 
 int main(int argc, char** argv)
 {
@@ -28,10 +33,20 @@ int main(int argc, char** argv)
 
    int clientSd = establishConnection(serverName, serverPort);
 
+   pthread_t listenThread;
+   struct thread_data* data = new thread_data;
+   data->sd = clientSd;
+   int iret = pthread_create(&listenThread, NULL, serverListen, (void*)data);
+   if (iret != 0) {
+      cerr << "Thread creations error: " << iret << endl;
+      close(clientSd);
+      exit(EXIT_FAILURE);
+   }
+
    // This is the buffer that will store messages
    // This stores messages to send and recieved messages.
    char sendBuffer[MAX_MSG_SIZE];
-   string command, response;
+   string command;
 
    /** Initialization is completed. Socket is ready to use
     * While loop is used until program termination.
@@ -39,9 +54,6 @@ int main(int argc, char** argv)
     * receives and displays messages from the server.
     */
    while (1) {
-      response = recieve(clientSd);
-      cout << response << endl;
-
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
          command = (string)sendBuffer;
          command = command.substr(0, command.length() - 1);
@@ -55,7 +67,24 @@ int main(int argc, char** argv)
       }
    }
 
+   pthread_exit(NULL);
    close(clientSd);
+}
+
+void* serverListen(void* ptr)
+{
+   int clientSd = ((thread_data*)ptr)->sd;
+   string response;
+
+   while (true) {
+      response = recieve(clientSd);
+      cout << response << endl;
+
+      if (cmp(response, "exit"))
+         break;
+   }
+   close(clientSd);
+   exit(EXIT_SUCCESS);
 }
 
 int establishConnection(const char* serverName, const char* serverPort)

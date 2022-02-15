@@ -9,7 +9,7 @@ bool loginMenuCommand(string command, Session* session)
    }
    if (cmp(command, "print")) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
-           "sign in as guest",
+           "sign in as guest, \"l\" to log out.",
            session->clientSd);
       return true;
    }
@@ -21,6 +21,14 @@ bool loginMenuCommand(string command, Session* session)
    }
    if (cmp(command, "g")) {
       return signInAsGuestCommand(session);
+   }
+   if (cmp(command, "l")) {
+      if (session->record != nullptr) {
+         send("Signed out successfully.", session->clientSd);
+         session->record = nullptr;
+      } else
+         send("You are not signed in.", session->clientSd);
+      return true;
    }
 
    send("Not a recognized command, try again.", session->clientSd);
@@ -70,8 +78,8 @@ bool makeAccountCommand(Session* session)
          return true;
 
       if (input.length() < 4 || (input[0] == 'G' && input[1] == ':')) {
-         send("Username invalid (must be 4 chars or longer, not " +
-                  "starting with \'G:\'):",
+         send("Username invalid (must be 4 chars or longer, not starting with "
+              "\'G:\'):",
               session->clientSd);
          input = recieve(session->clientSd);
          continue;
@@ -103,7 +111,7 @@ bool signInAsGuestCommand(Session* session)
    if (checkReturn(input, session))
       return true;
 
-   session->record = new Record("G:" + input);
+   session->record = new Record("G: " + input);
    send("Signed in as guest successfully.", session->clientSd);
    session->currMenu = MAIN;
    return true;

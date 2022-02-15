@@ -66,7 +66,7 @@ void* clientSession(void* ptr)
 
    while (1) {
       string command = recieve(sd);
-      cerr << command << endl;
+      cerr << "Menu[" << session->currMenu << "]: Command= " << command << endl;
 
       // Returns false if the command was exit/quit
       if (!parseCommand(command, session))

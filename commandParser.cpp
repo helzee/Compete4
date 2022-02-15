@@ -44,6 +44,7 @@ void mainMenuCommand(string command, Session* session)
       if (session->record != nullptr) {
          string name = "Your name is " + session->record->getName();
          send(name, session->clientSd);
+         return;
       }
       send("You are not logged in.", session->clientSd);
       return;

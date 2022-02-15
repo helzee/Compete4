@@ -27,4 +27,6 @@ public:
    {
       return sessionID > rhs.sessionID;
    }
+
+   int getSessionID() { return sessionID; }
 };

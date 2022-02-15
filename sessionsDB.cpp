@@ -1,14 +1,14 @@
 #include "constants.h"
 #include "session.cpp"
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-vector<Session> sessions = new vector<Session>;
+unordered_map<int, Session> sessionMap = new unordered_map<int Session>();
 
 Session* makeSession()
 {
    Session* newSession = new Session();
-   sessions.push_back(newSession);
+   sessionMap.insert(newSession->getSessionID(), newSession);
    return newSession;
 }

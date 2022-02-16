@@ -157,7 +157,7 @@ bool signInAsGuestCommand(Session* session)
    if (checkReturn(input, session))
       return true;
 
-   session->record = new Record("G: " + input, "NoPassword");
+   session->record = new Record("G: " + input, 0);
    send("Signed in as guest successfully.", session->clientSd);
    send("Going to main menu.", session->clientSd);
    session->currMenu = MAIN;
@@ -177,4 +177,36 @@ bool checkReturn(string input, Session* session)
    return false;
 }
 
-string encrypt(string password) { return password; }
+// Uses basic Rabin Function
+int encrypt(string password)
+{
+   // Cast the password into an unsigned int
+   // Then turn it into a long unsigned int, therefore making upper-half empty
+   auto number = (long unsigned int)turnToInt(password);
+
+   // Square the number
+   number = number * number;
+   return (int)(number % HASH_NUMBER);
+}
+
+unsigned int turnToInt(string password)
+{
+   unsigned int toReturn = 0;
+   unsigned int toXOR;
+   unsigned short int letter;
+
+   for (int i = 0; i < password.length(); i++) {
+      letter = (unsigned short int)password[i];
+
+      // toXOR = (letter^2 + letter)^2 + letter
+      // toXOR will be at most 32 bits long: an unsigned int
+      toXOR = letter + letter * letter;
+      toXOR = toXOR * toXOR + letter;
+
+      // toReturn = (toReturn * 2) XOR toXOR
+      toReturn *= 2;
+      toReturn = toReturn ^ toXOR;
+   }
+
+   return toReturn;
+}

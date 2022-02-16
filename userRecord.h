@@ -11,21 +11,21 @@ using namespace std;
 class Record
 {
 public:
-   Record(string, string);
+   Record(string, int);
+   bool checkPassword(int);
    string getName();
    void winGame();
    void loseGame();
    void tieGame();
    float getRatio();
    int getGamesPlayed();
-   bool checkPassword(string);
 
 private:
    int gamesWon = 0;
    int gamesLost = 0;
    int gamesPlayed = 0;
    string username;
-   string encryptedPassword;
+   int encryptedPassword;
 };
 
 #endif

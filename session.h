@@ -7,9 +7,7 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-class gameSession
-{
-};
+class gameSession;
 
 using namespace std;
 

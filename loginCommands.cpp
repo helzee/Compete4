@@ -1,9 +1,11 @@
 #include "loginCommands.h"
 #include "commandParser.h"
+#include "openssl/sha.h"
 
 bool loginMenuCommand(string command, Session* session)
 {
    if (cmp(command, "main") || cmp(command, "back")) {
+      send("Going to main menu.", session->clientSd);
       session->currMenu = MAIN;
       return true;
    }
@@ -40,68 +42,107 @@ bool loginMenuCommand(string command, Session* session)
 
 bool signInCommand(Session* session)
 {
-   string input;
+   string username, password;
    Record* playerRecord;
 
-   send("Please enter username to sign in:", session->clientSd);
-   input = recieve(session->clientSd);
-
+   // Get username
    while (true) {
-      if (cmp(input, "exit") || cmp(input, "quit"))
+      send("Please enter username to sign in:", session->clientSd);
+      username = recieve(session->clientSd);
+
+      if (cmp(username, "exit") || cmp(username, "quit"))
          return false;
-      if (checkReturn(input, session))
+      if (checkReturn(username, session))
          return true;
 
-      playerRecord = getRecord(input);
-      if (playerRecord == nullptr) {
-         send("Username not found, try again:", session->clientSd);
-         input = recieve(session->clientSd);
-         continue;
-      }
-
-      session->record = playerRecord;
-      send("Signed in successfully.", session->clientSd);
-      send("Going to main menu.", session->clientSd);
-      session->currMenu = MAIN;
-      return true;
+      if (checkIfRecord(username))
+         break;
+      send("Username not found, try again:", session->clientSd);
    }
+
+   send("Username found.", session->clientSd);
+
+   // Get password
+   while (true) {
+      send("Please enter password:", session->clientSd);
+      password = recieve(session->clientSd);
+
+      if (cmp(password, "exit") || cmp(password, "quit"))
+         return false;
+      if (checkReturn(password, session))
+         return true;
+
+      playerRecord = getRecord(username, password);
+      if (playerRecord == nullptr)
+         send("Password incorrect.", session->clientSd);
+      else
+         break;
+   }
+
+   session->record = playerRecord;
+   send("Signed in successfully. Going to main menu.", session->clientSd);
+   session->currMenu = MAIN;
+   return true;
 }
 
 bool makeAccountCommand(Session* session)
 {
-   string input;
-   Record* checkRecord;
+   string username, password;
 
-   send("Please enter your desired username: ", session->clientSd);
-   input = recieve(session->clientSd);
-
+   // Get username
    while (true) {
-      if (cmp(input, "exit") || cmp(input, "quit"))
+      send("Please enter your desired username: ", session->clientSd);
+      username = recieve(session->clientSd);
+
+      if (cmp(username, "exit") || cmp(username, "quit"))
          return false;
-      if (checkReturn(input, session))
+      if (checkReturn(username, session))
          return true;
 
-      if (input.length() < 4 || (input[0] == 'G' && input[1] == ':')) {
+      if (username.length() < 4 || (username[0] == 'G' && username[1] == ':')) {
          send("Username invalid (must be 4 chars or longer, not starting with "
               "\'G:\'):",
               session->clientSd);
-         input = recieve(session->clientSd);
          continue;
       }
-
-      checkRecord = getRecord(input);
-      if (checkRecord != nullptr) {
+      if (checkIfRecord(username)) {
          send("Username taken, try again:", session->clientSd);
-         input = recieve(session->clientSd);
          continue;
       }
 
-      session->record = makeRecord(input);
-      send("Signed up successfully.", session->clientSd);
-      send("Going to main menu.", session->clientSd);
-      session->currMenu = MAIN;
-      return true;
+      break;
    }
+
+   send("Username is valid and available.", session->clientSd);
+
+   // Get password
+   while (true) {
+      send("Please enter desired password:", session->clientSd);
+      password = recieve(session->clientSd);
+
+      if (cmp(password, "exit") || cmp(password, "quit"))
+         return false;
+      if (checkReturn(password, session))
+         return true;
+
+      if (password.length() < 5) {
+         send("Password must be at least 5 chars long.", session->clientSd);
+         continue;
+      }
+
+      break;
+   }
+
+   session->record = makeRecord(username, password);
+   if (session->record == nullptr) {
+      send("Error occured: Could not make account. Please try again.",
+           session->clientSd);
+      return makeAccountCommand(session);
+   }
+
+   send("Signed up successfully, going to main menu.", session->clientSd);
+   session->currMenu = MAIN;
+   return true;
 }
 
 bool signInAsGuestCommand(Session* session)
@@ -116,7 +157,7 @@ bool signInAsGuestCommand(Session* session)
    if (checkReturn(input, session))
       return true;
 
-   session->record = new Record("G: " + input);
+   session->record = new Record("G: " + input, "NoPassword");
    send("Signed in as guest successfully.", session->clientSd);
    send("Going to main menu.", session->clientSd);
    session->currMenu = MAIN;

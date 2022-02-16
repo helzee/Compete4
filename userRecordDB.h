@@ -3,11 +3,11 @@
 #ifndef RECORDSDB_H
 #define RECORDSDB_H
 
-Record* makeRecord(string, string);
+Record* makeRecord(string, int);
 
 bool deleteRecord(string);
 
-Record* getRecord(string, string);
+Record* getRecord(string, int);
 
 bool checkIfRecord(string);
 

@@ -1,12 +1,12 @@
 #include "userRecord.h"
 
-Record::Record(string username, string encryptedPassword)
+Record::Record(string username, int encryptedPassword)
 {
    this->username = username;
    this->encryptedPassword = encryptedPassword;
 }
 
-bool Record::checkPassword(string encryptedPassword)
+bool Record::checkPassword(int encryptedPassword)
 {
    return this->encryptedPassword == encryptedPassword;
 }

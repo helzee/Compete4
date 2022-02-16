@@ -14,6 +14,7 @@ bool signInCommand(Session*);
 bool makeAccountCommand(Session*);
 bool signInAsGuestCommand(Session*);
 bool checkReturn(string, Session*);
-string encrypt(string);
+int encrypt(string);
+unsigned int turnToInt(string);
 
 #endif

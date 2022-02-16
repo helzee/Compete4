@@ -2,7 +2,7 @@
 
 unordered_map<string, void*> recordMap;
 
-Record* makeRecord(string username, string encryptedPassword)
+Record* makeRecord(string username, int encryptedPassword)
 {
    if (recordMap.find(username) != recordMap.end())
       return nullptr;
@@ -14,7 +14,7 @@ Record* makeRecord(string username, string encryptedPassword)
 
 bool deleteRecord(string username) { return recordMap.erase(username) == 1; }
 
-Record* getRecord(string username, string encryptedPassword)
+Record* getRecord(string username, int encryptedPassword)
 {
    auto recordHolder = recordMap.find(username);
    if (recordHolder == recordMap.end())

@@ -43,4 +43,7 @@
 
 enum MENUS { MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST };
 
+// Prime 7879 * Prime 6949 = 54,751,171
+#define HASH_NUMBER 54751171
+
 #endif

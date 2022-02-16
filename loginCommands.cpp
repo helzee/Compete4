@@ -203,7 +203,8 @@ unsigned int turnToInt(string password)
       toXOR = letter + letter * letter;
       toXOR = toXOR * toXOR + letter;
 
-      // toReturn = toReturn XOR toXOR
+      // toReturn = (toReturn * 2) XOR toXOR
+      toReturn *= 2;
       toReturn = toReturn ^ toXOR;
    }
 

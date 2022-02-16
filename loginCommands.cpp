@@ -72,7 +72,7 @@ bool signInCommand(Session* session)
       if (checkReturn(password, session))
          return true;
 
-      playerRecord = getRecord(username, password);
+      playerRecord = getRecord(username, encrypt(password));
       if (playerRecord == nullptr)
          send("Password incorrect.", session->clientSd);
       else
@@ -133,7 +133,7 @@ bool makeAccountCommand(Session* session)
       break;
    }
 
-   session->record = makeRecord(username, password);
+   session->record = makeRecord(username, encrypt(password));
    if (session->record == nullptr) {
       send("Error occured: Could not make account. Please try again.",
            session->clientSd);
@@ -176,3 +176,5 @@ bool checkReturn(string input, Session* session)
    }
    return false;
 }
+
+string encrypt(string password) { return password; }

@@ -31,6 +31,9 @@ bool parseCommand(string command, Session* session)
 
 void mainMenuCommand(string command, Session* session)
 {
+   if (cmp(command, "help")) {
+      send(MAIN_HELP, session->clientSd);
+   }
    if (cmp(command, "login")) {
       session->currMenu = LOGIN;
       loginMenuCommand("print", session);

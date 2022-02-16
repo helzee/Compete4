@@ -17,7 +17,7 @@ public:
     
     bool connectPlayer(Session*);
     bool disconnectPlayer(Session*);
-    void resetBoard(Session*);
+    void resetBoard();
 
     bool dropPiece(Session*, int);
     string printBoard(Session*);

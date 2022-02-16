@@ -5,8 +5,10 @@
 // ----------------------------------------------------------------------------
 
 // Constructor
-gameSession::gameSession()
+gameSession::gameSession(int id)
 {
+    // Sets the fed gameid from gameDB into this game's identifier
+    gameID = id;
     // Initialize the board with empty spaces
     // Set the number of tokens in each column to 0
     // Player one will use: x
@@ -101,6 +103,20 @@ void resetBoard() {
     }
 }
 
+// Drop piece
+// This method is the core of the game 
+// It is responsible for:
+//  1. Dropping pieces into directed column
+//  2. Checking for wincondition
+//  2b.      announce win     
+//  2c.      terminate game (disconnect players), set inGame
+//  3. Switch turns
+//  4. Print out board
+
+// Print Board
+// prints out the matrix that represents the connect 4 board
+// ASCII border around characters and within frame to make state clear
+
 
 // ----------------------------------------------------------------------------
 //  Private Methods
@@ -120,3 +136,120 @@ bool partOfGame(Session* sender)
 
 // Determines if the player sending information is allowed to move
 // Helper used in droppiece
+bool isTurn(Session* player)
+{
+    // Determine if player is p1 or p2 slot
+    // Compare with turn boolean: false = p1, true = p2
+    if (players[0]->getSessionID() == sender->getSessionID())
+    {
+        if(isTurn == false)
+            return true; 
+    }
+    else if (players[1]->getSessionID() == sender->getSessionID())
+    {
+        return true;    
+    }
+}
+
+// Checks for the win condition
+// Used after every droppiece so if connect four is achieved, the game is over
+bool checkWin() {
+    // horizontal
+    for (int i = 0; i < BOARD_ROW; i++) 
+    {
+        for (int j = 0; j < BOARD_COL; j++)
+        {
+            // check player1
+            if (board[i][j] == 'o' &&
+                board[i][j+1] == 'o' &&
+                board[i][j+2] == 'o' &&
+                board[i][j+3] == 'o' &&)
+            {
+                return true;
+            }
+            // check player2
+            if (board[i][j] == 'x' &&
+                board[i][j+1] == 'x' &&
+                board[i][j+2] == 'x' &&
+                board[i][j+3] == 'x' &&)
+            {
+                return true;
+            }
+        }
+    }
+    // vertical
+    for (int i = 0; i < BOARD_ROW; i++) 
+    {
+        for (int j = 0; j < BOARD_COL; j++)
+        {
+            // check player1
+            if (board[i][j] == 'o' &&
+                board[i+1][j] == 'o' &&
+                board[i+2][j] == 'o' &&
+                board[i+3][j] == 'o' &&)
+            {
+                return true;
+            }
+            // check player2
+            if (board[i][j] == 'x' &&
+                board[i+1][j] == 'x' &&
+                board[i+1][j] == 'x' &&
+                board[i+1][j] == 'x' &&)
+            {
+                return true;
+            }
+        }
+    }
+    // descending diagonal
+    for (int i = 0; i < BOARD_ROW; i++) 
+    {
+        for (int j = 0; j < BOARD_COL; j++)
+        {
+            // check player1
+            if (board[i][j] == 'o' &&
+                board[i-1][j-1] == 'o' &&
+                board[i-2][j-2] == 'o' &&
+                board[i-3][j-3] == 'o' &&)
+            {
+                return true;
+            }
+            // check player2
+            if (board[i][j] == 'x' &&
+                board[i-1][j-1] == 'x' &&
+                board[i-2][j-2] == 'x' &&
+                board[i-3][j-3] == 'x' &&)
+            {
+                return true;
+            }
+        }
+    }
+    // ascending diagonal
+    for (int i = 0; i < BOARD_ROW; i++) 
+    {
+        for (int j = 0; j < BOARD_COL; j++)
+        {
+            // check player1
+            if (board[i][j] == 'o' &&
+                board[i-1][j+1] == 'o' &&
+                board[i-2][j+2] == 'o' &&
+                board[i-3][j+3] == 'o' &&)
+            {
+                return true;
+            }
+            // check player2
+            if (board[i][j] == 'x' &&
+                board[i-1][j+1] == 'x' &&
+                board[i-2][j+2] == 'x' &&
+                board[i-3][j+3] == 'x' &&)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Announce Update
+// Print out board after a move is made to both players
+// When game is completed, announce the winnder to both players
+// TBD

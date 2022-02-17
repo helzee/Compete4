@@ -116,6 +116,33 @@ void resetBoard() {
 // Print Board
 // prints out the matrix that represents the connect 4 board
 // ASCII border around characters and within frame to make state clear
+String printBoard() {
+    string connectBoard = "";
+    // Print Board Top
+    connectBoard += "|_._._._._._._|\n";
+    // Board print per row
+    // prints out 2x colnum characters
+    for(int i = 0; i < BOARD_ROW; i++) 
+    {
+        connectBoard += "|";
+        for(int j = 0; j < (BOARD_COL*2)-1; j++)
+        {
+            // is a seperator char
+            if ( i % 2 == 0) {
+                connectBoard += "T";
+            }
+            // is a token slot
+            else
+            {
+                connectBoard += board[i][j - (j/2)];
+            }
+        }
+        connectBoard += "|\n";
+    }
+    // Print Board Base
+    connectBoard += "/‾‾‾‾‾‾‾‾‾‾‾‾‾/\n"
+    return connectBoard;
+}
 
 
 // ----------------------------------------------------------------------------

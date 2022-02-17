@@ -20,7 +20,7 @@ public:
     void resetBoard();
 
     bool dropPiece(Session*, int);
-    string printBoard(Session*);
+    string printBoard();
 
     gameSession(int);
 

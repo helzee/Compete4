@@ -116,6 +116,17 @@ void resetBoard() {
 // Print Board
 // prints out the matrix that represents the connect 4 board
 // ASCII border around characters and within frame to make state clear
+/*
+    Example string:
+    |_._._._._._._|
+    | T T T T T T |
+    | T T T T T T |
+    | T T T T T T |
+    | T T TxT T T |
+    | T ToToT T T |
+    | TxTxToT T T |
+    /‾‾‾‾‾‾‾‾‾‾‾‾‾/
+*/
 String printBoard() {
     string connectBoard = "";
     // Print Board Top

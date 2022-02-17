@@ -21,14 +21,14 @@ using namespace std;
 void initCommandLexer()
 {
 
-   regHelp = new regex(R"(^(h(elp)?)(\s))");
-   regExit = new regex(R"(^(exit|q(uit)?)(\s))");
-   regPrint = new regex(R"(^(p(rint)?)(\s))");
+   regHelp = new regex(R"(^(h(elp)?)(\s)*)");
+   regExit = new regex(R"(^(exit|q(uit)?)(\s)*)");
+   regPrint = new regex(R"(^(p(rint)?)(\s)*)");
    regBack = new regex(R"(^(b(ack)?)(\s)*)");
    regName = new regex(R"(^(n(ame)?)(\s)*)");
    regLogin = new regex(R"(^(l(ogin)?)(\s)*)");
    regSignin = new regex(R"(^(s(ignin)?)(\s)*)");
-   regMakeAcct = new regex(R"(^(m(akeaccount))(\s)*)");
+   regMakeAcct = new regex(R"(^(m(akeaccount)?)(\s)*)");
    regLBoard = new regex(R"(^((lb)|(leaderboard))(\s)*)");
 }
 
@@ -42,7 +42,6 @@ void initCommandLexer()
  */
 CommandTok lexCommand(const char* command)
 {
-  
 
    if (regex_match(command, *regHelp)) { // HELP
       return TOKHELP;

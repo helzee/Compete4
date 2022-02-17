@@ -5,6 +5,7 @@
 #include "loginCommands.h"
 #include "session.h"
 
+// helper strings
 const char* HELP_TEXT1 = "List of global commands:\n"
                          "help (h): self explanatory\n"
                          "exit (quit, q) : quit the game\n"
@@ -20,6 +21,7 @@ const char* MAIN_MENU_HEADER = "------MAIN MENU------\n"
 // Return false if the command was quit/exit
 bool parseCommand(string command, Session* session)
 {
+   // lexer needs newline to work
    string newLineComm = command + "\n";
    // first step: check for global commands
    CommandTok commTok = lexCommand(newLineComm.c_str());
@@ -42,6 +44,7 @@ bool parseCommand(string command, Session* session)
       return true;
    }
 
+   // step 2: check for local commands
    switch (session->currMenu) {
    case MAIN:
       mainMenuCommand(commTok, session);

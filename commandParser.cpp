@@ -10,7 +10,8 @@ const char* HELP_TEXT1 = "List of global commands:\n"
                          "exit (quit, q) : quit the game\n"
                          "leaderboard (lb) : view leaderboard\n";
 const char* HELP_TEXT2 = "print (p) : re-print the current menu\n"
-                         "name (n) : print your username\n";
+                         "name (n) : print your username\n"
+                         "back (b) : go back to previous menu\n";
 
 const char* LBOARD_TEXT = "You are viewing the leaderboard\n";
 const char* MAIN_MENU_HEADER = "------MAIN MENU------\n"

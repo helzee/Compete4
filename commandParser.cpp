@@ -18,7 +18,6 @@ bool parseCommand(string command, Session* session)
       break;
    case LOGIN:
       return loginMenuCommand(command, session);
-      break;
    default:
       send("ERROR: You are went to an invalid menu, sending back to main menu",
            session->clientSd);
@@ -34,24 +33,24 @@ void mainMenuCommand(string command, Session* session)
    if (cmp(command, "help")) {
       send(MAIN_HELP, session->clientSd);
    }
-   if (cmp(command, "login")) {
+
+   else if (cmp(command, "login")) {
       session->currMenu = LOGIN;
       loginMenuCommand("print", session);
-      return;
    }
-   if (cmp(command, "print")) {
+
+   else if (cmp(command, "print")) {
       send("You are in the Main Menu", session->clientSd);
-      return;
    }
-   if (cmp(command, "name")) {
+
+   else if (cmp(command, "name")) {
       if (session->record != nullptr) {
          string name = "Your name is " + session->record->getName();
          send(name, session->clientSd);
-         return;
-      }
-      send("You are not logged in.", session->clientSd);
-      return;
+      } else
+         send("You are not logged in.", session->clientSd);
    }
 
-   send("Not a recognized command, try again.", session->clientSd);
+   else
+      send("Not a recognized command, try again.", session->clientSd);
 }

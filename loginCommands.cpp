@@ -9,12 +9,13 @@ bool loginMenuCommand(string command, Session* session)
       session->currMenu = MAIN;
       return true;
    }
-   if (cmp(command, "print")) {
+   if (cmp(command, "print") || cmp(command, "help")) {
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
            "sign in as guest, \"l\" to log out.",
            session->clientSd);
       return true;
    }
+
    if (cmp(command, "s")) {
       return signInCommand(session);
    }

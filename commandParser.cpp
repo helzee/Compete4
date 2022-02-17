@@ -19,8 +19,9 @@ const char* MAIN_MENU_HEADER = "------MAIN MENU------\n"
 // Return false if the command was quit/exit
 bool parseCommand(string command, Session* session)
 {
+   string newLineComm = command + "\n";
    // first step: check for global commands
-   CommandTok commTok = lexCommand(command.c_str());
+   CommandTok commTok = lexCommand(newLineComm.c_str());
    switch (commTok) {
    case TOKHELP:
       send(HELP_TEXT1, session->clientSd);

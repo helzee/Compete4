@@ -20,48 +20,50 @@ using namespace std;
 
 void initCommandLexer()
 {
-   
-   regHelp = new regex(R"(^(help|h))");
-   regExit = new regex(R"(^(exit|quit|q))");
-   regPrint = new regex(R"(^(print|p))");
-   regBack = new regex(R"(^(back|b))");
-   regName = new regex(R"(^(name|n))");
-   regLogin = new regex(R"(^(login|l))");
-   regSignin = new regex(R"(^(signin|s))");
-   regMakeAcct = new regex(R"(^(m|makeaccount))");
-   regLBoard = new regex(R"(^(leaderboard|lb))");
+
+   regHelp = new regex(R"(^(h(elp)?)(\s))");
+   regExit = new regex(R"(^(exit|q(uit)?)(\s))");
+   regPrint = new regex(R"(^(p(rint)?)(\s))");
+   regBack = new regex(R"(^(b(ack)?)(\s)*)");
+   regName = new regex(R"(^(n(ame)?)(\s)*)");
+   regLogin = new regex(R"(^(l(ogin)?)(\s)*)");
+   regSignin = new regex(R"(^(s(ignin)?)(\s)*)");
+   regMakeAcct = new regex(R"(^(m(akeaccount))(\s)*)");
+   regLBoard = new regex(R"(^((lb)|(leaderboard))(\s)*)");
 }
 
 /**
- * @brief Scans a command sent by the user. Returns the command type as a token enum.
- * 
+ * @brief Scans a command sent by the user. Returns the command type as a token
+ * enum.
+ *
  * @param command the command sent by the user to be scanned
- * @return CommandTok : the token that this command represents (TOKBAD if the command does not exist)
+ * @return CommandTok : the token that this command represents (TOKBAD if the
+ * command does not exist)
  */
 CommandTok lexCommand(const char* command)
 {
-   const char *c = command;
-   
+  
 
-   
-   
-   if (regex_search(c = command, *regHelp)) { // HELP
+   if (regex_match(command, *regHelp)) { // HELP
       return TOKHELP;
-   } else if (regex_search(c = command, *regExit)) { // EXIT
+   } else if (regex_match(command, *regExit)) { // EXIT
       return TOKEXIT;
-   } else if (regex_search(c = command, *regPrint)) { // PRINT
+   } else if (regex_match(command, *regPrint)) { // PRINT
       return TOKPRINT;
-   } else if (regex_search(c = command, *regBack)) { // BACK
+   } else if (regex_match(command, *regBack)) { // BACK
       return TOKBACK;
-   } else if (regex_search(c = command, *regLogin)) { // LOGIN
-      return TOKLOGIN;
-   } else if (regex_search(c = command, *regSignin)) { // SIGNIN
-      return TOKSIGNIN;
-   } else if (regex_search(c = command, *regMakeAcct)) { // MAKE ACCT
-      return TOKMAKEACCT;
-   } else if (regex_search(c = command, *regLBoard)) { // MAKE ACCT
+   } else if (regex_match(command, *regLBoard)) { // LEADERBOARD
       return TOKLBOARD;
+   } else if (regex_match(command, *regLogin)) { // LOGIN
+      return TOKLOGIN;
+   } else if (regex_match(command, *regSignin)) { // SIGNIN
+      return TOKSIGNIN;
+   } else if (regex_match(command, *regMakeAcct)) { // MAKE ACCT
+      return TOKMAKEACCT;
+
+   } else if (regex_match(command, *regName)) { // NAME
+      return TOKNAME;
    }
-   
+
    return TOKBAD;
 }

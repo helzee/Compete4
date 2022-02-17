@@ -3,54 +3,59 @@
 // Return false if the command was quit/exit
 bool parseCommand(string command, Session* session)
 {
-   // global commands
-   if (cmp(command, "quit") || cmp(command, "exit")) {
+   // first step: check for global commands
+   CommandTok commTok = CommandLexer::lexCommand(command.c_str());
+   switch (commTok) {
+   case TOKHELP:
+      send(HELP_TEXT, session->clientSd);
+      return true;
+   case TOKEXIT:
       return false;
-   }
-   if (cmp(command, "leaderboard")) {
-      send("You are viewing the leaderboard", session->clientSd);
+   case TOKLBOARD:
+      send(LBOARD_TEXT, session->clientSd);
+      return true;
+   case TOKNAME:
+      if (session->record != nullptr) {
+         string name = "Your name is " + session->record->getName() + "\n";
+         send(name, session->clientSd);
+      } else
+         send("You are not logged in.\n", session->clientSd);
       return true;
    }
 
    switch (session->currMenu) {
    case MAIN:
-      mainMenuCommand(command, session);
+      mainMenuCommand(commTok, session);
       break;
    case LOGIN:
       return loginMenuCommand(command, session);
    default:
-      send("ERROR: You are went to an invalid menu, sending back to main menu",
+      send("ERROR: You went to an invalid menu, sending back to main menu",
            session->clientSd);
       session->currMenu = MAIN;
-      mainMenuCommand("print", session);
+      mainMenuCommand(TOKPRINT, session);
    }
 
    return true;
 }
 
-void mainMenuCommand(string command, Session* session)
+void mainMenuCommand(CommandTok command, Session* session)
 {
-   if (cmp(command, "help")) {
-      send(MAIN_HELP, session->clientSd);
-   }
 
-   else if (cmp(command, "login")) {
+   switch (command) {
+   case TOKLOGIN:
       session->currMenu = LOGIN;
       loginMenuCommand("print", session);
-   }
-
-   else if (cmp(command, "print")) {
-      send("You are in the Main Menu", session->clientSd);
-   }
-
-   else if (cmp(command, "name")) {
-      if (session->record != nullptr) {
-         string name = "Your name is " + session->record->getName();
-         send(name, session->clientSd);
-      } else
-         send("You are not logged in.", session->clientSd);
-   }
-
-   else
+      return;
+   case TOKPRINT:
+      send(MAIN_MENU_HEADER, session->clientSd);
+      return;
+   case TOKBAD:
       send("Not a recognized command, try again.", session->clientSd);
+      return;
+   }
+
+   return;
+
+
 }

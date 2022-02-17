@@ -9,6 +9,7 @@
 #include "sessionsDB.h"
 #include "gameSession.h"
 #include "gameSessionDB.h"
+#include "commandLexer.h"
 
 using namespace std;
 
@@ -38,6 +39,10 @@ int main(int argc, char** argv)
    /*for(int i = 0; i < 10; i++) {
       makeGame();
    }*/
+
+   // Initialize regex objects for the lexer
+   // the class members are static, so pointer is not needed
+   CommandLexer();
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;
@@ -70,6 +75,7 @@ void* clientSession(void* ptr)
 
    Session* session = makeSession(sd);
    parseCommand("print", session);
+   
 
    while (1) {
       string command = recieve(sd);

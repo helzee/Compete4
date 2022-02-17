@@ -41,8 +41,7 @@ int main(int argc, char** argv)
    }*/
 
    // Initialize regex objects for the lexer
-   // the class members are static, so pointer is not needed
-   CommandLexer();
+   initCommandLexer();
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;

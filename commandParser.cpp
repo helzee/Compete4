@@ -4,6 +4,7 @@
 #include "globalFuncs.h"
 #include "loginCommands.h"
 #include "session.h"
+#include "constants.h"
 
 // helper strings
 const char* HELP_TEXT1 = "List of global commands:\n"
@@ -51,7 +52,7 @@ bool parseCommand(string command, Session* session)
       mainMenuCommand(commTok, session);
       break;
    case LOGIN:
-      return loginMenuCommand(command, session);
+      return loginMenuCommand(commTok, session);
    default:
       send("ERROR: You went to an invalid menu, sending back to main menu",
            session->clientSd);
@@ -68,7 +69,7 @@ void mainMenuCommand(CommandTok command, Session* session)
    switch (command) {
    case TOKLOGIN:
       session->currMenu = LOGIN;
-      loginMenuCommand("print", session);
+      loginMenuCommand(TOKPRINT, session);
       return;
    case TOKPRINT:
       send(MAIN_MENU_HEADER, session->clientSd);

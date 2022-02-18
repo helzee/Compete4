@@ -1,5 +1,4 @@
-#include "constants.h"
-#include "globalFuncs.h"
+
 #include "session.h"
 #include "userRecord.h"
 #include "userRecordDB.h"
@@ -9,7 +8,7 @@
 
 using namespace std;
 
-bool loginMenuCommand(string, Session*);
+bool loginMenuCommand(CommandTok, Session*);
 bool signInCommand(Session*);
 bool makeAccountCommand(Session*);
 bool signInAsGuestCommand(Session*);

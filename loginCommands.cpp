@@ -1,6 +1,9 @@
 #include "loginCommands.h"
 #include "commandParser.h"
 #include "openssl/sha.h"
+#include "constants.h"
+#include "globalFuncs.h"
+#include "commandLexer.h"
 
 bool loginMenuCommand(CommandTok command, Session* session)
 {

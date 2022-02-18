@@ -2,30 +2,28 @@
 #include "commandParser.h"
 #include "openssl/sha.h"
 
-bool loginMenuCommand(string command, Session* session)
+bool loginMenuCommand(CommandTok command, Session* session)
 {
-   if (cmp(command, "main") || cmp(command, "back")) {
+
+   switch (command) {
+   case (TOKMAIN):
+   case (TOKBACK):
       send("Going to main menu.", session->clientSd);
       session->currMenu = MAIN;
       return true;
-   }
-   if (cmp(command, "print") || cmp(command, "help")) {
+   case (TOKPRINT):
       send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
            "sign in as guest, \"l\" to log out.",
            session->clientSd);
       return true;
-   }
-
-   if (cmp(command, "s")) {
+   case (TOKSIGNIN):
       return signInCommand(session);
-   }
-   if (cmp(command, "m")) {
+   case (TOKMAKEACCT):
       return makeAccountCommand(session);
-   }
-   if (cmp(command, "g")) {
+   case (TOKGUEST):
       return signInAsGuestCommand(session);
-   }
-   if (cmp(command, "l")) {
+   // reusing login token for logout!s
+   case (TOKLOGIN):
       if (session->record != nullptr) {
          send("Signed out successfully.", session->clientSd);
          session->record = nullptr;

@@ -28,19 +28,11 @@ enum CommandTok {
    TOKLOGIN,
    TOKSIGNIN,
    TOKMAKEACCT,
-   TOKLBOARD
+   TOKLBOARD,
+   TOKMAIN,
+   TOKGUEST
 
 };
-
-static regex* regHelp;
-static regex* regExit;
-static regex* regPrint;
-static regex* regBack;
-static regex* regName;
-static regex* regLogin;
-static regex* regSignin;
-static regex* regMakeAcct;
-static regex* regLBoard;
 
 void initCommandLexer();
 

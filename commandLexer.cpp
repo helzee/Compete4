@@ -23,12 +23,26 @@
 #define REGLBOARD "(leaderboard|lb)"
 #define REGSIGNIN "(s(ignin)?)"
 #define REGMAKEACCT "(m(akeaccount)?)"
+#define REGMAIN "(main)"
+#define REGGUEST "(g(uest)?)"
 
 #include "commandLexer.h"
 #include "constants.h"
 #include <regex>
 #include <string>
 using namespace std;
+
+static regex* regHelp;
+static regex* regExit;
+static regex* regPrint;
+static regex* regBack;
+static regex* regName;
+static regex* regLogin;
+static regex* regSignin;
+static regex* regMakeAcct;
+static regex* regLBoard;
+static regex* regMain;
+static regex* regGuest;
 
 // regex objects. icase = ignore case. match_continuous = only match from first
 // char
@@ -44,12 +58,14 @@ void initCommandLexer()
    regSignin = new regex(REGPREFIX REGSIGNIN REGSUFFIX);
    regMakeAcct = new regex(REGPREFIX REGMAKEACCT REGSUFFIX);
    regLBoard = new regex(REGPREFIX REGLBOARD REGSUFFIX);
-
+   regMain = new regex(REGPREFIX REGMAIN REGSUFFIX);
+   regGuest = new regex(REGPREFIX REGGUEST REGSUFFIX);
 }
 
 /**
  * @brief Scans a command sent by the user. Returns the command type as a token
- * enum.
+ * enum. Future idea: We could pass in the current menu if we wanted to create
+ * unique tokens for each menu.
  *
  * @param command the command sent by the user to be scanned
  * @return CommandTok : the token that this command represents (TOKBAD if the
@@ -77,6 +93,10 @@ CommandTok lexCommand(const char* command)
 
    } else if (regex_match(command, *regName)) { // NAME
       return TOKNAME;
+   } else if (regex_match(command, *regMain)) { // MAIN
+      return TOKMAIN;
+   } else if (regex_match(command, *regGuest)) {
+      return TOKGUEST;
    }
 
    return TOKBAD;

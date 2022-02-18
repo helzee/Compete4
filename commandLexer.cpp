@@ -9,6 +9,21 @@
  *
  */
 
+// REGEX strings split into prefix - regex - suffix
+// These strings auto concat at runtime
+#define REGPREFIX "(^"
+#define REGSUFFIX "(\\s)*)"
+
+#define REGHELP "(h(elp)?)"
+#define REGEXIT "(exit|(q(uit)?))"
+#define REGPRINT "(p(rint)?)"
+#define REGBACK "(b(ack)?)"
+#define REGNAME "(n(ame)?)"
+#define REGLOGIN "(l(ogin)?)"
+#define REGLBOARD "(leaderboard|lb)"
+#define REGSIGNIN "(s(ignin)?)"
+#define REGMAKEACCT "(m(akeaccount)?)"
+
 #include "commandLexer.h"
 #include "constants.h"
 #include <regex>
@@ -20,15 +35,16 @@ using namespace std;
 
 void initCommandLexer()
 {
-   regHelp = new regex(R"(^(help|h)\s+)");
-   regExit = new regex(R"(^(exit|quit|q)\s+)");
-   regPrint = new regex(R"(^(print|p)\s+)");
-   regBack = new regex(R"(^(back|b)\s+)");
-   regName = new regex(R"(^(name|n)\s+)");
-   regLogin = new regex(R"(^(login|l)\s+)");
-   regSignin = new regex(R"(^(signin|s)\s+)");
-   regMakeAcct = new regex(R"(^(m|makeaccount)\s+)");
-   regLBoard = new regex(R"(^(leaderboard|lb)\s+)");
+   regHelp = new regex(REGPREFIX REGHELP REGSUFFIX);
+   regExit = new regex(REGPREFIX REGEXIT REGSUFFIX);
+   regPrint = new regex(REGPREFIX REGPRINT REGSUFFIX);
+   regBack = new regex(REGPREFIX REGBACK REGSUFFIX);
+   regName = new regex(REGPREFIX REGNAME REGSUFFIX);
+   regLogin = new regex(REGPREFIX REGLOGIN REGSUFFIX);
+   regSignin = new regex(REGPREFIX REGSIGNIN REGSUFFIX);
+   regMakeAcct = new regex(REGPREFIX REGMAKEACCT REGSUFFIX);
+   regLBoard = new regex(REGPREFIX REGLBOARD REGSUFFIX);
+
 }
 
 /**

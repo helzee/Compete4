@@ -27,6 +27,7 @@ bool parseCommand(string command, Session* session)
    CommandTok commTok = lexCommand(newLineComm.c_str());
    switch (commTok) {
    case TOKHELP:
+      // make max message size bigger to fit this in one? --------------------
       send(HELP_TEXT1, session->clientSd);
       send(HELP_TEXT2, session->clientSd);
       return true;

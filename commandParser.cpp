@@ -1,13 +1,34 @@
 #include "commandParser.h"
+#include "commandLexer.h"
+#include "constants.h"
+#include "globalFuncs.h"
+#include "loginCommands.h"
+#include "session.h"
+
+// helper strings
+const char* HELP_TEXT1 = "List of global commands:\n"
+                         "help (h): self explanatory\n"
+                         "exit (quit, q) : quit the game\n"
+                         "leaderboard (lb) : view leaderboard\n";
+const char* HELP_TEXT2 = "print (p) : re-print the current menu\n"
+                         "name (n) : print your username\n"
+                         "back (b) : go back to previous menu\n";
+
+const char* LBOARD_TEXT = "You are viewing the leaderboard\n";
+const char* MAIN_MENU_HEADER = "------MAIN MENU------\n"
+                               "login (l): to login or switch current acount\n";
 
 // Return false if the command was quit/exit
 bool parseCommand(string command, Session* session)
 {
+   // lexer needs newline to work
+   string newLineComm = command + "\n";
    // first step: check for global commands
-   CommandTok commTok = CommandLexer::lexCommand(command.c_str());
+   CommandTok commTok = lexCommand(newLineComm.c_str());
    switch (commTok) {
    case TOKHELP:
-      send(HELP_TEXT, session->clientSd);
+      send(HELP_TEXT1, session->clientSd);
+      send(HELP_TEXT2, session->clientSd);
       return true;
    case TOKEXIT:
       return false;
@@ -23,6 +44,7 @@ bool parseCommand(string command, Session* session)
       return true;
    }
 
+   // step 2: check for local commands
    switch (session->currMenu) {
    case MAIN:
       mainMenuCommand(commTok, session);
@@ -56,6 +78,4 @@ void mainMenuCommand(CommandTok command, Session* session)
    }
 
    return;
-
-
 }

@@ -18,7 +18,7 @@ using namespace std;
 // regex objects. icase = ignore case. match_continuous = only match from first
 // char
 
-CommandLexer::CommandLexer()
+void initCommandLexer()
 {
    regHelp = new regex(R"(^(help|h)\s+)");
    regExit = new regex(R"(^(exit|quit|q)\s+)");
@@ -32,32 +32,36 @@ CommandLexer::CommandLexer()
 }
 
 /**
- * @brief Scans a command sent by the user. Returns the command type as a token enum.
- * 
+ * @brief Scans a command sent by the user. Returns the command type as a token
+ * enum.
+ *
  * @param command the command sent by the user to be scanned
- * @return CommandTok : the token that this command represents (TOKBAD if the command does not exist)
+ * @return CommandTok : the token that this command represents (TOKBAD if the
+ * command does not exist)
  */
-CommandTok CommandLexer::lexCommand(const char* command)
+CommandTok lexCommand(const char* command)
 {
-   const char *c = command;
-   
-   
-   if (regex_search(c, *regHelp)) { //HELP
+
+   if (regex_match(command, *regHelp)) { // HELP
       return TOKHELP;
-   } else if (regex_search(c, *regExit)) { //EXIT
+   } else if (regex_match(command, *regExit)) { // EXIT
       return TOKEXIT;
-   } else if (regex_search(c, *regPrint)) { //PRINT
+   } else if (regex_match(command, *regPrint)) { // PRINT
       return TOKPRINT;
-   } else if (regex_search(c, *regBack)) { //BACK
+   } else if (regex_match(command, *regBack)) { // BACK
       return TOKBACK;
-   } else if (regex_search(c, *regLogin)) { //LOGIN
-      return TOKLOGIN;
-   } else if (regex_search(c, *regSignin)) { //SIGNIN
-      return TOKSIGNIN;
-   } else if (regex_search(c, *regMakeAcct)) { //MAKE ACCT
-      return TOKMAKEACCT;
-   } else if (regex_search(c, *regLBoard)) { //MAKE ACCT
+   } else if (regex_match(command, *regLBoard)) { // LEADERBOARD
       return TOKLBOARD;
-   } 
+   } else if (regex_match(command, *regLogin)) { // LOGIN
+      return TOKLOGIN;
+   } else if (regex_match(command, *regSignin)) { // SIGNIN
+      return TOKSIGNIN;
+   } else if (regex_match(command, *regMakeAcct)) { // MAKE ACCT
+      return TOKMAKEACCT;
+
+   } else if (regex_match(command, *regName)) { // NAME
+      return TOKNAME;
+   }
+
    return TOKBAD;
 }

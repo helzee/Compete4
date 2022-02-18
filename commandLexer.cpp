@@ -20,15 +20,15 @@ using namespace std;
 
 CommandLexer::CommandLexer()
 {
-   regHelp = new regex(R"(^(help|h)\s)");
-   regExit = new regex(R"(^(exit|quit|q)\s)");
-   regPrint = new regex(R"(^(print|p)\s)");
-   regBack = new regex(R"(^(back|b)\s)");
-   regName = new regex(R"(^(name|n)\s)");
-   regLogin = new regex(R"(^(login|l)\s)");
-   regSignin = new regex(R"(^(signin|s)\s)");
-   regMakeAcct = new regex(R"(^(m|makeaccount)\s)");
-   regLBoard = new regex(R"(^(leaderboard|lb)\s)");
+   regHelp = new regex(R"(^(help|h)\s+)");
+   regExit = new regex(R"(^(exit|quit|q)\s+)");
+   regPrint = new regex(R"(^(print|p)\s+)");
+   regBack = new regex(R"(^(back|b)\s+)");
+   regName = new regex(R"(^(name|n)\s+)");
+   regLogin = new regex(R"(^(login|l)\s+)");
+   regSignin = new regex(R"(^(signin|s)\s+)");
+   regMakeAcct = new regex(R"(^(m|makeaccount)\s+)");
+   regLBoard = new regex(R"(^(leaderboard|lb)\s+)");
 }
 
 /**

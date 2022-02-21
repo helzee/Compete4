@@ -26,6 +26,7 @@ bool parseCommand(string command, Session* session)
    string newLineComm = command + "\n";
    // first step: check for global commands
    CommandTok* commTok = commandLexer.lexCommand(newLineComm.c_str());
+   session.handleCommand(commTok);
    switch (commTok->getType()) {
    case TOKHELP:
       // make max message size bigger to fit this in one? --------------------

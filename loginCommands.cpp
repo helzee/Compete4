@@ -5,10 +5,10 @@
 #include "globalFuncs.h"
 #include "commandLexer.h"
 
-bool loginMenuCommand(CommandTok command, Session* session)
+bool loginMenuCommand(CommandTok* command, Session* session)
 {
 
-   switch (command) {
+   switch (command->getType()) {
    case (TOKMAIN):
    case (TOKBACK):
       send("Going to main menu.", session->clientSd);
@@ -173,7 +173,7 @@ bool checkReturn(string input, Session* session)
       return true;
    }
    if (cmp(input, "back")) {
-      loginMenuCommand("print", session);
+      parseCommand("print", session);
       return true;
    }
    return false;

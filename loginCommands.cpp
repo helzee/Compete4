@@ -4,42 +4,7 @@
 #include "globalFuncs.h"
 #include "commandLexer.h"
 
-bool loginMenuCommand(CommandTok* command, Session* session)
-{
 
-   switch (command->getType()) {
-   case (TOKMAIN):
-   case (TOKBACK):
-      send("Going to main menu.", session->clientSd);
-      session->currMenu = MAIN;
-      return true;
-   case (TOKPRINT):
-      send("Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
-           "sign in as guest, \"l\" to log out.",
-           session->clientSd);
-      return true;
-   case (TOKSIGNIN):
-      return signInCommand(session);
-   case (TOKMAKEACCT):
-      return makeAccountCommand(session);
-   case (TOKGUEST):
-      return signInAsGuestCommand(session);
-   // reusing login token for logout!s
-   case (TOKLOGIN):
-      if (session->record != nullptr) {
-         send("Signed out successfully.", session->clientSd);
-         session->record = nullptr;
-      } else
-         send("You are not signed in.", session->clientSd);
-
-      send("Going to main menu.", session->clientSd);
-      session->currMenu = MAIN;
-      return true;
-   }
-
-   send("Not a recognized command, try again.", session->clientSd);
-   return true;
-}
 
 bool signInCommand(Session* session)
 {

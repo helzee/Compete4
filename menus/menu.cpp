@@ -1,12 +1,14 @@
 #include "menu.h"
 #include "../commandLexer.h"
-#include "globalFuncs.h"
-#include "session.h"
+#include "../globalFuncs.h"
+#include "../session.h"
+#include "../userRecord.h"
 
 #include "loginMenu.h"
 #include "mainMenu.h"
 #include "makeAccMenu.h"
 #include "signInMenu.h"
+#include "guestMenu.h"
 
 using namespace std;
 
@@ -25,7 +27,7 @@ Menu::Menu()
    header = "DEFAULT HEADER";
 }
 
-int Menu::navigate(CommandTok* comm, Session* session)
+int Menu::navigate(CommandTok* comm, Session* session) const
 {
    TokType menu = comm->getType();
    switch (menu) {
@@ -103,11 +105,11 @@ int Menu::backCommand(CommandTok* comm, Session* session) const
 // ---------------------------------------------------------------------------
 int Menu::nameCommand(CommandTok* comm, Session* session) const
 {
-   if (session->record != nullptr) {
-      string name = "Your name is " + session->record->getName() + "\n";
-      return send(name, session->clientSd);
+   if (session->getRecord() != nullptr) {
+      string name = "Your name is " + session->getRecord()->getName() + "\n";
+      return session->send(name);
    } else
-      return send("You are not logged in.\n", session->clientSd);
+      return session->send("You are not logged in.\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -125,26 +127,27 @@ int Menu::makeAcctCommand(CommandTok* comm, Session* session) const
 }
 int Menu::lBoardCommand(CommandTok* comm, Session* session) const
 {
-   return send(LBOARD_TEXT, session->clientSd);
+   return session->send(LBOARD_TEXT);
 }
 int Menu::mainCommand(CommandTok* comm, Session* session) const {
    
    if (changeMenu(session, MAIN)) {
-      allMenus[newMenu]->sendWelcome(session);
       return 0;
    }
    return 1;
 }
-int Menu::guestCommand(CommandTok* comm, Session* session) const;
+int Menu::guestCommand(CommandTok* comm, Session* session) const {
+   return sendBadCommand(session);
+}
 
-bool Menu::changeMenu(Session* session, MenuType menu) const {
-   Menu* newMenu = allMenus[menu];
+int Menu::changeMenu(Session* session, MenuType menu) const {
+   const Menu* newMenu = allMenus[menu];
    if (!session->isMenuLocked()) {
       session->setMenu(newMenu);
       newMenu->sendWelcome(session);
-      return true;
+      return 0;
    } else {
-      return send("Cannot leave this menu yet", session->getSessionID);
-      return false;
+      return session->send("Cannot leave this menu yet");
+      return 1;
    }
      }

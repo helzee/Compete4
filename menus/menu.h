@@ -24,8 +24,9 @@ public:
 
 protected:
    enum MenuType { MENU = 0, MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST };
-   void changeMenu(Session* session, MenuType menu) const;
+   int changeMenu(Session* session, MenuType menu) const;
    virtual int sendWelcome(Session* session) const;
+   int sendBadCommand(Session* session) const;
    const Menu** allMenus;
 
    virtual int badCommand(CommandTok* comm, Session* session) const;
@@ -54,7 +55,7 @@ protected:
    const char* LBOARD_TEXT = "You are viewing the leaderboard";
    const char* BADCOMMAND_TEXT = "Not a recognized command, try again.";
 
-   const MenuType type;
+   MenuType type;
    const char* header;
 };
 

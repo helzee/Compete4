@@ -7,12 +7,12 @@
 
 using namespace std;
 
-class GuestMenu : Menu {
+class GuestMenu : public Menu {
    public:
       GuestMenu();
 
    private:
-      MenuType type;
+     
 };
 
 #endif

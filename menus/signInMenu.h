@@ -3,16 +3,21 @@
 #ifndef SIGNINMENU_H
 #define SIGNINMENU_H
 #include "../constants.h"
-#include "menu.h"
+
+#include "restrictedMenu.h"
+
+#define MIN_UNAME 4
+#define MAX_UNAME 32
 
 using namespace std;
 
-class SignInMenu : Menu {
+class SignInMenu : public RestrictedMenu {
    public:
       SignInMenu();
 
    private:
-      MenuType type;
+      virtual int badCommand(CommandTok* comm, Session* session) const;
+      virtual int backCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

@@ -5,7 +5,7 @@
 
 // Game List 
 // When scalable, change to an odered map or vector
-gameSession* gameList[MAX_GAMES];
+GameSession* gameList[MAX_GAMES];
 
 // Create a new gamesession
 // Add to the database/list
@@ -17,6 +17,6 @@ void makeGame();
 /* bool removeGame(int);*/
 
 // Hands off the gameSession object pointer to player's session
-gameSession* getGame(int);
+GameSession* getGame(int);
 
 #endif

@@ -29,6 +29,16 @@ int Session::handleCommand(CommandTok* comm)
    return currMenu->navigate(comm, this);
 }
 
-void Session::setMenu(Menu* newMenu) { currMenu = newMenu; }
+void Session::setMenu(const Menu* newMenu) { currMenu = newMenu; }
 
 bool Session::isMenuLocked() const { return menuLocked; }
+
+int Session::send(string message) const
+{
+   while (write(clientSd, message.c_str(), MAX_MSG_SIZE) != MAX_MSG_SIZE)
+      ;
+      
+   return 0;
+}
+
+Record* Session::getRecord() const { return record; }

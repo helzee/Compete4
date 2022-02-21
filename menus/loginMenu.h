@@ -13,6 +13,10 @@ class LoginMenu : Menu {
 
    private:
       MenuType type;
+       virtual int backCommand(CommandTok* comm, Session* session) const;
+       virtual int signinCommand(CommandTok* comm, Session* session) const;
+       virtual int makeAcctCommand(CommandTok* comm, Session* session) const;
+       virtual int guestCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

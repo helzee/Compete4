@@ -1,7 +1,7 @@
 #include "mainMenu.h"
-#include "globalFuncs.h"
+#include "../globalFuncs.h"
 #include "menu.h"
-#include "session.h"
+#include "../session.h"
 
 using namespace std;
 
@@ -18,6 +18,6 @@ int MainMenu::sendWelcome(Session* session) const
 }
 
 int MainMenu::loginCommand(CommandTok* comm, Session* session) const {
-   changeMenu(session, LOGIN);
-   return 0;
+   return changeMenu(session, LOGIN);
+   
 }

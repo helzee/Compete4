@@ -1,6 +1,7 @@
 #include "session.h"
 #include "commandLexer.h"
 #include "menus/menu.h"
+#include "menus/mainMenu.h"
 
 /**
  * @brief Construct a new Session:: Session object
@@ -12,8 +13,9 @@
 Session::Session(int clientSd, int sessionID)
 {
    menuLocked = false;
-   this->clientSd = clientSd;
-   this->sessionID = sessionID;
+   clientSd = clientSd;
+   sessionID = sessionID;
+   currMenu = mainMenu;
 }
 
 int Session::getSessionID() const { return sessionID; }

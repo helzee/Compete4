@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class MakeAcctMenu : Menu {
+class MakeAcctMenu : public Menu {
    public:
       MakeAcctMenu();
 
@@ -15,4 +15,5 @@ class MakeAcctMenu : Menu {
       MenuType type;
 };
 
+static const MakeAcctMenu makeAcctMenu;
 #endif

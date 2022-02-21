@@ -15,4 +15,6 @@ class GuestMenu : public Menu {
      
 };
 
+static const GuestMenu guestMenu;
+
 #endif

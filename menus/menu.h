@@ -61,4 +61,5 @@ protected:
 
 static const Menu menu;
 
+
 #endif

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class MainMenu : Menu
+class MainMenu : public Menu
 {
 public:
    MainMenu();
@@ -17,5 +17,7 @@ private:
    int sendWelcome(Session* session) const;
    virtual int loginCommand(CommandTok* comm, Session* session) const;
 };
+
+static const MainMenu mainMenu;
 
 #endif

@@ -12,15 +12,12 @@
 
 using namespace std;
 
+const Menu* makeMenus[] = {&menu, &mainMenu, &makeAcctMenu, &signInMenu, &guestMenu};
+
 Menu::Menu()
 {
    
-   const Menu* makeMenus[] = {new Menu(),
-                              (const Menu*)new MainMenu(),
-                              (const Menu*)new LoginMenu(),
-                              (const Menu*)new SignInMenu(),
-                              (const Menu*)new MakeAcctMenu(),
-                              (const Menu*)new GuestMenu()};
+   
 
    allMenus = makeMenus;
    type = MENU;

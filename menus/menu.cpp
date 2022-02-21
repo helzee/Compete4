@@ -12,7 +12,7 @@
 
 using namespace std;
 
-const Menu* makeMenus[] = {&menu, &mainMenu, &makeAcctMenu, &signInMenu, &guestMenu};
+const Menu* makeMenus[] = {menu, mainMenu, makeAcctMenu, signInMenu, guestMenu};
 
 Menu::Menu()
 {

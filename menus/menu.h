@@ -59,7 +59,7 @@ protected:
    const char* header;
 };
 
-static const Menu menu;
+static const Menu* menu = new Menu();
 
 
 #endif

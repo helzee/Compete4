@@ -18,6 +18,6 @@ private:
    virtual int loginCommand(CommandTok* comm, Session* session) const;
 };
 
-static const MainMenu mainMenu;
+static const MainMenu* mainMenu = new MainMenu();
 
 #endif

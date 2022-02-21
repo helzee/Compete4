@@ -15,5 +15,5 @@ class MakeAcctMenu : public Menu {
       MenuType type;
 };
 
-static const MakeAcctMenu makeAcctMenu;
+static const MakeAcctMenu* makeAcctMenu = new MakeAcctMenu();
 #endif

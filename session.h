@@ -1,29 +1,44 @@
 /** @file session.h
  *
  */
-#include "constants.h"
-#include "userRecord.h"
+
+
 
 #ifndef SESSION_H
 #define SESSION_H
 
-class gameSession;
+#include "constants.h"
+
+class GameSession;
+class Menu;
+class Record;
+
 
 using namespace std;
 
+/**
+ * @brief Tracks each client's session. takes command tokens and interfaces with menus using those tokens
+ * 
+ */
 class Session
 {
 public:
-   int currMenu = 0;
-   int clientSd;
-   Record* record = nullptr;
-   gameSession* currGame = nullptr;
+   
+   
 
    Session(int, int);
-   int getSessionID();
+   int getSessionID() const;
+   int handleCommand(CommandTok* comm);
+   void setMenu(Menu*);
+   bool isMenuLocked() const;
 
 private:
+   bool menuLocked;
    int sessionID;
+   Menu* currMenu;
+   int clientSd;
+   Record* record = nullptr;
+   GameSession* currGame = nullptr;
 };
 
 #endif

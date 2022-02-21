@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void send(string, int);
+int send(string, int);
 string recieve(int);
 bool cmp(string, string);
 

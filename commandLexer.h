@@ -91,6 +91,6 @@ private:
    TokType determineTok(const char* command) const;
 };
 
-static CommandLexer commandLexer;
+static const CommandLexer commandLexer;
 
 #endif

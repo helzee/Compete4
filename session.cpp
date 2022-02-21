@@ -1,9 +1,34 @@
 #include "session.h"
+#include "commandLexer.h"
+#include "menus/menu.h"
+
+/**
+ * @brief Construct a new Session:: Session object
+ *
+ * @param clientSd
+ * @param sessionID
+ */
 
 Session::Session(int clientSd, int sessionID)
 {
+   menuLocked = false;
    this->clientSd = clientSd;
    this->sessionID = sessionID;
 }
 
-int Session::getSessionID() { return sessionID; }
+int Session::getSessionID() const { return sessionID; }
+
+/**
+ * @brief tells the menu to interpret a command token
+ *
+ * @param comm
+ * @return int
+ */
+int Session::handleCommand(CommandTok* comm)
+{
+   return currMenu->navigate(comm, this);
+}
+
+void Session::setMenu(Menu* newMenu) { currMenu = newMenu; }
+
+bool Session::isMenuLocked() const { return menuLocked; }

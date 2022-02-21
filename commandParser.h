@@ -1,9 +1,11 @@
 
-#include "commandLexer.h"
+
 
 
 #ifndef COMMANDPARSER_H
 #define COMMANDPARSER_H
+
+#include "commandLexer.h"
 
 class Session;
 using namespace std;

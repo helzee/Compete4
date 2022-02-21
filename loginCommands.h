@@ -1,11 +1,13 @@
 
-#include "session.h"
-#include "userRecord.h"
-#include "userRecordDB.h"
-#include "commandLexer.h"
+
+
 
 #ifndef LOGINCOMMANDS_H
 #define LOGINCOMMANDS_H
+
+#include "constants.h"
+
+class Session;
 
 using namespace std;
 

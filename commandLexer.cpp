@@ -9,45 +9,16 @@
  *
  */
 
-// REGEX strings split into prefix - regex - suffix
-// These strings auto concat at runtime
-#define REGPREFIX "(^"
-#define REGSUFFIX "(\\s)*)"
-
-#define REGHELP "(h(elp)?)"
-#define REGEXIT "(exit|(q(uit)?))"
-#define REGPRINT "(p(rint)?)"
-#define REGBACK "(b(ack)?)"
-#define REGNAME "(n(ame)?)"
-#define REGLOGIN "(l(ogin)?)"
-#define REGLBOARD "(leaderboard|lb)"
-#define REGSIGNIN "(s(ignin)?)"
-#define REGMAKEACCT "(m(akeaccount)?)"
-#define REGMAIN "(main)"
-#define REGGUEST "(g(uest)?)"
-
 #include "commandLexer.h"
 #include "constants.h"
 #include <regex>
 #include <string>
 using namespace std;
 
-static regex* regHelp;
-static regex* regExit;
-static regex* regPrint;
-static regex* regBack;
-static regex* regName;
-static regex* regLogin;
-static regex* regSignin;
-static regex* regMakeAcct;
-static regex* regLBoard;
-static regex* regMain;
-static regex* regGuest;
-
 // regex objects. icase = ignore case. match_continuous = only match from first
 // char
 
-void initCommandLexer()
+CommandLexer::CommandLexer()
 {
    regHelp = new regex(REGPREFIX REGHELP REGSUFFIX);
    regExit = new regex(REGPREFIX REGEXIT REGSUFFIX);
@@ -71,9 +42,21 @@ void initCommandLexer()
  * @return CommandTok : the token that this command represents (TOKBAD if the
  * command does not exist)
  */
-CommandTok lexCommand(const char* command)
-{
+CommandTok* CommandLexer::lexCommand(const char* command) const {
+   CommandTok* tok = new CommandTok();
+   tok->type = determineTok(command);
+   tok->lex = command;
+   return tok;
+}
+CommandTok::CommandTok() { type = TOKBAD;
+   lex = nullptr;
+}
 
+TokType CommandTok::getType() const { return type; }
+const char* CommandTok::getLex() const { return lex; }
+
+TokType CommandLexer::determineTok(const char* command) const
+{
    if (regex_match(command, *regHelp)) { // HELP
       return TOKHELP;
    } else if (regex_match(command, *regExit)) { // EXIT

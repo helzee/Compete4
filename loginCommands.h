@@ -9,7 +9,7 @@
 
 using namespace std;
 
-bool loginMenuCommand(CommandTok, Session*);
+bool loginMenuCommand(CommandTok*, Session*);
 bool signInCommand(Session*);
 bool makeAccountCommand(Session*);
 bool signInAsGuestCommand(Session*);

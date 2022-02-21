@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class gameSession
+class GameSession
 {
 public:
     int gameID;
@@ -22,7 +22,7 @@ public:
     bool dropPiece(Session*, int);
     string printBoard();
 
-    gameSession(int);
+    GameSession(int);
 
 private:
     Session* players[2];

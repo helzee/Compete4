@@ -9,7 +9,7 @@
 #include "sessionsDB.h"
 #include "gameSession.h"
 #include "gameSessionDB.h"
-#include "commandLexer.h"
+
 
 using namespace std;
 
@@ -40,8 +40,7 @@ int main(int argc, char** argv)
       makeGame();
    }*/
 
-   // Initialize regex objects for the lexer
-   initCommandLexer();
+   
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;

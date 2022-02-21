@@ -15,9 +15,26 @@
 #ifndef COMMANDLEXER_H
 #define COMMANDLEXER_H
 
+// REGEX strings split into prefix - regex - suffix
+// These strings auto concat at runtime
+#define REGPREFIX "(^"
+#define REGSUFFIX "(\\s)*)"
+
+#define REGHELP "(h(elp)?)"
+#define REGEXIT "(exit|(q(uit)?))"
+#define REGPRINT "(p(rint)?)"
+#define REGBACK "(b(ack)?)"
+#define REGNAME "(n(ame)?)"
+#define REGLOGIN "(l(ogin)?)"
+#define REGLBOARD "(leaderboard|lb)"
+#define REGSIGNIN "(s(ignin)?)"
+#define REGMAKEACCT "(m(akeaccount)?)"
+#define REGMAIN "(main)"
+#define REGGUEST "(g(uest)?)"
+
 using namespace std;
 
-enum CommandTok {
+enum TokType {
 
    TOKBAD = 0,
    TOKHELP,
@@ -34,9 +51,46 @@ enum CommandTok {
 
 };
 
-void initCommandLexer();
+class CommandTok {
+   friend class CommandLexer;
 
-CommandTok lexCommand(const char* command);
+public:
+   CommandTok();
+   TokType getType() const;
+   const char* getLex() const;
 
+private:
+   TokType type;
+   const char* lex;
+};
+
+/** NOTE: CommandLexer is meant to be used as a static class! It is instantiated
+ * at the bottom of this header.
+ * 
+ * The command lexer can also be seen as a builder of CommandToks*/
+
+class CommandLexer
+{
+public:
+   CommandLexer();
+   CommandTok* lexCommand(const char* command) const;
+
+private:
+   regex* regHelp;
+   regex* regExit;
+   regex* regPrint;
+   regex* regBack;
+   regex* regName;
+   regex* regLogin;
+   regex* regSignin;
+   regex* regMakeAcct;
+   regex* regLBoard;
+   regex* regMain;
+   regex* regGuest;
+
+   TokType determineTok(const char* command) const;
+};
+
+static CommandLexer commandLexer;
 
 #endif

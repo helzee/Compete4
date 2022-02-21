@@ -1,11 +1,12 @@
 #include "gameSession.h"
 
+
 // ----------------------------------------------------------------------------
 //  Public Methods
 // ----------------------------------------------------------------------------
 
 // Constructor
-gameSession::gameSession(int id)
+GameSession::GameSession(int id)
 {
     // Sets the fed gameid from gameDB into this game's identifier
     gameID = id;
@@ -31,7 +32,7 @@ gameSession::gameSession(int id)
 }
 
 // Connect Player
-bool connectPlayer(Session* player) 
+bool GameSession::connectPlayer(Session* player) 
 {
     // if ingame, two players already connected
     if (inGame) 
@@ -61,7 +62,7 @@ bool connectPlayer(Session* player)
 
 // Disconnect Player
 // *change player currmenu in commandParser
-bool disconnectPlayer(Session* player) 
+bool GameSession::disconnectPlayer(Session* player) 
 {
     // doesn't matter if ingame
     // check player one
@@ -88,7 +89,7 @@ bool disconnectPlayer(Session* player)
 
 // Resets board when both players have connected to the game
 // Check connnectPlayer
-void resetBoard() {
+void GameSession::resetBoard() {
     // Set the number of tokens in each column to 0
     // Player one will use: x
     // Player two will use: o
@@ -127,7 +128,7 @@ void resetBoard() {
     | TxTxToT T T |
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
-String printBoard() {
+String GameSession::printBoard() {
     string connectBoard = "";
     // Print Board Top
     connectBoard += "|_._._._._._._|\n";

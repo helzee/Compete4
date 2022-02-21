@@ -25,8 +25,8 @@ bool parseCommand(string command, Session* session)
    // lexer needs newline to work
    string newLineComm = command + "\n";
    // first step: check for global commands
-   CommandTok commTok = lexCommand(newLineComm.c_str());
-   switch (commTok) {
+   CommandTok* commTok = commandLexer.lexCommand(newLineComm.c_str());
+   switch (commTok->getType()) {
    case TOKHELP:
       // make max message size bigger to fit this in one? --------------------
       send(HELP_TEXT1, session->clientSd);
@@ -57,19 +57,19 @@ bool parseCommand(string command, Session* session)
       send("ERROR: You went to an invalid menu, sending back to main menu",
            session->clientSd);
       session->currMenu = MAIN;
-      mainMenuCommand(TOKPRINT, session);
+      parseCommand("print", session);
    }
 
    return true;
 }
 
-void mainMenuCommand(CommandTok command, Session* session)
+void mainMenuCommand(CommandTok* command, Session* session)
 {
 
-   switch (command) {
+   switch (command->getType()) {
    case TOKLOGIN:
       session->currMenu = LOGIN;
-      loginMenuCommand(TOKPRINT, session);
+      parseCommand("print", session);
       return;
    case TOKPRINT:
       send(MAIN_MENU_HEADER, session->clientSd);

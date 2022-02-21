@@ -26,14 +26,13 @@ int SignInMenu::badCommand(CommandTok* comm, Session* session) const {
       lexeme++;
    }
    if (size < MIN_UNAME || size > MAX_UNAME) {
-      return send("Username must be between 4 and 32 characters (inclusive)",
-                  session->getSessionID());
+      return session->send("Username must be between 4 and 32 characters (inclusive)");
    }
    string username(comm->getLex());
    username = username.substr(0, size);
    // if username doesn't exist
    if (!checkIfRecord(username)) {
-      return send("Username not registered.", session->getSessionID());
+      return session->send("Username not registered.");
    }
 
    send("Username found.", session->getSessionID());

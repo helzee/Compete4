@@ -34,7 +34,7 @@ int RestrictedMenu::printCommand(CommandTok* comm, Session* session) const
 int RestrictedMenu::backCommand(CommandTok* comm, Session* session) const
 {
    // should be implemented in  ALL child classes. bad command by default
-   return send("You cannot go back from here", session->getSessionID());
+   return session->send("You cannot go back from here");
 }
 // ---------------------------------------------------------------------------
 int RestrictedMenu::nameCommand(CommandTok* comm, Session* session) const

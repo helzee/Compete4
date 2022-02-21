@@ -62,12 +62,12 @@ int Menu::sendWelcome(Session* session) const { return sendGlobalHelp(session); 
 
 int Menu::sendGlobalHelp(Session* session) const
 {
-   send(HELP_TEXT1, session->getSessionID());
-   return send(HELP_TEXT2, session->getSessionID());
+   session->send(HELP_TEXT1);
+   return session->send(HELP_TEXT2);
 }
 int Menu::sendBadCommand(Session* session) const
 {
-   return send(BADCOMMAND_TEXT, session->getSessionID());
+   return session->send(BADCOMMAND_TEXT);
 }
 
 int Menu::badCommand(CommandTok* comm, Session* session) const

@@ -14,7 +14,7 @@ MainMenu::MainMenu()
 
 int MainMenu::sendWelcome(Session* session) const
 {
-   return send(header, session->getSessionID());
+   return session->send(header);
 }
 
 int MainMenu::loginCommand(CommandTok* comm, Session* session) const {

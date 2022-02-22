@@ -13,7 +13,6 @@ public:
    MainMenu();
 
 private:
-   MenuType type;
    int sendWelcome(Session* session) const;
    virtual int loginCommand(CommandTok* comm, Session* session) const;
 };

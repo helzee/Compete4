@@ -13,7 +13,7 @@ using namespace std;
 
 
 
-bool parseCommand(string, Session*);
+int parseCommand(string, Session*);
 void mainMenuCommand(CommandTok*, Session*);
 
 #endif

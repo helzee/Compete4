@@ -10,7 +10,7 @@
 
 
 // Return false if the command was quit/exit
-bool parseCommand(string command, Session* session)
+int parseCommand(string command, Session* session)
 {
    // lexer needs newline to work
    string newLineComm = command + "\n";

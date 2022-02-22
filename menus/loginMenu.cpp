@@ -1,6 +1,7 @@
 #include "loginMenu.h"
 #include "menu.h"
 #include "menuManager.h"
+#include "../session.h"
 
 using namespace std;
 
@@ -28,6 +29,8 @@ int LoginMenu::guestCommand(CommandTok* comm, Session* session) const {
    return changeMenu(session, GUEST);
    
 }
+
+//int LoginMenu::sendWelcome(Session* session) const { session->send(header); }
 
 // make logout command. change regex to allow for that without login confusion
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

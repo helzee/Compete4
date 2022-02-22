@@ -2,16 +2,14 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
-
+#include "commandParser.h"
 #include "constants.h"
-#include "globalFuncs.h"
-#include "session.h"
-#include "sessionsDB.h"
 #include "gameSession.h"
 #include "gameSessionDB.h"
-#include "commandParser.h"
+#include "globalFuncs.h"
 #include "menus/menuManager.h"
-
+#include "session.h"
+#include "sessionsDB.h"
 
 using namespace std;
 
@@ -43,7 +41,7 @@ int main(int argc, char** argv)
       makeGame();
    }*/
 
-   //initialize menu objects in static manager
+   // initialize menu objects in static manager
    MenuManager* menuManager = new MenuManager();
    menuManager->buildMenus();
 
@@ -79,15 +77,17 @@ void* clientSession(void* ptr)
 
    Session* session = makeSession(sd, data->menuManager);
    parseCommand("print", session);
-   
 
    while (1) {
       string command = recieve(sd);
-      //cerr << "Menu[" << session->getMenu() << "]: Command= " << command << endl;
+      cerr << "Menu[" << session->getMenu()->getType()
+           << "]: Command= " << command << endl;
 
       // Returns false if the command was exit/quit
-      if (parseCommand(command, session) < 0)
+      if (parseCommand(command, session) < 0) {
          break;
+      }
+         
    }
 
    cerr << "Closing Client Connection" << endl;

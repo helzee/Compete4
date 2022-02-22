@@ -59,7 +59,7 @@ int Menu::navigate(CommandTok* comm, Session* session) const
 
 int Menu::sendWelcome(Session* session) const
 {
-   return sendGlobalHelp(session);
+   return session->send(header);
 }
 
 int Menu::sendGlobalHelp(Session* session) const
@@ -81,6 +81,7 @@ int Menu::helpCommand(CommandTok* comm, Session* session) const
    return sendGlobalHelp(session);
 }
 int Menu::exitCommand(CommandTok* comm, Session* session) const { return -1; }
+
 int Menu::printCommand(CommandTok* comm, Session* session) const
 {
    // this is the parent menu class. not any specific menu. default print is

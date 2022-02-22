@@ -4,8 +4,6 @@
 #define MENU_H
 #include "../constants.h"
 
-
-
 using namespace std;
 
 class CommandTok;
@@ -20,18 +18,14 @@ class Session;
 class Menu
 {
 public:
-  
-  
-   int navigate(CommandTok* comm, Session* session) const;
+   virtual int navigate(CommandTok* comm, Session* session) const;
    Menu();
-   MenuType getType() const;
+   virtual MenuType getType() const;
 
 protected:
-   
-   int changeMenu(Session* session, MenuType menu) const;
+   virtual int changeMenu(Session* session, MenuType menu) const;
    virtual int sendWelcome(Session* session) const;
-   int sendBadCommand(Session* session) const;
-   const Menu** allMenus;
+   virtual int sendBadCommand(Session* session) const;
 
    virtual int badCommand(CommandTok* comm, Session* session) const;
    virtual int helpCommand(CommandTok* comm, Session* session) const;
@@ -46,7 +40,7 @@ protected:
    virtual int mainCommand(CommandTok* comm, Session* session) const;
    virtual int guestCommand(CommandTok* comm, Session* session) const;
 
-   int sendGlobalHelp(Session* session) const;
+   virtual int sendGlobalHelp(Session* session) const;
 
    const char* HELP_TEXT1 = "List of global commands:\n"
                             "help (h): self explanatory\n"
@@ -59,14 +53,10 @@ protected:
    const char* LBOARD_TEXT = "You are viewing the leaderboard";
    const char* BADCOMMAND_TEXT = "Not a recognized command, try again.";
 
-    MenuType type;
-    const char* header;
-   
-   private:
-    
+   MenuType type;
+   const char* header;
+
+private:
 };
-
-
-
 
 #endif

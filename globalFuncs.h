@@ -9,6 +9,6 @@ int send(string, int);
 string recieve(int);
 bool cmp(string, string);
 
-void buildMenus();
+
 
 #endif

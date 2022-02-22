@@ -1,5 +1,5 @@
 #include "gameSessionDB.h"
-
+#include "gameSession.h"
 using namespace std;
 
 // Counter for number of games, also used for session ID

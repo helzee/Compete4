@@ -1,7 +1,9 @@
-#include "constants.h"
-#include "gameSession.h"
+
 #ifndef GAMESESSIONDB_H
 #define GAMESESSIONDB_H
+#include "constants.h"
+
+class GameSession;
 
 // Game List 
 // When scalable, change to an odered map or vector

@@ -3,4 +3,4 @@
 
 using namespace std;
 
-GuestMenu::GuestMenu() { type = GUEST; }
+GuestMenu::GuestMenu() { this->type = GUEST; }

@@ -9,10 +9,11 @@
 
 #include "constants.h"
 
+
 class GameSession;
-class Menu;
 class Record;
 class CommandTok;
+
 
 using namespace std;
 
@@ -29,7 +30,7 @@ public:
    Session(int, int);
    int getSessionID() const;
    int handleCommand(CommandTok* comm);
-   void setMenu(const Menu*);
+   void setMenu(MenuType menu);
    bool isMenuLocked() const;
    int send(string msg) const;
    Record* getRecord() const;
@@ -38,8 +39,8 @@ private:
    bool menuLocked;
    int sessionID;
 
-   // menus never change. thats why const
-   const Menu* currMenu;
+   
+   MenuType currMenu;
    int clientSd;
    Record* record = nullptr;
    GameSession* currGame = nullptr;

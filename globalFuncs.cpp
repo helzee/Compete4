@@ -1,4 +1,7 @@
 #include "globalFuncs.h"
+#include "menus/menu.h"
+#include "menus/mainMenu.h"
+#include "menus/loginMenu.h"
 
 // this could be inside session?
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -30,3 +33,7 @@ string recieve(int sd)
 }
 
 bool cmp(string a, string b) { return a.compare(b) == 0; }
+
+void buildMenus() {
+   Menu* menus[] = {new Menu(), new MainMenu(), new LoginMenu()};
+}

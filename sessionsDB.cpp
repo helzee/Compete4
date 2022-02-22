@@ -1,5 +1,5 @@
 #include "sessionsDB.h"
-
+#include "session.h"
 using namespace std;
 
 int sessionCounter = 0;

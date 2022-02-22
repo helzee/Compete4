@@ -1,8 +1,9 @@
-#include "constants.h"
-#include "session.h"
+
 #ifndef SESSIONSDB_H
 #define SESSIONSDB_H
+#include "constants.h"
 
+class Session;
 Session* makeSession(int);
 
 bool removeSession(int);

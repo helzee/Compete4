@@ -19,6 +19,6 @@ class LoginMenu : public Menu {
        virtual int guestCommand(CommandTok* comm, Session* session) const;
 };
 
-static const LoginMenu* loginMenu = new LoginMenu();
+
 
 #endif

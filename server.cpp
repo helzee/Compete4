@@ -2,13 +2,14 @@
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
  */
 
-#include "commandParser.h"
+
 #include "constants.h"
 #include "globalFuncs.h"
 #include "session.h"
 #include "sessionsDB.h"
 #include "gameSession.h"
 #include "gameSessionDB.h"
+#include "commandParser.h"
 
 
 using namespace std;

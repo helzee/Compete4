@@ -19,11 +19,13 @@ class Session;
 class Menu
 {
 public:
+  
+  
    int navigate(CommandTok* comm, Session* session) const;
    Menu();
 
 protected:
-   enum MenuType { MENU = 0, MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST };
+   
    int changeMenu(Session* session, MenuType menu) const;
    virtual int sendWelcome(Session* session) const;
    int sendBadCommand(Session* session) const;
@@ -55,11 +57,14 @@ protected:
    const char* LBOARD_TEXT = "You are viewing the leaderboard";
    const char* BADCOMMAND_TEXT = "Not a recognized command, try again.";
 
-   MenuType type;
-   const char* header;
+    MenuType type;
+    const char* header;
+   
+   private:
+    
 };
 
-static const Menu* menu = new Menu();
+
 
 
 #endif

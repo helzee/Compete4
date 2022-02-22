@@ -20,6 +20,6 @@ class SignInMenu : public RestrictedMenu {
       virtual int backCommand(CommandTok* comm, Session* session) const;
 };
 
-static const SignInMenu* signInMenu = new SignInMenu();
+const SignInMenu* signInMenu = new SignInMenu();
 
 #endif

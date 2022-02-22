@@ -1,8 +1,11 @@
 #include "constants.h"
-#include "userRecord.h"
+#include <string>
 #ifndef RECORDSDB_H
 #define RECORDSDB_H
 
+using namespace std;
+
+class Record;
 Record* makeRecord(string, int);
 
 bool deleteRecord(string);

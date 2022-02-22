@@ -15,6 +15,6 @@ class GuestMenu : public Menu {
      
 };
 
-static const GuestMenu* guestMenu = new GuestMenu();
+
 
 #endif

@@ -1,4 +1,5 @@
 #include "userRecordDB.h"
+#include "userRecord.h"
 
 unordered_map<string, void*> recordMap;
 

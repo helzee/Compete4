@@ -1,5 +1,5 @@
 #include "gameSession.h"
-
+#include "session.h"
 
 // ----------------------------------------------------------------------------
 //  Public Methods

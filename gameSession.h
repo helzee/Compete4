@@ -1,12 +1,16 @@
 /** @file gameSession.h
  * 
  */
-#include "constants.h"
-#include "session.h"
-#include "globalFuncs.h"
+
 
 #ifndef GAMESESSION_H
 #define GAMESESSION_H
+
+#include "constants.h"
+
+#include "globalFuncs.h"
+
+class Session;
 
 using namespace std;
 

@@ -12,17 +12,17 @@
 
 using namespace std;
 
-const Menu* makeMenus[] = {menu, mainMenu, makeAcctMenu, signInMenu, guestMenu};
+
 
 Menu::Menu()
 {
    
-   
 
-   allMenus = makeMenus;
    type = MENU;
    header = "DEFAULT HEADER";
 }
+
+
 
 int Menu::navigate(CommandTok* comm, Session* session) const
 {
@@ -97,7 +97,7 @@ int Menu::printCommand(CommandTok* comm, Session* session) const
 int Menu::backCommand(CommandTok* comm, Session* session) const
 {
    // should be implemented in  ALL child classes. bad command by default
-   return send("You cannot go back from here", session->getSessionID());
+   return session->send("You cannot go back from here");
 }
 // ---------------------------------------------------------------------------
 int Menu::nameCommand(CommandTok* comm, Session* session) const
@@ -140,7 +140,7 @@ int Menu::guestCommand(CommandTok* comm, Session* session) const {
 int Menu::changeMenu(Session* session, MenuType menu) const {
    const Menu* newMenu = allMenus[menu];
    if (!session->isMenuLocked()) {
-      session->setMenu(newMenu);
+      session->setMenu(menu);
       newMenu->sendWelcome(session);
       return 0;
    } else {

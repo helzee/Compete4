@@ -5,6 +5,11 @@
 #include "../constants.h"
 #include "menu.h"
 
+class Session;
+class CommandTok;
+class RestrictedMenu;
+
+
 using namespace std;
 
 class LoginMenu : public Menu {

@@ -6,12 +6,14 @@
 #include "../userRecordDB.h"
 #include "../session.h"
 #include "../userRecord.h"
+#include "menuManager.h"
 
 using namespace std;
 
 SignInMenu::SignInMenu() {
    header = "Please enter username to sign in:";
    type = SIGNIN;
+   menuManager.addMenu(this, SIGNIN);
 }
 
 

@@ -9,10 +9,11 @@
 #include "makeAccMenu.h"
 #include "signInMenu.h"
 #include "guestMenu.h"
+#include "menuManager.h"
 
 using namespace std;
 
-
+MenuType Menu::getType() const { return type; }
 
 Menu::Menu()
 {
@@ -20,9 +21,8 @@ Menu::Menu()
 
    type = MENU;
    header = "DEFAULT HEADER";
+   menuManager.addMenu(this, MENU);
 }
-
-
 
 int Menu::navigate(CommandTok* comm, Session* session) const
 {
@@ -138,9 +138,9 @@ int Menu::guestCommand(CommandTok* comm, Session* session) const {
 }
 
 int Menu::changeMenu(Session* session, MenuType menu) const {
-   const Menu* newMenu = allMenus[menu];
+   const Menu* newMenu = menuManager.getMenu(menu);
    if (!session->isMenuLocked()) {
-      session->setMenu(menu);
+      session->setMenu(newMenu);
       newMenu->sendWelcome(session);
       return 0;
    } else {

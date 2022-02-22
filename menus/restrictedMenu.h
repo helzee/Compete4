@@ -5,6 +5,10 @@
 #include "../constants.h"
 #include "menu.h"
 
+class Session;
+class CommandTok;
+class RestrictedMenu;
+
 using namespace std;
 
 // a menu with a very specific task. cant do much else here

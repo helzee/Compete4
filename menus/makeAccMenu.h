@@ -15,5 +15,5 @@ class MakeAcctMenu : public Menu {
       MenuType type;
 };
 
-const MakeAcctMenu* makeAcctMenu = new MakeAcctMenu();
+
 #endif

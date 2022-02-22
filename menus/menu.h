@@ -5,6 +5,7 @@
 #include "../constants.h"
 
 
+
 using namespace std;
 
 class CommandTok;
@@ -23,6 +24,7 @@ public:
   
    int navigate(CommandTok* comm, Session* session) const;
    Menu();
+   MenuType getType() const;
 
 protected:
    

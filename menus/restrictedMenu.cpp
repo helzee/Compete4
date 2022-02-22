@@ -4,6 +4,12 @@
 #include "../globalFuncs.h"
 #include "../session.h"
 
+/**
+ * @brief Construct a new Restricted Menu:: Restricted Menu object
+ * This menu is not an abstract class, but it is treated like one.
+ * It is not added to the menu manager.
+ * 
+ */
 RestrictedMenu::RestrictedMenu() { header = "Restricted menu header"; 
 }
 

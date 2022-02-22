@@ -13,7 +13,7 @@
 class GameSession;
 class Record;
 class CommandTok;
-
+class Menu;
 
 using namespace std;
 
@@ -30,7 +30,7 @@ public:
    Session(int, int);
    int getSessionID() const;
    int handleCommand(CommandTok* comm);
-   void setMenu(MenuType menu);
+   void setMenu(const Menu* menu);
    bool isMenuLocked() const;
    int send(string msg) const;
    Record* getRecord() const;
@@ -40,7 +40,7 @@ private:
    int sessionID;
 
    
-   MenuType currMenu;
+   const Menu* currMenu;
    int clientSd;
    Record* record = nullptr;
    GameSession* currGame = nullptr;

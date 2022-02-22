@@ -5,6 +5,9 @@
 #include "../constants.h"
 
 #include "restrictedMenu.h"
+class Session;
+class CommandTok;
+
 
 #define MIN_UNAME 4
 #define MAX_UNAME 32
@@ -20,6 +23,6 @@ class SignInMenu : public RestrictedMenu {
       virtual int backCommand(CommandTok* comm, Session* session) const;
 };
 
-const SignInMenu* signInMenu = new SignInMenu();
+
 
 #endif

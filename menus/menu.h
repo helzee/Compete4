@@ -15,11 +15,19 @@ class Session;
  * @brief Menu class (parent of all menus) All menus inherit
  * from this Menu class. It is not an abstract class (currently), but it
  * should be treated like one. The user should never actually end up in 
- * a Menu object.
+ * a Menu object. It's primary function is to allow the user to navigate
+ * our menu system (with the navigate method)
+ * 
+ * NOTE: This class and its child classes are designed for dynamic binding. To
+ * allow the session to "not care much" about the current menu it is in.
  * 
  * NOTE: All client interactions with menus are done through const pointers.
  * It is very important that menus are read-only, as multiple
  * clients will be pointing to the same menu object at once.
+ * 
+ * NOTE: All menus, when constructed, should initialize their own
+ * header string. If not, they will use the default header (in Menu) which is
+ * just a place holder.
  *
  */
 class Menu

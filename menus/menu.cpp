@@ -13,6 +13,11 @@
 
 using namespace std;
 
+/**
+ * @brief Returns the type of menu this instance is
+ * 
+ * @return MenuType this instance's menu type
+ */
 MenuType Menu::getType() const { return type; }
 
 Menu::Menu()
@@ -20,7 +25,7 @@ Menu::Menu()
 
    type = MENU;
    header = "DEFAULT HEADER";
-   // menuManager.addMenu(this, MENU);
+   
 }
 
 int Menu::navigate(CommandTok* comm, Session* session) const

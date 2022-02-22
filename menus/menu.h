@@ -12,7 +12,14 @@ class Session;
 #define NUM_MENUS 6
 
 /**
- * @brief Menu class (parent of all menus)
+ * @brief Menu class (parent of all menus) All menus inherit
+ * from this Menu class. It is not an abstract class (currently), but it
+ * should be treated like one. The user should never actually end up in 
+ * a Menu object.
+ * 
+ * NOTE: All client interactions with menus are done through const pointers.
+ * It is very important that menus are read-only, as multiple
+ * clients will be pointing to the same menu object at once.
  *
  */
 class Menu

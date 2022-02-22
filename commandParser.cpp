@@ -6,9 +6,6 @@
 #include "session.h"
 
 
-// helper strings
-
-
 // Return false if the command was quit/exit
 int parseCommand(string command, Session* session)
 {

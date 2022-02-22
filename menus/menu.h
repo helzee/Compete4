@@ -4,6 +4,7 @@
 #define MENU_H
 #include "../constants.h"
 
+
 using namespace std;
 
 class CommandTok;
@@ -17,6 +18,9 @@ class Session;
  * should be treated like one. The user should never actually end up in 
  * a Menu object. It's primary function is to allow the user to navigate
  * our menu system (with the navigate method)
+ * 
+ * NOTE: You could customize a menu class by giving it its own nagivate() function
+ * And then defining what tokens u want to use in there.
  * 
  * NOTE: This class and its child classes are designed for dynamic binding. To
  * allow the session to "not care much" about the current menu it is in.

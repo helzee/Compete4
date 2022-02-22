@@ -46,8 +46,8 @@
 // Prime 7879 * Prime 6949 = 54,751,171
 #define HASH_NUMBER 54751171
 
-#define NUM_OF_MENUS 6
-enum MenuType { MENU = 0, MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST };
+// menu enums. Last enum is not a menu, but is used to keep track of number of menus
+enum MenuType { MENU = 0, MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST, PASSWORD, NUM_OF_MENUS };
 
 class Menu;
 class Session;

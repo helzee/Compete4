@@ -1,51 +1,41 @@
 #include "signInMenu.h"
-#include "menu.h"
-#include "restrictedMenu.h"
 #include "../commandLexer.h"
 #include "../globalFuncs.h"
-#include "../userRecordDB.h"
 #include "../session.h"
 #include "../userRecord.h"
+#include "../userRecordDB.h"
+#include "../constants.h"
+#include "menu.h"
 #include "menuManager.h"
+#include "restrictedMenu.h"
 
 using namespace std;
 
-SignInMenu::SignInMenu() {
+SignInMenu::SignInMenu()
+{
    header = "Please enter username to sign in:";
    type = SIGNIN;
-   //menuManager.addMenu(this, SIGNIN);
+   // menuManager.addMenu(this, SIGNIN);
 }
 
-
-
-int SignInMenu::badCommand(CommandTok* comm, Session* session) const {
-   //first, check validity
-   const char* lexeme = comm->getLex();
-   int size = 0;
-   // while no whitespace and not at end
-   while (*lexeme != '\0' && *lexeme != ' ' && *lexeme != '\t') {
-      size++;
-      lexeme++;
+int SignInMenu::badCommand(CommandTok* comm, Session* session) const
+{
+   if (!Record::isUsernameValid(comm->getLex())) {
+      return session->send("Username must be between 4 and 32 characters (inclusive)"
+       "and contain no spaces or tabs");
    }
-   if (size < MIN_UNAME || size > MAX_UNAME) {
-      return session->send("Username must be between 4 and 32 characters (inclusive)");
-   }
-   string username(comm->getLex());
-   username = username.substr(0, size);
-   // if username doesn't exist
-   if (!checkIfRecord(username)) {
+   if (!RecordDB::checkIfRecord(comm->getLex())) {
       return session->send("Username not registered.");
    }
 
-   send("Username found.", session->getSessionID());
+   session->send("Username found.");
 
-   //go to password page? or implement login command loop
-
-   // get password
+   return changeMenu(session, PASSWORD);
 
    return 0;
 }
 
-int SignInMenu::backCommand(CommandTok* comm, Session* session) const {
+int SignInMenu::backCommand(CommandTok* comm, Session* session) const
+{
    return changeMenu(session, LOGIN);
 }

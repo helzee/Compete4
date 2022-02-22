@@ -34,12 +34,14 @@ public:
    int send(string msg) const;
    Record* getRecord() const;
    const Menu* getMenu() const;
+   string getUserName() const;
+   bool signin(string password);
 
 private:
    bool menuLocked;
    int sessionID;
    const MenuManager* menuManager;
-
+   string username;
    const Menu* currMenu;
    int clientSd;
    Record* record = nullptr;

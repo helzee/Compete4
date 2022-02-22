@@ -5,15 +5,19 @@
 
 using namespace std;
 
-#define MIN_PASSWORD 6
-#define MAX_PASSWORD 32
 
-class PasswordMenu : public SignInMenu {
-   public:
-      PasswordMenu();
 
-   protected:
-      virtual int badCommand(CommandTok* comm, Session* session) const;
+class PasswordMenu : public SignInMenu
+{
+public:
+   PasswordMenu();
+
+protected:
+   virtual int badCommand(CommandTok* comm, Session* session) const;
+   virtual int backCommand(CommandTok* comm, Session* session) const;
+
+private:
+   int checkPassword(CommandTok* comm, Session* session) const;
 };
 
 #endif

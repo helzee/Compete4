@@ -30,3 +30,21 @@ void Record::tieGame() { gamesPlayed++; }
 float Record::getRatio() { return ((float)gamesWon) / gamesLost; }
 
 int Record::getGamesPlayed() { return gamesPlayed; }
+
+bool Record::isUsernameValid(string username) {
+   //first, check validity
+   const char* lexeme = username.c_str();
+   int size = 0;
+   // while no whitespace and not at end
+   while (*lexeme != '\0') {
+      // if (*lexeme != ' ' && *lexeme != '\t') {
+      //    return false;
+      // } gotta fix this
+      size++;
+      lexeme++;
+   }
+   if (size < MIN_UNAME || size > MAX_UNAME) {
+      return false;
+   }
+   return true;
+}

@@ -1,5 +1,5 @@
 #include "menuManager.h"
-
+#include "../constants.h"
 #include "mainMenu.h"
 #include "loginMenu.h"
 #include "guestMenu.h"
@@ -7,6 +7,7 @@
 #include "makeAccMenu.h"
 #include "restrictedMenu.h"
 #include "menu.h"
+#include "passwordMenu.h"
 
 
 
@@ -27,4 +28,5 @@ void MenuManager::buildMenus() {
    allMenus[LOGIN] = new LoginMenu();
    allMenus[MAKEACCOUNT] = new MakeAcctMenu();
    allMenus[SIGNIN] = new SignInMenu();
+   allMenus[PASSWORD] = new PasswordMenu();
 }

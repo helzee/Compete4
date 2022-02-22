@@ -5,6 +5,7 @@
 #include "../constants.h"
 #include "menu.h"
 
+
 using namespace std;
 
 class GuestMenu : public Menu {

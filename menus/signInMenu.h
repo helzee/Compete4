@@ -9,8 +9,7 @@ class Session;
 class CommandTok;
 
 
-#define MIN_UNAME 4
-#define MAX_UNAME 32
+
 
 using namespace std;
 

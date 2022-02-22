@@ -1,55 +1,14 @@
 #include "loginCommands.h"
 #include "commandParser.h"
-#include "openssl/sha.h"
 #include "globalFuncs.h"
 #include "commandLexer.h"
+#include "session.h"
+#include "userRecordDB.h"
 
 
+// I'm slowly turning these command functions into menus -Josh
+// planning to delete this file when finished
 
-bool signInCommand(Session* session)
-{
-   string username, password;
-   Record* playerRecord;
-
-   // Get username
-   while (true) {
-      send("Please enter username to sign in:", session->clientSd);
-      username = recieve(session->clientSd);
-
-      if (cmp(username, "exit") || cmp(username, "quit"))
-         return false;
-      if (checkReturn(username, session))
-         return true;
-
-      if (checkIfRecord(username))
-         break;
-      send("Username not found, try again:", session->clientSd);
-   }
-
-   send("Username found.", session->clientSd);
-
-   // Get password
-   while (true) {
-      send("Please enter password:", session->clientSd);
-      password = recieve(session->clientSd);
-
-      if (cmp(password, "exit") || cmp(password, "quit"))
-         return false;
-      if (checkReturn(password, session))
-         return true;
-
-      playerRecord = getRecord(username, encrypt(password));
-      if (playerRecord == nullptr)
-         send("Password incorrect.", session->clientSd);
-      else
-         break;
-   }
-
-   session->record = playerRecord;
-   send("Signed in successfully. Going to main menu.", session->clientSd);
-   session->currMenu = MAIN;
-   return true;
-}
 
 bool makeAccountCommand(Session* session)
 {
@@ -143,36 +102,3 @@ bool checkReturn(string input, Session* session)
    return false;
 }
 
-// Uses basic Rabin Function
-int encrypt(string password)
-{
-   // Cast the password into an unsigned int
-   // Then turn it into a long unsigned int, therefore making upper-half empty
-   auto number = (long unsigned int)turnToInt(password);
-
-   // Square the number
-   number = number * number;
-   return (int)(number % HASH_NUMBER);
-}
-
-unsigned int turnToInt(string password)
-{
-   unsigned int toReturn = 0;
-   unsigned int toXOR;
-   unsigned short int letter;
-
-   for (int i = 0; i < password.length(); i++) {
-      letter = (unsigned short int)password[i];
-
-      // toXOR = (letter^2 + letter)^2 + letter
-      // toXOR will be at most 32 bits long: an unsigned int
-      toXOR = letter + letter * letter;
-      toXOR = toXOR * toXOR + letter;
-
-      // toReturn = (toReturn * 2) XOR toXOR
-      toReturn *= 2;
-      toReturn = toReturn ^ toXOR;
-   }
-
-   return toReturn;
-}

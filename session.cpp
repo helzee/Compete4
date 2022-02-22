@@ -2,6 +2,8 @@
 #include "commandLexer.h"
 #include "menus/menu.h"
 #include "menus/menuManager.h"
+#include "userRecord.h"
+#include "userRecordDB.h"
 
 /**
  * @brief Construct a new Session:: Session object
@@ -18,6 +20,7 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager)
    this->sessionID = sessionID;
    this->menuManager = menuManager;
    currMenu = menuManager->getMenu(MAIN);
+   username = "";
 }
 
 const Menu* Session::getMenu() const { return currMenu; }
@@ -29,6 +32,8 @@ bool Session::changeMenu(MenuType menu) {
    }
    return false;
 }
+
+string Session::getUserName() const { return username; }
 
 int Session::getSessionID() const { return sessionID; }
 
@@ -56,4 +61,15 @@ int Session::send(string message) const
    return 0;
 }
 
+bool Session::signin(string password) {
+   Record* record = RecordDB::getRecord(username, password);
+   if (record != nullptr) {
+      this->record = record;
+      this->username = username;
+      return true;
+   }
+   return false;
+}
+
 Record* Session::getRecord() const { return record; }
+

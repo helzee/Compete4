@@ -3,6 +3,7 @@
 #include "../constants.h"
 #include "../globalFuncs.h"
 #include "../session.h"
+#include "../commandLexer.h"
 
 /**
  * @brief Construct a new Restricted Menu:: Restricted Menu object
@@ -12,6 +13,8 @@
  */
 RestrictedMenu::RestrictedMenu() { header = "Restricted menu header"; 
 }
+
+
 
 int RestrictedMenu::badCommand(CommandTok* comm, Session* session) const
 {

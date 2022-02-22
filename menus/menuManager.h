@@ -1,5 +1,5 @@
-#ifndef MENUBUILDER_H
-#define MENUBUILDER_H
+#ifndef MENUMANAGER_H
+#define MENUMANAGER_H
 #include "../constants.h"
 #include "menu.h"
 

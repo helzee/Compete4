@@ -15,10 +15,12 @@ class MenuManager {
    
    const Menu* getMenu(MenuType menu) const;
    void addMenu(const Menu*, MenuType menu);
-   private:
+   void buildMenus();
+
+private:
    const Menu* allMenus[NUM_OF_MENUS];
 };
 
-static MenuManager menuManager;
+
 
 #endif

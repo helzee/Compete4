@@ -10,6 +10,7 @@
 #include "gameSession.h"
 #include "gameSessionDB.h"
 #include "commandParser.h"
+#include "menus/menuManager.h"
 
 
 using namespace std;
@@ -22,6 +23,7 @@ void* clientSession(void* ptr);
 
 struct thread_data {
    int sd; // socket number
+   const MenuManager* menuManager;
 };
 
 int main(int argc, char** argv)
@@ -41,7 +43,9 @@ int main(int argc, char** argv)
       makeGame();
    }*/
 
-   
+   //initialize menu objects in static manager
+   MenuManager* menuManager = new MenuManager();
+   menuManager->buildMenus();
 
    // accept incoming connections
    struct sockaddr_storage cliAddr;
@@ -58,7 +62,7 @@ int main(int argc, char** argv)
       pthread_t newThread;
       struct thread_data* data = new thread_data;
       data->sd = newSd;
-
+      data->menuManager = menuManager;
       int iret = pthread_create(&newThread, NULL, clientSession, (void*)data);
       cerr << "Connected to Client" << endl;
       if (iret != 0) {
@@ -70,9 +74,10 @@ int main(int argc, char** argv)
 
 void* clientSession(void* ptr)
 {
-   int sd = ((thread_data*)ptr)->sd;
+   thread_data* data = (thread_data*)ptr;
+   int sd = data->sd;
 
-   Session* session = makeSession(sd);
+   Session* session = makeSession(sd, data->menuManager);
    parseCommand("print", session);
    
 

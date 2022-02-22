@@ -3,8 +3,10 @@
 #define SESSIONSDB_H
 #include "constants.h"
 
+class MenuManager;
+
 class Session;
-Session* makeSession(int);
+Session* makeSession(int, const MenuManager*);
 
 bool removeSession(int);
 

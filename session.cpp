@@ -10,15 +10,25 @@
  * @param sessionID
  */
 
-Session::Session(int clientSd, int sessionID)
+
+Session::Session(int clientSd, int sessionID, const MenuManager* menuManager)
 {
    menuLocked = false;
    this->clientSd = clientSd;
    this->sessionID = sessionID;
-   currMenu = menuManager.getMenu(MAIN);
+   this->menuManager = menuManager;
+   currMenu = menuManager->getMenu(MAIN);
 }
 
+const Menu* Session::getMenu() const { return currMenu; }
 
+bool Session::changeMenu(MenuType menu) {
+   if (!isMenuLocked()) {
+      currMenu = menuManager->getMenu(menu);
+      return true;
+   }
+   return false;
+}
 
 int Session::getSessionID() const { return sessionID; }
 

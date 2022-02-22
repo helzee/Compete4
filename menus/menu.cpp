@@ -4,12 +4,12 @@
 #include "../session.h"
 #include "../userRecord.h"
 
+#include "guestMenu.h"
 #include "loginMenu.h"
 #include "mainMenu.h"
 #include "makeAccMenu.h"
-#include "signInMenu.h"
-#include "guestMenu.h"
 #include "menuManager.h"
+#include "signInMenu.h"
 
 using namespace std;
 
@@ -17,11 +17,10 @@ MenuType Menu::getType() const { return type; }
 
 Menu::Menu()
 {
-   
 
    type = MENU;
    header = "DEFAULT HEADER";
-   menuManager.addMenu(this, MENU);
+   // menuManager.addMenu(this, MENU);
 }
 
 int Menu::navigate(CommandTok* comm, Session* session) const
@@ -58,7 +57,10 @@ int Menu::navigate(CommandTok* comm, Session* session) const
    }
 }
 
-int Menu::sendWelcome(Session* session) const { return sendGlobalHelp(session); }
+int Menu::sendWelcome(Session* session) const
+{
+   return sendGlobalHelp(session);
+}
 
 int Menu::sendGlobalHelp(Session* session) const
 {
@@ -126,25 +128,26 @@ int Menu::lBoardCommand(CommandTok* comm, Session* session) const
 {
    return session->send(LBOARD_TEXT);
 }
-int Menu::mainCommand(CommandTok* comm, Session* session) const {
-   
+int Menu::mainCommand(CommandTok* comm, Session* session) const
+{
+
    if (changeMenu(session, MAIN)) {
       return 0;
    }
    return 1;
 }
-int Menu::guestCommand(CommandTok* comm, Session* session) const {
+int Menu::guestCommand(CommandTok* comm, Session* session) const
+{
    return sendBadCommand(session);
 }
 
-int Menu::changeMenu(Session* session, MenuType menu) const {
-   const Menu* newMenu = menuManager.getMenu(menu);
-   if (!session->isMenuLocked()) {
-      session->setMenu(newMenu);
-      newMenu->sendWelcome(session);
+int Menu::changeMenu(Session* session, MenuType menu) const
+{
+
+   if (session->changeMenu(menu)) {
+      session->getMenu()->sendWelcome(session);
       return 0;
-   } else {
-      return session->send("Cannot leave this menu yet");
-      return 1;
    }
-     }
+   session->send("Cannot leave this menu yet");
+   return 1;
+}

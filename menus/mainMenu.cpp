@@ -11,7 +11,7 @@ MainMenu::MainMenu()
    header = "------MAIN MENU------\n"
             "login (l): to login or switch current acount";
    type = MAIN;
-   menuManager.addMenu(this, MAIN);
+   //menuManager.addMenu(this, MAIN);
 }
 
 int MainMenu::sendWelcome(Session* session) const

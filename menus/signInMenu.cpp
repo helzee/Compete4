@@ -13,7 +13,7 @@ using namespace std;
 SignInMenu::SignInMenu() {
    header = "Please enter username to sign in:";
    type = SIGNIN;
-   menuManager.addMenu(this, SIGNIN);
+   //menuManager.addMenu(this, SIGNIN);
 }
 
 

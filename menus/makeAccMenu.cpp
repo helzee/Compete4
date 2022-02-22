@@ -6,5 +6,5 @@ using namespace std;
 
 MakeAcctMenu::MakeAcctMenu() { 
    type = MAKEACCOUNT; 
-   menuManager.addMenu(this, MAKEACCOUNT);
+   //menuManager.addMenu(this, MAKEACCOUNT);
    }

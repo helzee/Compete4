@@ -1,14 +1,15 @@
 #include "sessionsDB.h"
 #include "session.h"
+#include "menus/menuManager.h"
 using namespace std;
 
 int sessionCounter = 0;
 
 unordered_map<int, void*> sessionMap;
 
-Session* makeSession(int sd)
+Session* makeSession(int sd, const MenuManager* menuManager)
 {
-   Session* newSession = new Session(sd, sessionCounter++);
+   Session* newSession = new Session(sd, sessionCounter++, menuManager);
    sessionMap.insert({newSession->getSessionID(), newSession});
    return newSession;
 }

@@ -29,3 +29,6 @@ int MakePasswordMenu::checkPassword(CommandTok* comm, Session* session) const {
 int MakePasswordMenu::badCommand(CommandTok* comm, Session* session) const {
    return checkPassword(comm, session);
 }
+int MakePasswordMenu::backCommand(CommandTok* comm, Session* session) const {
+   return changeMenu(session, MAKEACCOUNT);
+}

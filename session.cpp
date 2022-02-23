@@ -82,6 +82,7 @@ bool Session::isPasswordValid(string password) const {
       return true;
    }
    send("Password must be at least 5 chars long.");
+   return false;
 }
 
 bool Session::signin(string password)

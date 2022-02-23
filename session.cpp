@@ -21,7 +21,7 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
    this->menuManager = menuManager;
    currMenu = menuManager->getMenu(MAIN);
    username = "";
-   record = nullptr;
+   this->record = nullptr;
    this->recordDB = recordDB;
 }
 
@@ -74,6 +74,8 @@ bool Session::makeRecord(string password) {
       send("Error occured: Could not make account. Please try again.");
       return false;
    }
+   this->record = temp;
+   username = possibleUsername;
    return true;
 }
 

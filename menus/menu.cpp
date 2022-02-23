@@ -1,8 +1,8 @@
 #include "menu.h"
 #include "../commandLexer.h"
-#include "../globalFuncs.h"
+
 #include "../session.h"
-#include "../userRecord.h"
+
 
 #include "guestMenu.h"
 #include "loginMenu.h"
@@ -162,7 +162,7 @@ int Menu::backCommand(CommandTok* comm, Session* session) const
 int Menu::nameCommand(CommandTok* comm, Session* session) const
 {
    if (session->getRecord() != nullptr) {
-      string name = "Your name is " + session->getRecord()->getName() + "\n";
+      string name = "Your name is " + session->getUserName() + "\n";
       return session->send(name);
    } else
       return session->send("You are not logged in.\n");

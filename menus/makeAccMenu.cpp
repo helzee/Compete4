@@ -25,7 +25,7 @@ int MakeAcctMenu::badCommand(CommandTok* comm, Session* session) const
       return 1;
    }
    if (session->checkIfRecord(comm->getLex())) {
-      string sendMsg = "Username \"" + username + " already exists.";
+      string sendMsg = "Username \"" + username + "\" already exists.";
       return session->send(sendMsg);
    }
    session->send("Username is valid and available.");

@@ -78,8 +78,8 @@ bool Session::signin(string password)
 Record* Session::getRecord() const { return record; }
 
 bool Session::isUsernameValid(string username) const {
-   Record::isUsernameValid(username);
+   return Record::isUsernameValid(username);
 }
 bool Session::checkIfRecord(string username) const {
-   recordDB->checkIfRecord(username);
+   return recordDB->checkIfRecord(username);
 }

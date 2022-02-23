@@ -39,17 +39,22 @@ public:
    bool signin(string password);
    bool isUsernameValid(string username) const;
    bool checkIfRecord(string username) const; //synchronized read of recordDB
+   bool isPasswordValid(string password) const;
+   bool makeRecord(string user);
+   void setPossibleUsername(string username);
 
 private:
    bool menuLocked;
    int sessionID;
    const MenuManager* menuManager;
    string username;
+   string possibleUsername;
    const Menu* currMenu;
    int clientSd;
    Record* record;
    GameSession* currGame;
    RecordDB* recordDB; // synchronized access
+
 };
 
 #endif

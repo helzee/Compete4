@@ -39,7 +39,9 @@ unsigned int RecordDB::turnToInt(string password)
    return toReturn;
 }
 
-
+Record* RecordDB::makeRecord(string username, string password) {
+   return makeRecord(username, encrypt(password));
+}
 
 Record* RecordDB::makeRecord(string username, int encryptedPassword)
 {

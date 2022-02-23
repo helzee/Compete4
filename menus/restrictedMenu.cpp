@@ -14,6 +14,7 @@
 RestrictedMenu::RestrictedMenu() { header = "Restricted menu header"; 
 }
 
+// implement different global help commands here?
 
 
 int RestrictedMenu::badCommand(CommandTok* comm, Session* session) const
@@ -22,7 +23,7 @@ int RestrictedMenu::badCommand(CommandTok* comm, Session* session) const
 }
 int RestrictedMenu::helpCommand(CommandTok* comm, Session* session) const
 {
-   return sendWelcome(session);
+   return sendGlobalHelp(session);
 }
 int RestrictedMenu::exitCommand(CommandTok* comm, Session* session) const { return -1; }
 int RestrictedMenu::printCommand(CommandTok* comm, Session* session) const

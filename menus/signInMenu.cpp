@@ -22,8 +22,8 @@ SignInMenu::SignInMenu()
 int SignInMenu::badCommand(CommandTok* comm, Session* session) const
 {
    if (!session->isUsernameValid(comm->getLex())) {
-      return session->send("Username must be between 4 and 32 characters (inclusive)"
-       "and contain no spaces or tabs");
+      return 1;
+   
    }
    if (!session->checkIfRecord(comm->getLex())) {
       return session->send("Username not registered.");

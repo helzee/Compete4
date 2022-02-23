@@ -20,6 +20,7 @@ public:
    bool checkIfRecord(string);
 
    unsigned int turnToInt(string password);
+   Record* makeRecord(string username, string password);
 
 private:
    unordered_map<string, void*> recordMap;

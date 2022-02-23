@@ -45,3 +45,5 @@ bool Record::isUsernameValid(string username) {
    }
    return true;
 }
+
+bool Record::isPasswordValid(string password) { return password.length() >= MIN_PASSWORD; }

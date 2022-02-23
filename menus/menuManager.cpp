@@ -8,6 +8,7 @@
 #include "restrictedMenu.h"
 #include "menu.h"
 #include "passwordMenu.h"
+#include "makePasswordMenu.h"
 
 
 
@@ -29,4 +30,5 @@ void MenuManager::buildMenus() {
    allMenus[MAKEACCOUNT] = new MakeAcctMenu();
    allMenus[SIGNIN] = new SignInMenu();
    allMenus[PASSWORD] = new PasswordMenu();
+   allMenus[MAKEPASSWORD] = new MakePasswordMenu();
 }

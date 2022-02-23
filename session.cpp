@@ -64,6 +64,26 @@ int Session::send(string message) const
    return 0;
 }
 
+void Session::setPossibleUsername(string username) {
+   possibleUsername = username;
+}
+
+bool Session::makeRecord(string password) {
+   Record* temp = recordDB->makeRecord(possibleUsername, password);
+   if (temp == nullptr) {
+      send("Error occured: Could not make account. Please try again.");
+      return false;
+   }
+   return true;
+}
+
+bool Session::isPasswordValid(string password) const {
+   if (Record::isPasswordValid(password) ) {
+      return true;
+   }
+   send("Password must be at least 5 chars long.");
+}
+
 bool Session::signin(string password)
 {
    Record* record = recordDB->getRecord(username, password);
@@ -77,9 +97,18 @@ bool Session::signin(string password)
 
 Record* Session::getRecord() const { return record; }
 
-bool Session::isUsernameValid(string username) const {
-   return Record::isUsernameValid(username);
+bool Session::isUsernameValid(string username) const
+{
+   if (Record::isUsernameValid(username)) {
+      return true;
+   }
+   send("Username must be between 4 and 32 characters (inclusive)"
+        "and contain no spaces or tabs");
+   return false;
 }
-bool Session::checkIfRecord(string username) const {
+
+// check if username exists
+bool Session::checkIfRecord(string username) const
+{
    return recordDB->checkIfRecord(username);
 }

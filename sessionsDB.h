@@ -4,12 +4,25 @@
 #include "constants.h"
 
 class MenuManager;
-
+class RecordDB;
 class Session;
-Session* makeSession(int, const MenuManager*);
 
-bool removeSession(int);
+using namespace std;
 
-Session* getSession(int);
+class SessionDB
+{
+public:
+   SessionDB(const MenuManager*, RecordDB*);
+   Session* makeSession(int);
+   bool removeSession(int);
+
+   Session* getSession(int);
+
+private:
+   const MenuManager* menuManager;
+   RecordDB* recordDB;
+   unordered_map<int, void*> sessionMap;
+   int sessionCounter;
+};
 
 #endif

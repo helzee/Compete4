@@ -9,8 +9,6 @@ class Session;
 class CommandTok;
 
 
-
-
 using namespace std;
 
 class SignInMenu : public RestrictedMenu {
@@ -20,6 +18,7 @@ class SignInMenu : public RestrictedMenu {
    private:
       virtual int badCommand(CommandTok* comm, Session* session) const;
       virtual int backCommand(CommandTok* comm, Session* session) const;
+      
 };
 
 

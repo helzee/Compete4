@@ -2,6 +2,9 @@
 #include "userRecord.h"
 #include "openssl/sha.h"
 
+
+RecordDB::RecordDB() {}
+
 // Uses basic Rabin Function
 int RecordDB::encrypt(string password)
 {
@@ -40,39 +43,39 @@ unsigned int RecordDB::turnToInt(string password)
 
 Record* RecordDB::makeRecord(string username, int encryptedPassword)
 {
-   // if (recordMap.find(username) != recordMap.end())
-   //    return nullptr;
+   if (recordMap.find(username) != recordMap.end())
+      return nullptr;
 
-   // Record* newRecord = new Record(username, encryptedPassword);
-   // recordMap.insert({username, newRecord});
-   //return newRecord;
+   Record* newRecord = new Record(username, encryptedPassword);
+   recordMap.insert({username, newRecord});
+   return newRecord;
    return nullptr;
 }
 
 bool RecordDB::deleteRecord(string username) { 
-   //return recordMap.erase(username) == 1;
+   return recordMap.erase(username) == 1;
    return true;
 }
 
 Record* RecordDB::getRecord(string username, string password)
 {
-   // int encryptedPassword = encrypt(password);
-   // auto recordHolder = recordMap.find(username);
-   // if (recordHolder == recordMap.end())
-   //    return nullptr;
+   int encryptedPassword = encrypt(password);
+   auto recordHolder = recordMap.find(username);
+   if (recordHolder == recordMap.end())
+      return nullptr;
 
-   // Record* record = (Record*)recordHolder->second;
-   // if (record->checkPassword(encryptedPassword))
-   //    return record;
-   // else
-   //    return nullptr;
+   Record* record = (Record*)recordHolder->second;
+   if (record->checkPassword(encryptedPassword))
+      return record;
+   else
+      return nullptr;
 
-   // need to fix this before uncommenting
+  
    return nullptr;
 }
 
 bool RecordDB::checkIfRecord(string username)
 {
-   //return recordMap.find(username) != recordMap.end();
+   return recordMap.find(username) != recordMap.end();
    return true;
 }

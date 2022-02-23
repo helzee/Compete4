@@ -10,19 +10,20 @@ class Record;
 class RecordDB
 {
 public:
-   static Record* makeRecord(string, int);
+   RecordDB();
+   Record* makeRecord(string, int);
 
-   static bool deleteRecord(string);
+   bool deleteRecord(string);
 
-   static Record* getRecord(string, string);
+   Record* getRecord(string, string);
 
-   static bool checkIfRecord(string);
+   bool checkIfRecord(string);
 
-   static unsigned int turnToInt(string password);
+   unsigned int turnToInt(string password);
 
 private:
-   static unordered_map<string, void*> recordMap;
-   static int encrypt(string password);
+   unordered_map<string, void*> recordMap;
+   int encrypt(string password);
 };
 
 

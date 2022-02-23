@@ -1,22 +1,31 @@
 #include "sessionsDB.h"
-#include "session.h"
+#include "constants.h"
 #include "menus/menuManager.h"
+#include "session.h"
+#include "userRecordDB.h"
 using namespace std;
 
-int sessionCounter = 0;
-
-unordered_map<int, void*> sessionMap;
-
-Session* makeSession(int sd, const MenuManager* menuManager)
+SessionDB::SessionDB(const MenuManager* mmanager, RecordDB* recordDB)
 {
-   Session* newSession = new Session(sd, sessionCounter++, menuManager);
+   menuManager = mmanager;
+   this->recordDB = recordDB;
+   sessionCounter = 0;
+}
+
+Session* SessionDB::makeSession(int sd)
+{
+   Session* newSession =
+       new Session(sd, sessionCounter++, menuManager, recordDB);
    sessionMap.insert({newSession->getSessionID(), newSession});
    return newSession;
 }
 
-bool removeSession(int sessionID) { return sessionMap.erase(sessionID) == 1; }
+bool SessionDB::removeSession(int sessionID)
+{
+   return sessionMap.erase(sessionID) == 1;
+}
 
-Session* getSession(int sessionID)
+Session* SessionDB::getSession(int sessionID)
 {
    auto session = sessionMap.find(sessionID);
    if (session == sessionMap.end())

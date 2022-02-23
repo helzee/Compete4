@@ -12,8 +12,8 @@
  * @param sessionID
  */
 
-
-Session::Session(int clientSd, int sessionID, const MenuManager* menuManager)
+Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
+                 RecordDB* recordDB)
 {
    menuLocked = false;
    this->clientSd = clientSd;
@@ -21,11 +21,14 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager)
    this->menuManager = menuManager;
    currMenu = menuManager->getMenu(MAIN);
    username = "";
+   record = nullptr;
+   this->recordDB = recordDB;
 }
 
 const Menu* Session::getMenu() const { return currMenu; }
 
-bool Session::changeMenu(MenuType menu) {
+bool Session::changeMenu(MenuType menu)
+{
    if (!isMenuLocked()) {
       currMenu = menuManager->getMenu(menu);
       return true;
@@ -57,12 +60,13 @@ int Session::send(string message) const
 {
    while (write(clientSd, message.c_str(), MAX_MSG_SIZE) != MAX_MSG_SIZE)
       ;
-      
+
    return 0;
 }
 
-bool Session::signin(string password) {
-   Record* record = RecordDB::getRecord(username, password);
+bool Session::signin(string password)
+{
+   Record* record = recordDB->getRecord(username, password);
    if (record != nullptr) {
       this->record = record;
       this->username = username;
@@ -73,3 +77,9 @@ bool Session::signin(string password) {
 
 Record* Session::getRecord() const { return record; }
 
+bool Session::isUsernameValid(string username) const {
+   Record::isUsernameValid(username);
+}
+bool Session::checkIfRecord(string username) const {
+   recordDB->checkIfRecord(username);
+}

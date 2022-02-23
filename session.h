@@ -15,6 +15,7 @@ class Record;
 class CommandTok;
 class Menu;
 class MenuManager;
+class RecordDB;
 
 using namespace std;
 
@@ -26,7 +27,7 @@ class Session
 {
 public:
    bool changeMenu(MenuType menu);
-   Session(int, int, const MenuManager*);
+   Session(int, int, const MenuManager*, RecordDB*);
    int getSessionID() const;
    int handleCommand(CommandTok* comm);
    void setMenu(const Menu* menu);
@@ -36,6 +37,8 @@ public:
    const Menu* getMenu() const;
    string getUserName() const;
    bool signin(string password);
+   bool isUsernameValid(string username) const;
+   bool checkIfRecord(string username) const; //synchronized read of recordDB
 
 private:
    bool menuLocked;
@@ -44,8 +47,9 @@ private:
    string username;
    const Menu* currMenu;
    int clientSd;
-   Record* record = nullptr;
-   GameSession* currGame = nullptr;
+   Record* record;
+   GameSession* currGame;
+   RecordDB* recordDB; // synchronized access
 };
 
 #endif

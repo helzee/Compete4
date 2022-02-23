@@ -9,6 +9,7 @@
 #include "menuManager.h"
 #include "restrictedMenu.h"
 
+
 using namespace std;
 
 SignInMenu::SignInMenu()
@@ -20,11 +21,11 @@ SignInMenu::SignInMenu()
 
 int SignInMenu::badCommand(CommandTok* comm, Session* session) const
 {
-   if (!Record::isUsernameValid(comm->getLex())) {
+   if (!session->isUsernameValid(comm->getLex())) {
       return session->send("Username must be between 4 and 32 characters (inclusive)"
        "and contain no spaces or tabs");
    }
-   if (!RecordDB::checkIfRecord(comm->getLex())) {
+   if (!session->checkIfRecord(comm->getLex())) {
       return session->send("Username not registered.");
    }
 

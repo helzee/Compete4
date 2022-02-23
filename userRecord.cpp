@@ -35,11 +35,8 @@ bool Record::isUsernameValid(string username) {
    //first, check validity
    const char* lexeme = username.c_str();
    int size = 0;
-   // while no whitespace and not at end
+   
    while (*lexeme != '\0') {
-      // if (*lexeme != ' ' && *lexeme != '\t') {
-      //    return false;
-      // } gotta fix this
       size++;
       lexeme++;
    }

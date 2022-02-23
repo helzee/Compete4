@@ -1,7 +1,6 @@
 #include "passwordMenu.h"
 #include "../session.h"
 #include "../constants.h"
-#include "../userRecord.h"
 #include "../commandLexer.h"
 
 using namespace std;

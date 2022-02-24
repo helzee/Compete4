@@ -26,6 +26,7 @@ using namespace std;
 class Session
 {
 public:
+   void close();
    bool changeMenu(MenuType menu);
    Session(int, int, const MenuManager*, RecordDB*);
    int getSessionID() const;

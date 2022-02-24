@@ -12,6 +12,13 @@ SessionDB::SessionDB(const MenuManager* mmanager, RecordDB* recordDB)
    sessionCounter = 0;
 }
 
+void SessionDB::close(Session* session) {
+   session->close();
+   removeSession(session->getSessionID());
+   // flush all records to disk
+   //recordDB->saveRecords();
+}
+
 Session* SessionDB::makeSession(int sd)
 {
    Session* newSession =

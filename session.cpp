@@ -52,6 +52,15 @@ int Session::handleCommand(CommandTok* comm)
    return currMenu->navigate(comm, this);
 }
 
+void Session::close()
+{
+   // close currGame. opponent wins if unfinished
+   // update wins/losses of players
+   // record->signout(username)
+
+   
+}
+
 void Session::setMenu(const Menu* menu) { currMenu = menu; }
 
 bool Session::isMenuLocked() const { return menuLocked; }
@@ -64,11 +73,13 @@ int Session::send(string message) const
    return 0;
 }
 
-void Session::setPossibleUsername(string username) {
+void Session::setPossibleUsername(string username)
+{
    possibleUsername = username;
 }
 
-bool Session::makeRecord(string password) {
+bool Session::makeRecord(string password)
+{
    Record* temp = recordDB->makeRecord(possibleUsername, password);
    if (temp == nullptr) {
       send("Error occured: Could not make account. Please try again.");
@@ -79,8 +90,9 @@ bool Session::makeRecord(string password) {
    return true;
 }
 
-bool Session::isPasswordValid(string password) const {
-   if (Record::isPasswordValid(password) ) {
+bool Session::isPasswordValid(string password) const
+{
+   if (Record::isPasswordValid(password)) {
       return true;
    }
    send("Password must be at least 5 chars long.");

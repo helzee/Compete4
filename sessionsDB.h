@@ -17,6 +17,7 @@ public:
    bool removeSession(int);
 
    Session* getSession(int);
+   void close(Session* session);
 
 private:
    const MenuManager* menuManager;

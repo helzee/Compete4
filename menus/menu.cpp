@@ -162,10 +162,10 @@ int Menu::backCommand(CommandTok* comm, Session* session) const
 int Menu::nameCommand(CommandTok* comm, Session* session) const
 {
    if (session->getRecord() != nullptr) {
-      string name = "Your name is " + session->getUserName() + "\n";
+      string name = "Your name is " + session->getUserName() + ".";
       return session->send(name);
    } else
-      return session->send("You are not logged in.\n");
+      return session->send("You are not logged in.");
 }
 
 int Menu::loginCommand(CommandTok* comm, Session* session) const

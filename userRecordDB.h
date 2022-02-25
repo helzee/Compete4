@@ -2,8 +2,8 @@
 #ifndef RECORDSDB_H
 #define RECORDSDB_H
 #include "constants.h"
-#include <string>
 #include <pthread.h>
+#include <string>
 using namespace std;
 
 class Record;
@@ -29,8 +29,15 @@ public:
 private:
    unordered_map<string, void*> recordMap;
    int encrypt(string password);
+
+   // lock for record map
    pthread_rwlock_t rwLock;
+
+   // lock for record map file
    pthread_rwlock_t fileLock;
+
+   // to prevent deadlock(when writing/read file): file is always locked first,
+   // then map is locked within file lock
 };
 
 #endif

@@ -7,6 +7,7 @@
 #define GAMESESSION_H
 
 #include "constants.h"
+#include <pthread.h>
 
 #include "globalFuncs.h"
 
@@ -32,13 +33,14 @@ private:
     Session* players[2];
     char board[BOARD_ROW][BOARD_COL];
     int colCount[BOARD_COL];
-    bool turn = false;
-    bool inGame = false;
+    bool turn;
+    bool inGame;
     
     bool partOfGame(Session*);
     bool isTurn(Session*);
     bool checkWin();
     void announceUpdate();
+    pthread_rwlock_t lock;
 };
 
 #endif

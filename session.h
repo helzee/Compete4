@@ -43,6 +43,7 @@ public:
    bool isPasswordValid(string password) const;
    bool makeRecord(string user);
    void setPossibleUsername(string username);
+   void setGame(GameSession*);
 
 private:
    bool menuLocked;

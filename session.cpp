@@ -25,6 +25,8 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
    this->recordDB = recordDB;
 }
 
+void Session::setGame(GameSession* game) { currGame = game; }
+
 const Menu* Session::getMenu() const { return currMenu; }
 
 bool Session::changeMenu(MenuType menu)

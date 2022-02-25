@@ -47,14 +47,14 @@ public:
 private:
    bool menuLocked;
    int sessionID;
-   const MenuManager* menuManager;
+   const MenuManager* menuManager; // const access by all sessions
    string username;
-   string possibleUsername;
-   const Menu* currMenu;
+   string possibleUsername; 
+   const Menu* currMenu; // const access by all sessions
    int clientSd;
-   Record* record;
-   GameSession* currGame;
-   RecordDB* recordDB; // synchronized access
+   Record* record; // 1 to 1 access
+   GameSession* currGame; // synchronized access (2 sessions)
+   RecordDB* recordDB; // synchronized access (all sessions)
 
 };
 

@@ -1,9 +1,12 @@
 #include "userRecordDB.h"
 #include "userRecord.h"
 #include "openssl/sha.h"
+#include <pthread.h>
 
 
-RecordDB::RecordDB() {}
+RecordDB::RecordDB() {
+   pthread_rwlock_init(&rwLock, NULL );
+}
 
 // Uses basic Rabin Function
 int RecordDB::encrypt(string password)
@@ -45,26 +48,44 @@ Record* RecordDB::makeRecord(string username, string password) {
 
 Record* RecordDB::makeRecord(string username, int encryptedPassword)
 {
-   if (recordMap.find(username) != recordMap.end())
+   // blocking wait to read
+   pthread_rwlock_rdlock(&rwLock);
+   if (recordMap.find(username) != recordMap.end()) {
+      pthread_rwlock_unlock(&rwLock); // finished read
       return nullptr;
-
+   }
+   pthread_rwlock_unlock(&rwLock); // finished read
+   
    Record* newRecord = new Record(username, encryptedPassword);
+
+   pthread_rwlock_wrlock(&rwLock); // block wait to write
    recordMap.insert({username, newRecord});
+   pthread_rwlock_unlock(&rwLock); // finished write
+   
+   
    return newRecord;
-   return nullptr;
+   
 }
 
 bool RecordDB::deleteRecord(string username) { 
-   return recordMap.erase(username) == 1;
-   return true;
+   pthread_rwlock_wrlock(&rwLock); // block wait to write
+   bool retval = recordMap.erase(username) == 1;
+   pthread_rwlock_unlock(&rwLock); // finished write
+   return retval;
 }
 
 Record* RecordDB::getRecord(string username, string password)
 {
    int encryptedPassword = encrypt(password);
+   // blocking wait to read
+   pthread_rwlock_rdlock(&rwLock);
    auto recordHolder = recordMap.find(username);
-   if (recordHolder == recordMap.end())
+   if (recordHolder == recordMap.end()) {
+      pthread_rwlock_unlock(&rwLock); // finished read
       return nullptr;
+   }
+   pthread_rwlock_unlock(&rwLock); // finished read
+      
 
    Record* record = (Record*)recordHolder->second;
    if (record->checkPassword(encryptedPassword))
@@ -78,6 +99,9 @@ Record* RecordDB::getRecord(string username, string password)
 
 bool RecordDB::checkIfRecord(string username)
 {
-   return recordMap.find(username) != recordMap.end();
-   return true;
+   // blocking wait to read
+   pthread_rwlock_rdlock(&rwLock);
+   bool retval = recordMap.find(username) != recordMap.end();
+   pthread_rwlock_unlock(&rwLock); // finished read
+   return retval;
 }

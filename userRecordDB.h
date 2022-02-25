@@ -3,9 +3,12 @@
 #define RECORDSDB_H
 #include "constants.h"
 #include <string>
+#include <pthread.h>
 using namespace std;
 
 class Record;
+
+
 
 class RecordDB
 {
@@ -25,8 +28,7 @@ public:
 private:
    unordered_map<string, void*> recordMap;
    int encrypt(string password);
+   pthread_rwlock_t rwLock;
 };
-
-
 
 #endif

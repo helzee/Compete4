@@ -8,16 +8,19 @@ Needs:
     + after each game, record updated and recordDB saved to disk
   - games list menu
   - game logic
+
 Wants:
   - leaderboard menu
   - in-game chat
   - player logout
   - track players logged in (prevent multiple logins of same profile at one time)
   - on-exit server saves recordDB to disk
+
 Hopes:
   - ensure 100% no deadlocks ever
   - guest sign-in
   - provide admin commands on the server side (i.e. flush records, view sessions, kill sessions, view general debug info, active players, kick players)
+
 Dreams:
   - end-to-end encryption
   - lexer generates token after only a single pass of the command (flex?)

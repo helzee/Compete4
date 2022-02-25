@@ -56,11 +56,7 @@ void Session::close()
 {
    // close currGame. opponent wins if unfinished
    // update wins/losses of player
-
-   
 }
-
-void Session::setMenu(const Menu* menu) { currMenu = menu; }
 
 bool Session::isMenuLocked() const { return menuLocked; }
 

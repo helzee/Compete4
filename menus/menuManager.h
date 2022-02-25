@@ -5,14 +5,11 @@
 
 using namespace std;
 
-
-
-class MenuManager {
-   public:
-   
+class MenuManager
+{
+public:
    MenuManager();
 
-   
    const Menu* getMenu(MenuType menu) const;
    void addMenu(const Menu*, MenuType menu);
    void buildMenus();
@@ -20,7 +17,5 @@ class MenuManager {
 private:
    const Menu* allMenus[NUM_OF_MENUS];
 };
-
-
 
 #endif

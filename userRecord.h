@@ -4,7 +4,6 @@
 #include "constants.h"
 #include <iostream>
 
-
 #ifndef USER_RECORD_H
 #define USER_RECORD_H
 
@@ -30,7 +29,6 @@ public:
    int getGamesPlayed();
    static bool isUsernameValid(string username);
    static bool isPasswordValid(string password);
-
 
 private:
    int gamesWon;

@@ -51,7 +51,8 @@ enum TokType {
 
 };
 
-class CommandTok {
+class CommandTok
+{
    friend class CommandLexer;
 
 public:
@@ -66,7 +67,7 @@ private:
 
 /** NOTE: CommandLexer is meant to be used as a static class! It is instantiated
  * at the bottom of this header.
- * 
+ *
  * The command lexer can also be seen as a builder of CommandToks*/
 
 class CommandLexer

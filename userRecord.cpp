@@ -1,6 +1,6 @@
 #include "userRecord.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -11,13 +11,12 @@ Record::Record(string username, int encryptedPassword)
    this->username = username;
    this->encryptedPassword = encryptedPassword;
    gamesWon = gamesLost = gamesPlayed = 0;
-
 }
 
 // restore a record from disk
 Record::Record(istream& file)
 {
-   
+
    file >> username >> encryptedPassword >> gamesPlayed >> gamesWon >>
        gamesLost;
 }

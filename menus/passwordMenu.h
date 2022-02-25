@@ -5,8 +5,6 @@
 
 using namespace std;
 
-
-
 class PasswordMenu : public SignInMenu
 {
 public:

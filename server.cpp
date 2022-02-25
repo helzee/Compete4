@@ -47,7 +47,7 @@ int main(int argc, char** argv)
    menuManager->buildMenus();
 
    // initialize record database
-   
+
    RecordDB* recordDB = new RecordDB();
 
    // initialize session database
@@ -75,8 +75,6 @@ int main(int argc, char** argv)
          cerr << "Thread creations error: " << iret << endl;
          close(newSd);
       }
-      
-      
    }
 }
 
@@ -97,7 +95,6 @@ void* clientSession(void* ptr)
       if (parseCommand(command, session) < 0) {
          break;
       }
-         
    }
 
    cerr << "Closing Client Connection" << endl;

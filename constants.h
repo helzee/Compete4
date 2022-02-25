@@ -41,14 +41,22 @@
    "Invalid argument count. Requires at most 2 args: (ServerName, "            \
    "ServerPort)\nDefault args are csslab7.uwb.edu and 13337 respectively."
 
-
-
 // Prime 7879 * Prime 6949 = 54,751,171
 #define HASH_NUMBER 54751171
 
-// menu enums. Last enum is not a menu, but is used to keep track of number of menus
-enum MenuType { MENU = 0, MAIN, LOGIN, SIGNIN, MAKEACCOUNT, GUEST, PASSWORD, 
-MAKEPASSWORD, NUM_OF_MENUS };
+// menu enums. Last enum is not a menu, but is used to keep track of number of
+// menus
+enum MenuType {
+   MENU = 0,
+   MAIN,
+   LOGIN,
+   SIGNIN,
+   MAKEACCOUNT,
+   GUEST,
+   PASSWORD,
+   MAKEPASSWORD,
+   NUM_OF_MENUS
+};
 
 class Menu;
 class Session;

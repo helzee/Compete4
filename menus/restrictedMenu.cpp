@@ -1,21 +1,19 @@
 #include "restrictedMenu.h"
-#include "menu.h"
+#include "../commandLexer.h"
 #include "../constants.h"
 #include "../globalFuncs.h"
 #include "../session.h"
-#include "../commandLexer.h"
+#include "menu.h"
 
 /**
  * @brief Construct a new Restricted Menu:: Restricted Menu object
  * This menu is not an abstract class, but it is treated like one.
  * It is not added to the menu manager.
- * 
+ *
  */
-RestrictedMenu::RestrictedMenu() { header = "Restricted menu header"; 
-}
+RestrictedMenu::RestrictedMenu() { header = "Restricted menu header"; }
 
 // implement different global help commands here?
-
 
 int RestrictedMenu::badCommand(CommandTok* comm, Session* session) const
 {
@@ -25,7 +23,10 @@ int RestrictedMenu::helpCommand(CommandTok* comm, Session* session) const
 {
    return sendGlobalHelp(session);
 }
-int RestrictedMenu::exitCommand(CommandTok* comm, Session* session) const { return -1; }
+int RestrictedMenu::exitCommand(CommandTok* comm, Session* session) const
+{
+   return -1;
+}
 int RestrictedMenu::printCommand(CommandTok* comm, Session* session) const
 {
    // this is the parent menu class. not any specific menu. default print is
@@ -59,23 +60,25 @@ int RestrictedMenu::loginCommand(CommandTok* comm, Session* session) const
 }
 int RestrictedMenu::signinCommand(CommandTok* comm, Session* session) const
 {
-return sendWelcome(session);
+   return sendWelcome(session);
 }
 int RestrictedMenu::makeAcctCommand(CommandTok* comm, Session* session) const
 {
-return sendWelcome(session);
+   return sendWelcome(session);
 }
 int RestrictedMenu::lBoardCommand(CommandTok* comm, Session* session) const
 {
-return sendWelcome(session);
+   return sendWelcome(session);
 }
-int RestrictedMenu::mainCommand(CommandTok* comm, Session* session) const {
-   
+int RestrictedMenu::mainCommand(CommandTok* comm, Session* session) const
+{
+
    if (changeMenu(session, MAIN)) {
       return 0;
    }
    return 1;
 }
-int RestrictedMenu::guestCommand(CommandTok* comm, Session* session) const {
+int RestrictedMenu::guestCommand(CommandTok* comm, Session* session) const
+{
    return sendWelcome(session);
 }

@@ -1,9 +1,9 @@
 #include "makeAccMenu.h"
 #include "../commandLexer.h"
+#include "../session.h"
 #include "menu.h"
 #include "menuManager.h"
 #include "restrictedMenu.h"
-#include "../session.h"
 
 using namespace std;
 

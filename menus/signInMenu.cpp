@@ -1,14 +1,13 @@
 #include "signInMenu.h"
 #include "../commandLexer.h"
+#include "../constants.h"
 #include "../globalFuncs.h"
 #include "../session.h"
 #include "../userRecord.h"
 #include "../userRecordDB.h"
-#include "../constants.h"
 #include "menu.h"
 #include "menuManager.h"
 #include "restrictedMenu.h"
-
 
 using namespace std;
 
@@ -23,7 +22,6 @@ int SignInMenu::badCommand(CommandTok* comm, Session* session) const
 {
    if (!session->isUsernameValid(comm->getLex())) {
       return 1;
-   
    }
    if (!session->checkIfRecord(comm->getLex())) {
       return session->send("Username not registered.");

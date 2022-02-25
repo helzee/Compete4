@@ -57,10 +57,8 @@ int main(int argc, char** argv)
       if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
          command = (string)sendBuffer;
          // get rid of ending \n
-         //command = command.substr(0, command.length() - 1);
+         // command = command.substr(0, command.length() - 1);
          send(command, clientSd);
-
-         
       }
    }
 

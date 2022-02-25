@@ -1,28 +1,25 @@
 #include "menuManager.h"
 #include "../constants.h"
-#include "mainMenu.h"
-#include "loginMenu.h"
 #include "guestMenu.h"
-#include "signInMenu.h"
+#include "loginMenu.h"
+#include "mainMenu.h"
 #include "makeAccMenu.h"
-#include "restrictedMenu.h"
+#include "makePasswordMenu.h"
 #include "menu.h"
 #include "passwordMenu.h"
-#include "makePasswordMenu.h"
+#include "restrictedMenu.h"
+#include "signInMenu.h"
 
-
-
-MenuManager::MenuManager() {
-   
-}
-void MenuManager::addMenu(const Menu* menu, MenuType index){
+MenuManager::MenuManager() {}
+void MenuManager::addMenu(const Menu* menu, MenuType index)
+{
    allMenus[index] = menu;
 }
 
-const Menu* MenuManager::getMenu(MenuType menu) const { 
-   return allMenus[menu]; }
+const Menu* MenuManager::getMenu(MenuType menu) const { return allMenus[menu]; }
 
-void MenuManager::buildMenus() { 
+void MenuManager::buildMenus()
+{
    allMenus[MAIN] = new MainMenu();
    allMenus[MENU] = new Menu();
    allMenus[GUEST] = new GuestMenu();

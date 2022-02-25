@@ -1,5 +1,3 @@
-
-
 #ifndef MAINMENU_H
 #define MAINMENU_H
 #include "../constants.h"
@@ -16,7 +14,5 @@ private:
    int sendWelcome(Session* session) const;
    virtual int loginCommand(CommandTok* comm, Session* session) const;
 };
-
-
 
 #endif

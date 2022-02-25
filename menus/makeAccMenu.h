@@ -8,16 +8,14 @@
 
 using namespace std;
 
-class MakeAcctMenu : public RestrictedMenu {
-   public:
-      MakeAcctMenu();
+class MakeAcctMenu : public RestrictedMenu
+{
+public:
+   MakeAcctMenu();
 
-   protected:
-      virtual int backCommand(CommandTok* comm, Session* session) const;
-      virtual int badCommand(CommandTok* comm, Session* session) const;
-
-
+protected:
+   virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int badCommand(CommandTok* comm, Session* session) const;
 };
-
 
 #endif

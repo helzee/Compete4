@@ -5,8 +5,6 @@
 
 using namespace std;
 
-
-
 class MakePasswordMenu : public MakeAcctMenu
 {
 public:

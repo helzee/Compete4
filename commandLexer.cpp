@@ -42,13 +42,16 @@ CommandLexer::CommandLexer()
  * @return CommandTok : the token that this command represents (TOKBAD if the
  * command does not exist)
  */
-CommandTok* CommandLexer::lexCommand(const char* command) const {
+CommandTok* CommandLexer::lexCommand(const char* command) const
+{
    CommandTok* tok = new CommandTok();
    tok->type = determineTok(command);
    tok->lex = command;
    return tok;
 }
-CommandTok::CommandTok() { type = TOKBAD;
+CommandTok::CommandTok()
+{
+   type = TOKBAD;
    lex = nullptr;
 }
 

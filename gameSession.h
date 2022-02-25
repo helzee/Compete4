@@ -1,7 +1,6 @@
 /** @file gameSession.h
- * 
+ *
  */
-
 
 #ifndef GAMESESSION_H
 #define GAMESESSION_H
@@ -17,28 +16,28 @@ using namespace std;
 class GameSession
 {
 public:
-    int gameID;
-    
-    bool connectPlayer(Session*);
-    bool disconnectPlayer(Session*);
-    void resetBoard();
+   int gameID;
 
-    bool dropPiece(Session*, int);
-    string printBoard();
+   bool connectPlayer(Session*);
+   bool disconnectPlayer(Session*);
+   void resetBoard();
 
-    GameSession(int);
+   bool dropPiece(Session*, int);
+   string printBoard();
+
+   GameSession(int);
 
 private:
-    Session* players[2];
-    char board[BOARD_ROW][BOARD_COL];
-    int colCount[BOARD_COL];
-    bool turn = false;
-    bool inGame = false;
-    
-    bool partOfGame(Session*);
-    bool isTurn(Session*);
-    bool checkWin();
-    void announceUpdate();
+   Session* players[2];
+   char board[BOARD_ROW][BOARD_COL];
+   int colCount[BOARD_COL];
+   bool turn = false;
+   bool inGame = false;
+
+   bool partOfGame(Session*);
+   bool isTurn(Session*);
+   bool checkWin();
+   void announceUpdate();
 };
 
 #endif

@@ -9,6 +9,7 @@
 RecordDB::RecordDB()
 {
    pthread_rwlock_init(&rwLock, NULL);
+   pthread_rwlock_init(&fileLock, NULL);
    getRecordFromDisk();
 }
 
@@ -16,19 +17,19 @@ int RecordDB::saveRecordToDisk()
 {
    // to prevent deadlock: file is always locked first, then map is locked
    // within file lock
-   //lock file write first
+   // lock file write first
    pthread_rwlock_wrlock(&fileLock);
    ofstream file(RECORDFILE);
-   //lock map read second
+   // lock map read second
    pthread_rwlock_rdlock(&rwLock);
    for (auto it = recordMap.begin(); it != recordMap.end(); it++) {
       Record* rec = (Record*)it->second;
       rec->toFile(file);
    }
-   //unlock map first
+   // unlock map first
    pthread_rwlock_unlock(&rwLock);
    file.close();
-   //then unlock file
+   // then unlock file
    pthread_rwlock_unlock(&fileLock);
 
    return 0;

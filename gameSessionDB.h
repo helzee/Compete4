@@ -5,7 +5,7 @@
 
 class GameSession;
 
-// Game List 
+// Game List
 // When scalable, change to an odered map or vector
 GameSession* gameList[MAX_GAMES];
 

@@ -2,6 +2,8 @@
  *
  */
 #include "constants.h"
+#include <iostream>
+
 
 #ifndef USER_RECORD_H
 #define USER_RECORD_H
@@ -17,6 +19,8 @@ class Record
 {
 public:
    Record(string, int);
+   Record(istream&);
+   int toFile(ofstream&);
    bool checkPassword(int);
    string getName();
    void winGame();
@@ -27,10 +31,11 @@ public:
    static bool isUsernameValid(string username);
    static bool isPasswordValid(string password);
 
+
 private:
-   int gamesWon = 0;
-   int gamesLost = 0;
-   int gamesPlayed = 0;
+   int gamesWon;
+   int gamesLost;
+   int gamesPlayed;
    string username;
    int encryptedPassword;
 };

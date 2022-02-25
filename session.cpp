@@ -55,8 +55,7 @@ int Session::handleCommand(CommandTok* comm)
 void Session::close()
 {
    // close currGame. opponent wins if unfinished
-   // update wins/losses of players
-   // record->signout(username)
+   // update wins/losses of player
 
    
 }
@@ -101,10 +100,10 @@ bool Session::isPasswordValid(string password) const
 
 bool Session::signin(string password)
 {
-   Record* record = recordDB->getRecord(username, password);
+   Record* record = recordDB->getRecord(possibleUsername, password);
    if (record != nullptr) {
       this->record = record;
-      this->username = username;
+      this->username = possibleUsername;
       return true;
    }
    return false;
@@ -112,9 +111,10 @@ bool Session::signin(string password)
 
 Record* Session::getRecord() const { return record; }
 
-bool Session::isUsernameValid(string username) const
+bool Session::isUsernameValid(string username)
 {
    if (Record::isUsernameValid(username)) {
+      possibleUsername = username;
       return true;
    }
    send("Username must be between 4 and 32 characters (inclusive)"

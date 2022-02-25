@@ -1,11 +1,54 @@
 #include "userRecordDB.h"
-#include "userRecord.h"
 #include "openssl/sha.h"
+#include "userRecord.h"
+#include <filesystem>
+#include <fstream>
 #include <pthread.h>
+#include <sstream>
 
+RecordDB::RecordDB()
+{
+   pthread_rwlock_init(&rwLock, NULL);
+   getRecordFromDisk();
+}
 
-RecordDB::RecordDB() {
-   pthread_rwlock_init(&rwLock, NULL );
+int RecordDB::saveRecordToDisk()
+{
+   ofstream file(RECORDFILE);
+   for (auto it = recordMap.begin(); it != recordMap.end(); it++) {
+      Record* rec = (Record*)it->second;
+      rec->toFile(file);
+   }
+   file.close();
+
+   return 0;
+}
+
+int RecordDB::getRecordFromDisk()
+{
+   pthread_rwlock_rdlock(&fileLock);
+   ifstream file(RECORDFILE);
+   string line;
+
+   while (file) {
+      getline(file, line);
+      if (line.empty()) {
+         pthread_rwlock_unlock(&fileLock);
+         return 0;
+      }
+      stringstream lineStream(line);
+
+      Record* rec = new Record(lineStream);
+      pthread_rwlock_wrlock(&rwLock);
+      recordMap.insert({rec->getName(), (void*)rec});
+      pthread_rwlock_unlock(&rwLock);
+      
+   }
+   file.close();
+   pthread_rwlock_unlock(&fileLock);
+   
+
+   return 0;
 }
 
 // Uses basic Rabin Function
@@ -42,7 +85,8 @@ unsigned int RecordDB::turnToInt(string password)
    return toReturn;
 }
 
-Record* RecordDB::makeRecord(string username, string password) {
+Record* RecordDB::makeRecord(string username, string password)
+{
    return makeRecord(username, encrypt(password));
 }
 
@@ -55,19 +99,18 @@ Record* RecordDB::makeRecord(string username, int encryptedPassword)
       return nullptr;
    }
    pthread_rwlock_unlock(&rwLock); // finished read
-   
+
    Record* newRecord = new Record(username, encryptedPassword);
 
    pthread_rwlock_wrlock(&rwLock); // block wait to write
    recordMap.insert({username, newRecord});
    pthread_rwlock_unlock(&rwLock); // finished write
-   
-   
+
    return newRecord;
-   
 }
 
-bool RecordDB::deleteRecord(string username) { 
+bool RecordDB::deleteRecord(string username)
+{
    pthread_rwlock_wrlock(&rwLock); // block wait to write
    bool retval = recordMap.erase(username) == 1;
    pthread_rwlock_unlock(&rwLock); // finished write
@@ -85,7 +128,6 @@ Record* RecordDB::getRecord(string username, string password)
       return nullptr;
    }
    pthread_rwlock_unlock(&rwLock); // finished read
-      
 
    Record* record = (Record*)recordHolder->second;
    if (record->checkPassword(encryptedPassword))
@@ -93,7 +135,6 @@ Record* RecordDB::getRecord(string username, string password)
    else
       return nullptr;
 
-  
    return nullptr;
 }
 

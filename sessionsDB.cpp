@@ -16,7 +16,7 @@ void SessionDB::close(Session* session) {
    session->close();
    removeSession(session->getSessionID());
    // flush all records to disk
-   //recordDB->saveRecords();
+   recordDB->saveRecordToDisk();
 }
 
 Session* SessionDB::makeSession(int sd)

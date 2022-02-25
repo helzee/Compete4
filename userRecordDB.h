@@ -8,14 +8,15 @@ using namespace std;
 
 class Record;
 
-
+#define RECORDFILE "data/records.dat"
 
 class RecordDB
 {
 public:
    RecordDB();
    Record* makeRecord(string, int);
-
+   int getRecordFromDisk();
+   int saveRecordToDisk();
    bool deleteRecord(string);
 
    Record* getRecord(string, string);
@@ -29,6 +30,7 @@ private:
    unordered_map<string, void*> recordMap;
    int encrypt(string password);
    pthread_rwlock_t rwLock;
+   pthread_rwlock_t fileLock;
 };
 
 #endif

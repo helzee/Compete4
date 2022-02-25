@@ -38,7 +38,7 @@ public:
    const Menu* getMenu() const;
    string getUserName() const;
    bool signin(string password);
-   bool isUsernameValid(string username) const;
+   bool isUsernameValid(string username);
    bool checkIfRecord(string username) const; //synchronized read of recordDB
    bool isPasswordValid(string password) const;
    bool makeRecord(string user);

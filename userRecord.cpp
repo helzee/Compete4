@@ -1,9 +1,35 @@
 #include "userRecord.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
+using namespace std;
+
+// create a brand new record
 Record::Record(string username, int encryptedPassword)
 {
    this->username = username;
    this->encryptedPassword = encryptedPassword;
+   gamesWon = gamesLost = gamesPlayed = 0;
+
+}
+
+// restore a record from disk
+Record::Record(istream& file)
+{
+   
+   file >> username >> encryptedPassword >> gamesPlayed >> gamesWon >>
+       gamesLost;
+}
+
+// save record to disk
+int Record::toFile(ofstream& file)
+{
+
+   file << username << " " << encryptedPassword << " " << gamesPlayed << " "
+        << gamesWon << " " << gamesLost << endl;
+
+   return 0;
 }
 
 bool Record::checkPassword(int encryptedPassword)
@@ -31,11 +57,12 @@ float Record::getRatio() { return ((float)gamesWon) / gamesLost; }
 
 int Record::getGamesPlayed() { return gamesPlayed; }
 
-bool Record::isUsernameValid(string username) {
-   //first, check validity
+bool Record::isUsernameValid(string username)
+{
+   // first, check validity
    const char* lexeme = username.c_str();
    int size = 0;
-   
+
    while (*lexeme != '\0') {
       size++;
       lexeme++;
@@ -46,4 +73,7 @@ bool Record::isUsernameValid(string username) {
    return true;
 }
 
-bool Record::isPasswordValid(string password) { return password.length() >= MIN_PASSWORD; }
+bool Record::isPasswordValid(string password)
+{
+   return password.length() >= MIN_PASSWORD;
+}

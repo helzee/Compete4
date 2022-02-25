@@ -44,6 +44,7 @@ public:
    bool isUsernameValid(string username);
    bool isPasswordValid(string password) const;
    void setPossibleUsername(string username);
+   void setGame(GameSession*);
 
 private:
    bool menuLocked; // Locks user to stay in current menu

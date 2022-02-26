@@ -14,6 +14,11 @@ using namespace std;
 #define SYMBOL_P2 "x"
 #define FOUR 4
 
+// NONE, P1, P2
+const char slotSymbols[]{' ', 'o', 'x'};
+
+enum Symbol { NONE, P1, P2 };
+
 // player 1, 2, or neither
 enum Owner { EMPTY, P1, P2 };
 
@@ -35,13 +40,14 @@ public:
    Board();
    bool dropPiece(int, Owner);
    string print() const;
-   bool checkWin(Owner, int, int) const;
+
    Owner getWinner() const;
    bool haveWinner() const;
    void reset();
-   bool incrementTurn();
 
 private:
+   bool incrementTurn();
+   bool checkWin(Owner, int, int) const;
    int checkWinHelper(Owner player, int connected, Direction dir, int row,
                       int col) const;
    void determineRowCol(int &, int &, Direction) const;
@@ -54,11 +60,12 @@ private:
       bool isOccupied() const;
       bool isOccupied(Owner) const;
       void setOwner(Owner);
-      string print() const;
+      char print() const;
 
    private:
       // owner of this slot
       Owner owner;
+      Symbol symbol;
    };
    Slot board[NUMROWS][NUMCOLS];
    bool isFinished;

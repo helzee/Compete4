@@ -35,12 +35,30 @@ bool Board::dropPiece(int col, Owner player)
    return false;
 }
 
-/***/
+/**
+ * @brief Construct a new Board:: Board object. Initialize it.
+ *
+ */
 Board::Board() { reset(); }
 
+/**
+ * @brief checks to see if the given player has won the game. this function
+ * should be called inside of dropPiece() after any piece is dropped. It starts
+ * at the newly dropped piece, and checks in every direction (except north,
+ * since no pieces could be above a newly dropped piece) to see if 4 tokens of
+ * this player have been connected
+ *
+ * @param player the player whose tokens we are counting
+ * @param row the current row we are in
+ * @param col the current collumn we are in
+ * @return true : this player has won
+ * @return false : this player has not won
+ */
 bool Board::checkWin(Owner player, int row, int col) const
 {
    // northsound, only have to check south, cuz nothing above new token
+   // add up total east and west tokens. subtract 1 from one of the helper
+   // functions so that we dont count the starting token twice
    int NorthSouth = checkWinHelper(player, 0, SOUTH, row, col);
    int EastWest = checkWinHelper(player, 0, EAST, row, col) +
                   checkWinHelper(player, -1, WEST, row, col);
@@ -48,11 +66,18 @@ bool Board::checkWin(Owner player, int row, int col) const
               checkWinHelper(player, -1, SOUTHWEST, row, col);
    int NWSE = checkWinHelper(player, 0, NORTHWEST, row, col) +
               checkWinHelper(player, -1, SOUTHEAST, row, col);
-   // middle tokend is counted in both helpers, so subtract 1
    return NWSE >= FOUR || NESW >= FOUR || EastWest >= FOUR ||
           NorthSouth >= FOUR;
 }
 
+/**
+ * @brief Determine the next slot to finished (based on the direction we are
+ * heading)
+ *
+ * @param row current row we are at
+ * @param col current collumn we are at
+ * @param dir the direction we want to go
+ */
 void Board::determineRowCol(int &row, int &col, Direction dir) const
 {
    switch (dir) {
@@ -87,6 +112,19 @@ void Board::determineRowCol(int &row, int &col, Direction dir) const
    }
 }
 
+/**
+ * @brief Recursive helper function that checks slots. it moves in the direction
+ * given in the parameters. It stops if it goes out of the board, finds a slot
+ * not occupied by the player, or finds 4 consecutive player tokens. It returns
+ * the total number of this players tokens in came across on its journey
+ *
+ * @param player the player whose tokens we are counting
+ * @param connected how many tokens we have found so far
+ * @param dir direction we are heading
+ * @param row the current row we are in
+ * @param col the current collumn we are in
+ * @return int : total connected tokens found in this journey
+ */
 int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
                           int col) const
 {
@@ -116,6 +154,16 @@ int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
    return connected;
 }
 
+/**
+ * @brief increments the total turn counter. checks if the game is finished. if
+ * it is, change the state of the game: set isfinished to true
+ * @pre game should not be finished and a successful move should have been
+ * completed
+ * @post turnCount is incremented and isFinished is possibly set to true
+ *
+ * @return true if game is not finished
+ * @return false if game is finished
+ */
 bool Board::incrementTurn()
 {
    turnCount++;
@@ -127,8 +175,14 @@ bool Board::incrementTurn()
 }
 
 Owner Board::getWinner() const { return winner; }
+
+// do we have a winner?
 bool Board::haveWinner() const { return winner != EMPTY; }
 
+/**
+ * @brief Reset the board and game logic
+ *
+ */
 void Board::reset()
 {
    for (int i = 0; i < NUMROWS; i++) {
@@ -141,6 +195,20 @@ void Board::reset()
    winner = EMPTY;
 }
 
+// Print Board
+// prints out the matrix that represents the connect 4 board
+// ASCII border around characters and within frame to make state clear
+/*
+    Example string:
+    |_._._._._._._|
+    | T T T T T T |
+    | T T T T T T |
+    | T T T T T T |
+    | T T TxT T T |
+    | T ToToT T T |
+    | TxTxToT T T |
+    /‾‾‾‾‾‾‾‾‾‾‾‾‾/
+*/
 string Board::print() const
 {
    string connectBoard = "";
@@ -168,23 +236,22 @@ string Board::print() const
    return connectBoard;
 }
 
-Board::Slot::Slot() { owner = EMPTY; }
+Board::Slot::Slot()
+{
+   owner = EMPTY;
+   symbol = NONE;
+}
 
 void Board::Slot::reset() { owner = EMPTY; }
 
 bool Board::Slot::isOccupied() const { return owner != EMPTY; }
 bool Board::Slot::isOccupied(Owner player) const { return player == owner; }
 void Board::Slot::setOwner(Owner player) { owner = player; }
-string Board::Slot::print() const
-{
-   switch (owner) {
-   case EMPTY:
-      return SYMBOL_EMPTY;
-   case P1:
-      return SYMBOL_P1;
-   case P2:
-      return SYMBOL_P2;
-   default:
-      return "?";
-   }
-}
+
+/**
+ * @brief Prints this slot's symbol as a character (defined in slotSymbols array
+ * in the header)
+ *
+ * @return char symbol
+ */
+char Board::Slot::print() const { return slotSymbols[symbol]; }

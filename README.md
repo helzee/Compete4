@@ -25,6 +25,7 @@ Dreams:
   - end-to-end encryption
   - lexer generates token after only a single pass of the command (flex?)
   - create a windows version of client.cpp
+  - create an html website for clients
   - run the server on the cloud
   - implement admin permissions for certain accounts
 

@@ -1,4 +1,5 @@
 a.out
 client
 *.json
+*.dat
 server

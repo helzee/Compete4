@@ -35,14 +35,16 @@ public:
    Board();
    bool dropPiece(int, Owner);
    string print() const;
-   bool checkWin(Owner);
+   bool checkWin(Owner, int, int) const;
+   Owner getWinner() const;
+   bool haveWinner() const;
    void reset();
    bool incrementTurn();
 
 private:
-   bool checkWinHelper(Owner player, int connected, Direction dir, int row,
-                       int col);
-   void determineRowCol(int&, int&, Direction);
+   int checkWinHelper(Owner player, int connected, Direction dir, int row,
+                      int col) const;
+   void determineRowCol(int &, int &, Direction) const;
    class Slot
    {
    public:
@@ -53,18 +55,15 @@ private:
       bool isOccupied(Owner) const;
       void setOwner(Owner);
       string print() const;
-      void visit();
 
    private:
       // owner of this slot
       Owner owner;
-      // used in check win algo
-      bool visited;
    };
    Slot board[NUMROWS][NUMCOLS];
-   int turn;
-   bool isFull;
-   bool hasWon;
+   bool isFinished;
+   Owner winner;
+   int turnCount;
 };
 
 #endif

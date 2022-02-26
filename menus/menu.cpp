@@ -69,6 +69,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return mainCommand(comm, session);
    case TOKGUEST:
       return guestCommand(comm, session);
+   case TOKLIST:
+      return listCommand(comm, session);
    // insert command functions here
    default:
       return badCommand(comm, session);
@@ -196,4 +198,12 @@ int Menu::mainCommand(CommandTok* comm, Session* session) const
 int Menu::guestCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
+}
+
+int Menu::listCommand(CommandTok* comm, Session* session) const
+{
+   if (changeMenu(session, GAMELIST)) {
+      return 0;
+   }
+   return 1;
 }

@@ -18,6 +18,24 @@ class Session;
  * a Menu object. It's primary function is to allow the user to navigate
  * our menu system (with the navigate method)
  *
+ * NOTE: HOW TO ADD NEW MENUS
+ *
+ * 1) in constants.h, define the new menu's enum in MenuType. put it before the
+ * final "size" enum
+ *
+ * 2) create the new menu header. declare it as a class that inherits from
+ * another menu (good default is Menu). You can look at other menu's for
+ * examples
+ *
+ * 3) in the header, declare what commands you want to override from the
+ * inherited menu
+ *
+ * 4) implement the new command functions in the new menu's .cpp file. Make sure
+ * that in the constructor you specify the menu type and give it a header string
+ *
+ * 2) in menuManager.cpp, instantiate your new menu in the buildMenus() function
+ * so that it will be in the allMenus array when the server starts.
+ *
  * NOTE: You could customize a menu class by giving it its own nagivate()
  * function And then defining what tokens u want to use in there.
  *
@@ -57,6 +75,7 @@ protected:
    virtual int lBoardCommand(CommandTok* comm, Session* session) const;
    virtual int mainCommand(CommandTok* comm, Session* session) const;
    virtual int guestCommand(CommandTok* comm, Session* session) const;
+   virtual int listCommand(CommandTok* comm, Session* session) const;
 
    virtual int sendGlobalHelp(Session* session) const;
 

@@ -1,6 +1,6 @@
 /**
  * @file commandLexer.h
- * @author your name (you@domain.com)
+ * @author
  * @brief
  * @version 0.1
  * @date 2022-02-17
@@ -71,6 +71,23 @@ private:
 /** NOTE: CommandLexer is meant to be used as a static class! It is instantiated
  * at the bottom of this header.
  *
+ * NOTE: How to add new commands:
+ *
+ * 1) define new regex definition (at the top of this header)
+ *
+ * 2) define a new command TokType (above this comment in the enum)
+ *
+ * 3) declare a new regex* (in the private section of CommandLexer)
+ *
+ * 4) instantiate the new regex in CommandLexer constructor (.cpp)
+ *
+ * 5) in .cpp, add a new "else if regex match" statement that returns
+ * your new command tokType in determineTok()
+ *
+ * 6) update the Menu::navigate() function to have a new case that recognizes
+ * your token Then, be sure to implement the command's function in he menu you
+ * want it to be used.
+ *
  * The command lexer can also be seen as a builder of CommandToks*/
 
 class CommandLexer
@@ -92,6 +109,7 @@ private:
    regex* regMain;
    regex* regGuest;
    regex* regList;
+   regex* regJoin;
 
    TokType determineTok(const char* command) const;
 };

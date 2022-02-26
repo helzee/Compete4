@@ -11,6 +11,7 @@ public:
    GameListMenu();
 
 private:
+   virtual int backCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

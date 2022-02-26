@@ -22,6 +22,10 @@ enum Symbol { NONE, P1, P2 };
 // player 1, 2, or neither
 enum Owner { EMPTY, P1, P2 };
 
+// these make it easier to call for p1 or p2
+#define PLAYER1 (Owner)1
+#define PLAYER2 (Owner)2
+
 enum Direction {
    NORTH,
    NORTHEAST,

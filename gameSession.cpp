@@ -14,17 +14,7 @@ GameSession::GameSession(int id)
    inGame = false;
    turn = false;
    gameID = id;
-   // Initialize the board with empty spaces
-   // Set the number of tokens in each column to 0
-   // Player one will use: x
-   // Player two will use: o
-   // for (int i = 0; i < NUMROWS; i++) {
-   //    for (int j = 0; j < NUMCOLS; j++) {
-   //       board[i][j] = ' ';
-   //       // # of tokens in each col
-   //       colCount[j] = 0;
-   //    }
-   // }
+   board = new Board();
 
    // Setting the players to empty
    players[0] = nullptr;
@@ -103,7 +93,6 @@ bool GameSession::disconnectPlayer(Session* player)
 }
 
 // Resets board when both players have connected to the game
-// Check connnectPlayer
 void GameSession::resetBoard() { board->reset(); }
 
 // Drop piece
@@ -115,6 +104,35 @@ void GameSession::resetBoard() { board->reset(); }
 //  2c.      terminate game (disconnect players), set inGame
 //  3. Switch turns
 //  4. Print out board
+/**
+ * @brief
+ * NOTE: This function is hard to predict, as we have not planned out what
+ * the menu for the game session will look like yet. if this function is
+ * responsible for dropping a piece, it may be called multiple times (if
+ * improper rows are given) so we have to be ready to call this function again
+ * and again from the same player before changing the turn or checking for wins
+ * or printing the board. -Josh NOTE: I changed return to int as this function
+ * may return different ints based on wheter drop piece was successful or not OR
+ * a win happened.
+ *
+ * @param player
+ * @param row
+ * @return int
+ */
+int GameSession::dropPiece(Session* player, int row)
+{
+   // INCOMPLETE!
+   Session* player1 = players[0];
+   Session* player2 = players[1];
+   // check for player number and if mutex (turn) is available
+   if (player == player1 && turn == 0) {
+      board->dropPiece(row, PLAYER1);
+   } else if (player == player2 && turn == 1) {
+      board->dropPiece(row, PLAYER2);
+   }
+
+   return 0;
+}
 
 // Print Board
 // prints out the matrix that represents the connect 4 board
@@ -130,32 +148,7 @@ void GameSession::resetBoard() { board->reset(); }
     | TxTxToT T T |
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
-string GameSession::printBoard()
-{
-   // string connectBoard = "";
-   // // Print Board Top
-   // connectBoard += "|_._._._._._._|\n";
-   // // Board print per row
-   // // prints out 2x colnum characters
-   // for (int i = 0; i < NUMROWS; i++) {
-   //    connectBoard += "|";
-   //    for (int j = 0; j < (NUMCOLS * 2) - 1; j++) {
-   //       // is a seperator char
-   //       if (i % 2 == 0) {
-   //          connectBoard += "T";
-   //       }
-   //       // is a token slot
-   //       else {
-   //          connectBoard += board[i][j - (j / 2)];
-   //       }
-   //    }
-   //    connectBoard += "|\n";
-   // }
-   // // Print Board Base
-   // connectBoard += "/‾‾‾‾‾‾‾‾‾‾‾‾‾/\n";
-
-   return board->print();
-}
+string GameSession::printBoard() { return board->print(); }
 
 // ----------------------------------------------------------------------------
 //  Private Methods

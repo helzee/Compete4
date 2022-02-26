@@ -16,7 +16,6 @@ class Board;
 // gameSession constants
 // ----------------------------------------------------------------------------
 
-#define MAX_GAMES 10
 // ----------------------------------------------------------------------------
 
 using namespace std;
@@ -30,13 +29,14 @@ public:
    bool disconnectPlayer(Session*);
    void resetBoard();
 
-   bool dropPiece(Session*, int);
+   int dropPiece(Session*, int);
    string printBoard();
 
    GameSession(int);
 
 private:
    Session* players[2];
+
    Board* board;
    bool turn;
    bool inGame;

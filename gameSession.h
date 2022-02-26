@@ -6,10 +6,18 @@
 #define GAMESESSION_H
 
 #include "constants.h"
+#include <pthread.h>
 
 #include "globalFuncs.h"
 
 class Session;
+class Board;
+
+// gameSession constants
+// ----------------------------------------------------------------------------
+
+#define MAX_GAMES 10
+// ----------------------------------------------------------------------------
 
 using namespace std;
 
@@ -29,15 +37,15 @@ public:
 
 private:
    Session* players[2];
-   char board[BOARD_ROW][BOARD_COL];
-   int colCount[BOARD_COL];
-   bool turn = false;
-   bool inGame = false;
+   Board* board;
+   bool turn;
+   bool inGame;
 
    bool partOfGame(Session*);
    bool isTurn(Session*);
    bool checkWin();
    void announceUpdate();
+   pthread_rwlock_t lock;
 };
 
 #endif

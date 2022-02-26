@@ -106,12 +106,15 @@ void GameSession::resetBoard() { board->reset(); }
 //  4. Print out board
 /**
  * @brief
+ *
  * NOTE: This function is hard to predict, as we have not planned out what
  * the menu for the game session will look like yet. if this function is
  * responsible for dropping a piece, it may be called multiple times (if
  * improper rows are given) so we have to be ready to call this function again
  * and again from the same player before changing the turn or checking for wins
- * or printing the board. -Josh NOTE: I changed return to int as this function
+ * or printing the board. -Josh
+ *
+ * NOTE: I changed return to int as this function
  * may return different ints based on wheter drop piece was successful or not OR
  * a win happened.
  *

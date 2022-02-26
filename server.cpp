@@ -50,10 +50,13 @@ int main(int argc, char** argv)
 
    RecordDB* recordDB = new RecordDB();
 
-   // initialize session database
-   SessionDB* sessionDB = new SessionDB(menuManager, recordDB);
+   // initialize game session DB
+   GameSessionDB* gameSessionDB = new GameSessionDB();
 
-   // accept incoming connections
+   // initialize session database
+   SessionDB* sessionDB = new SessionDB(menuManager, recordDB, gameSessionDB);
+
+     // accept incoming connections
    struct sockaddr_storage cliAddr;
    socklen_t cliAddrSize = sizeof(cliAddr);
 

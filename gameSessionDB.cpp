@@ -1,5 +1,6 @@
 #include "gameSessionDB.h"
 #include "gameSession.h"
+#include <pthread.h>
 #include <vector>
 using namespace std;
 
@@ -15,4 +16,12 @@ GameSession* GameSessionDB::getGame(int id)
    }
 
    return nullptr;
+}
+
+bool GameSessionDB::removeGame(int id) {}
+
+GameSessionDB::GameSessionDB()
+{
+   pthread_rwlock_init(&listLock, NULL);
+   gameCounter = 0;
 }

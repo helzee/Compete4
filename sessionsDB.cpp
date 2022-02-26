@@ -1,15 +1,18 @@
 #include "sessionsDB.h"
 #include "constants.h"
+#include "gameSessionDB.h"
 #include "menus/menuManager.h"
 #include "session.h"
 #include "userRecordDB.h"
 using namespace std;
 
-SessionDB::SessionDB(const MenuManager* mmanager, RecordDB* recordDB)
+SessionDB::SessionDB(const MenuManager* mmanager, RecordDB* recordDB,
+                     GameSessionDB* gameDB)
 {
    menuManager = mmanager;
    this->recordDB = recordDB;
    sessionCounter = 0;
+   gameSessionDB = gameDB;
 }
 
 void SessionDB::close(Session* session)
@@ -23,7 +26,7 @@ void SessionDB::close(Session* session)
 Session* SessionDB::makeSession(int sd)
 {
    Session* newSession =
-       new Session(sd, sessionCounter++, menuManager, recordDB);
+       new Session(sd, sessionCounter++, menuManager, recordDB, gameSessionDB);
    sessionMap.insert({newSession->getSessionID(), newSession});
    return newSession;
 }

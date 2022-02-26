@@ -12,7 +12,7 @@ using namespace std;
 class SessionDB
 {
 public:
-   SessionDB(const MenuManager*, RecordDB*);
+   SessionDB(const MenuManager*, RecordDB*, GameSessionDB*);
    Session* makeSession(int);
    bool removeSession(int);
 
@@ -22,6 +22,7 @@ public:
 private:
    const MenuManager* menuManager;
    RecordDB* recordDB;
+   GameSessionDB* gameSessionDB;
    unordered_map<int, void*> sessionMap;
    int sessionCounter;
 };

@@ -13,6 +13,7 @@ class CommandTok;
 class Menu;
 class MenuManager;
 class RecordDB;
+class GameSessionDB;
 
 using namespace std;
 
@@ -24,7 +25,7 @@ using namespace std;
 class Session
 {
 public:
-   Session(int, int, const MenuManager*, RecordDB*);
+   Session(int, int, const MenuManager*, RecordDB*, GameSessionDB*);
    void close();
 
    int handleCommand(CommandTok* comm);
@@ -57,6 +58,7 @@ private:
    Record* record;                 // 1 to 1 access to store player information
    GameSession* currGame;          // synchronized access (2 sessions)
    RecordDB* recordDB;             // synchronized access (all sessions)
+   GameSessionDB* gameDB;          // synchronized access (all sessions)
    const MenuManager* menuManager; // const access by all sessions
    const Menu* currMenu;           // const access by all sessions
 };

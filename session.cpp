@@ -1,5 +1,6 @@
 #include "session.h"
 #include "commandLexer.h"
+#include "gameSessionDB.h"
 #include "menus/menu.h"
 #include "menus/menuManager.h"
 #include "userRecord.h"
@@ -13,7 +14,7 @@
  */
 
 Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
-                 RecordDB* recordDB)
+                 RecordDB* recordDB, GameSessionDB* gameDB)
 {
    menuLocked = false;
    this->clientSd = clientSd;
@@ -23,6 +24,7 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
    username = "";
    this->record = nullptr;
    this->recordDB = recordDB;
+   this->gameDB = gameDB;
 }
 
 void Session::setGame(GameSession* game) { currGame = game; }

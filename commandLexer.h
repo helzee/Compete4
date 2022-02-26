@@ -31,6 +31,8 @@
 #define REGMAKEACCT "(m(akeaccount)?)"
 #define REGMAIN "(main)"
 #define REGGUEST "(g(uest)?)"
+#define REGLIST "((list)|(ls))"
+#define REGJOIN "(j(oin))"
 
 using namespace std;
 
@@ -47,8 +49,9 @@ enum TokType {
    TOKMAKEACCT,
    TOKLBOARD,
    TOKMAIN,
-   TOKGUEST
-
+   TOKGUEST,
+   TOKLIST,
+   TOKJOIN,
 };
 
 class CommandTok
@@ -88,6 +91,7 @@ private:
    regex* regLBoard;
    regex* regMain;
    regex* regGuest;
+   regex* regList;
 
    TokType determineTok(const char* command) const;
 };

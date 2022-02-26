@@ -189,11 +189,12 @@ bool GameSession::isTurn(Session* player)
    } else if (players[1]->getSessionID() == player->getSessionID()) {
       return true;
    }
+   return false;
 }
 
 // Checks for the win condition
 // Used after every droppiece so if connect four is achieved, the game is over
-bool GameSession::checkWin() {}
+bool GameSession::checkWin() { return false; }
 
 // Announce Update
 // Print out board after a move is made to both players

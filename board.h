@@ -17,14 +17,10 @@ using namespace std;
 // NONE, P1, P2
 const char slotSymbols[]{' ', 'o', 'x'};
 
-enum Symbol { NONE, P1, P2 };
+enum Symbol { SYMEMPTY, SYMP1, SYMP2 };
 
 // player 1, 2, or neither
 enum Owner { EMPTY, P1, P2 };
-
-// these make it easier to call for p1 or p2
-#define PLAYER1 (Owner)1
-#define PLAYER2 (Owner)2
 
 enum Direction {
    NORTH,

@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <vector>
 
+using namespace std;
 class GameSession;
 
 class GameSessionDB
@@ -24,7 +25,7 @@ public:
 private:
    // Game List
    // When scalable, change to an odered map or vector
-   vector<void*> gameList;
+   vector<GameSession*> gameList;
    int gameCounter;
    pthread_rwlock_t listLock;
 };

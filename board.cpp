@@ -239,7 +239,7 @@ string Board::print() const
 Board::Slot::Slot()
 {
    owner = EMPTY;
-   symbol = NONE;
+   symbol = SYMEMPTY;
 }
 
 void Board::Slot::reset() { owner = EMPTY; }

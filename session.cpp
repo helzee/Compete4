@@ -16,6 +16,7 @@
 Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
                  RecordDB* recordDB, GameSessionDB* gameDB)
 {
+
    menuLocked = false;
    this->clientSd = clientSd;
    this->sessionID = sessionID;

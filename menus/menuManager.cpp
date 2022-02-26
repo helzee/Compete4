@@ -1,5 +1,6 @@
 #include "menuManager.h"
 #include "../constants.h"
+#include "gameListMenu.h"
 #include "guestMenu.h"
 #include "loginMenu.h"
 #include "mainMenu.h"
@@ -10,7 +11,7 @@
 #include "restrictedMenu.h"
 #include "signInMenu.h"
 
-MenuManager::MenuManager() {}
+MenuManager::MenuManager() { buildMenus(); }
 void MenuManager::addMenu(const Menu* menu, MenuType index)
 {
    allMenus[index] = menu;
@@ -28,4 +29,5 @@ void MenuManager::buildMenus()
    allMenus[SIGNIN] = new SignInMenu();
    allMenus[PASSWORD] = new PasswordMenu();
    allMenus[MAKEPASSWORD] = new MakePasswordMenu();
+   allMenus[GAMELIST] = new GameListMenu();
 }

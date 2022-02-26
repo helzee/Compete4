@@ -31,6 +31,7 @@ CommandLexer::CommandLexer()
    regLBoard = new regex(REGPREFIX REGLBOARD REGSUFFIX);
    regMain = new regex(REGPREFIX REGMAIN REGSUFFIX);
    regGuest = new regex(REGPREFIX REGGUEST REGSUFFIX);
+   regList = new regex(REGPREFIX REGLIST REGSUFFIX);
 }
 
 /**
@@ -81,8 +82,10 @@ TokType CommandLexer::determineTok(const char* command) const
       return TOKNAME;
    } else if (regex_match(command, *regMain)) { // MAIN
       return TOKMAIN;
-   } else if (regex_match(command, *regGuest)) {
+   } else if (regex_match(command, *regGuest)) { // GUEST
       return TOKGUEST;
+   } else if (regex_match(command, *regList)) { // LIST
+      return TOKLIST;
    }
 
    return TOKBAD;

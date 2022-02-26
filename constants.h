@@ -48,6 +48,7 @@ enum MenuType {
    GUEST,
    PASSWORD,
    MAKEPASSWORD,
+   GAMELIST,
    NUM_OF_MENUS
 };
 

@@ -15,7 +15,9 @@ class Board;
 
 // gameSession constants
 // ----------------------------------------------------------------------------
-
+// these make it easier to call for p1 or p2
+#define PLAYER1 (Owner)1
+#define PLAYER2 (Owner)2
 // ----------------------------------------------------------------------------
 
 using namespace std;

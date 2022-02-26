@@ -12,13 +12,13 @@ void GameSessionDB::makeGame() {}
 GameSession* GameSessionDB::getGame(int id)
 {
    if (id < gameList.size()) {
-      return (GameSession*)gameList[id];
+      return gameList[id];
    }
 
    return nullptr;
 }
 
-bool GameSessionDB::removeGame(int id) {}
+bool GameSessionDB::removeGame(int id) { return false; }
 
 GameSessionDB::GameSessionDB()
 {

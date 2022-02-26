@@ -37,26 +37,10 @@ int main(int argc, char** argv)
 
    int serverSd = establishServer(serverPort);
 
-   // Create static gameSessions (comment out when not working)
-   /*for(int i = 0; i < 10; i++) {
-      makeGame();
-   }*/
-
-   // initialize menu objects in manager
-   MenuManager* menuManager = new MenuManager();
-   menuManager->buildMenus();
-
-   // initialize record database
-
-   RecordDB* recordDB = new RecordDB();
-
-   // initialize game session DB
-   GameSessionDB* gameSessionDB = new GameSessionDB();
-
    // initialize session database
-   SessionDB* sessionDB = new SessionDB(menuManager, recordDB, gameSessionDB);
+   SessionDB* sessionDB = new SessionDB();
 
-     // accept incoming connections
+   // accept incoming connections
    struct sockaddr_storage cliAddr;
    socklen_t cliAddrSize = sizeof(cliAddr);
 

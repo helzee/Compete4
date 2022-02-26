@@ -6,13 +6,14 @@
 class MenuManager;
 class RecordDB;
 class Session;
+class GameSessionDB;
 
 using namespace std;
 
 class SessionDB
 {
 public:
-   SessionDB(const MenuManager*, RecordDB*, GameSessionDB*);
+   SessionDB();
    Session* makeSession(int);
    bool removeSession(int);
 
@@ -20,7 +21,7 @@ public:
    void close(Session* session);
 
 private:
-   const MenuManager* menuManager;
+   MenuManager* menuManager;
    RecordDB* recordDB;
    GameSessionDB* gameSessionDB;
    unordered_map<int, void*> sessionMap;

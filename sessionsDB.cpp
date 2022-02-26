@@ -6,13 +6,19 @@
 #include "userRecordDB.h"
 using namespace std;
 
-SessionDB::SessionDB(const MenuManager* mmanager, RecordDB* recordDB,
-                     GameSessionDB* gameDB)
+SessionDB::SessionDB()
 {
-   menuManager = mmanager;
-   this->recordDB = recordDB;
+   // initialize menu objects in manager
+   menuManager = new MenuManager();
+
+   // initialize record database
+
+   recordDB = new RecordDB();
+
+   // initialize game session DB
+   gameSessionDB = new GameSessionDB();
+
    sessionCounter = 0;
-   gameSessionDB = gameDB;
 }
 
 void SessionDB::close(Session* session)

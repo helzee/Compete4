@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// menu types  enum declared in constants.h
+
 class MenuManager
 {
 public:

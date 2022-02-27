@@ -97,11 +97,33 @@ unsigned int RecordDB::turnToInt(string password)
    return toReturn;
 }
 
+/**
+ * @brief calls the original makeRecord() function, but allows the caller
+ * to use the unencrypted password for calling. This function then encrypts the
+ * password and calls the actual makeRecord() function
+ *
+ * @param username
+ * @param password
+ * @return Record* the record that was made or nullptr if it already exists or
+ * an error occured
+ */
 Record* RecordDB::makeRecord(string username, string password)
 {
    return makeRecord(username, encrypt(password));
 }
 
+/**
+ * @brief Makes a record from a username and encrypted password pair if that
+ * username does not already have a record tied to it
+ *
+ * NOTE: this function provides synchronizes read and write access to the
+ * recordDB, thus it can be used by multiple callers in parallel or concurrently
+ *
+ * @param username
+ * @param encryptedPassword
+ * @return Record* a new record. If a record with the same username already
+ * exists in the recordDB, then it returns nullptr
+ */
 Record* RecordDB::makeRecord(string username, int encryptedPassword)
 {
    // blocking wait to read

@@ -7,10 +7,10 @@ using namespace std;
 
 LoginMenu::LoginMenu()
 {
+   // swap l and s. l to login. s to signout
    header = "Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
             "sign in as guest, \"l\" to log out.";
    this->type = LOGIN;
-   // menuManager.addMenu(this, LOGIN);
 }
 
 int LoginMenu::backCommand(CommandTok* comm, Session* session) const

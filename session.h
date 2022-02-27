@@ -52,8 +52,9 @@ private:
    int sessionID;
    int clientSd; // Socket Description, used to send messages to client
 
-   string username;
-   string possibleUsername; // Temporary variable used for creating account
+   string username;         // after successful signin, this is set
+   string possibleUsername; // Temporary variable used to store a potential
+                            // username before proper password is given
 
    Record* record;                 // 1 to 1 access to store player information
    GameSession* currGame;          // synchronized access (2 sessions)

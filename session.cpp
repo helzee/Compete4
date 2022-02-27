@@ -6,13 +6,6 @@
 #include "userRecord.h"
 #include "userRecordDB.h"
 
-/**
- * @brief Construct a new Session:: Session object
- *
- * @param clientSd
- * @param sessionID
- */
-
 Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
                  RecordDB* recordDB, GameSessionDB* gameDB)
 {
@@ -23,6 +16,7 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
    this->menuManager = menuManager;
    currMenu = menuManager->getMenu(MAIN);
    username = "";
+   possibleUsername = "";
    this->record = nullptr;
    this->recordDB = recordDB;
    this->gameDB = gameDB;
@@ -46,7 +40,7 @@ string Session::getUserName() const { return username; }
 int Session::getSessionID() const { return sessionID; }
 
 /**
- * @brief tells the menu to interpret a command token
+ * @brief tells the current menu to interpret a command token
  *
  * @param comm
  * @return int
@@ -99,6 +93,19 @@ bool Session::isPasswordValid(string password) const
    return false;
 }
 
+/**
+ * @brief Checks to see if the given password and (previously given) username
+ * match a record. If so, that player is "signed in", in other words, the record
+ * is pointed to by this session and the possibleUsername (that was stored
+ * before pasword validation) is now stored as the actual username of the
+ * client.
+ *
+ * @param password the password the client typed in.
+ * @return true if sign in was successful (password matched the one in the
+ * record)
+ * @return false if signin was unsuccessful (password did not match that on
+ * record)
+ */
 bool Session::signin(string password)
 {
    Record* record = recordDB->getRecord(possibleUsername, password);

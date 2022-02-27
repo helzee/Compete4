@@ -6,6 +6,13 @@
 #include "userRecordDB.h"
 using namespace std;
 
+/**
+ * @brief Construct a new SessionDB object. This object basically encapsulates
+ * all of the server logic. It instantiates the MenuManager, the RecordDB, and
+ * the game sessionDB upon construction.
+ *
+ *
+ */
 SessionDB::SessionDB()
 {
    // initialize menu objects in manager

@@ -1,5 +1,20 @@
-/** @file server.cpp
+/**
+ * @file server.cpp
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
+ * @brief This is the main thread of execution for the serverside of Connect4
+ * Online. It initializes a SessionDB object which will act as the manager for
+ * all client sessions. The SessionDB object will also act as the initializer
+ * and manager of all the peripheral objects that each client will interact
+ * with. After these objects are initialized, the server creates a socket, binds
+ * it, and listens to the socket. It creates a new thread for each new client
+ * that connects to it, and that thread creates a Session instance to handle
+ * that client's interactions with the server and other clients connected to the
+ * server.
+ * @version 0.1
+ * @date 2022-02-27
+ *
+ * @copyright Copyright (c) 2022
+ *
  */
 
 #include "commandParser.h"
@@ -25,6 +40,13 @@ struct thread_data {
    SessionDB* sessionDB;
 };
 
+/**
+ * @brief
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
 int main(int argc, char** argv)
 {
    const char* serverPort = DEFAULT_PORT;
@@ -44,6 +66,7 @@ int main(int argc, char** argv)
    struct sockaddr_storage cliAddr;
    socklen_t cliAddrSize = sizeof(cliAddr);
 
+   // continuously wait for new connections
    while (1) {
 
       // accept and create a new socket for communication newSd
@@ -51,7 +74,7 @@ int main(int argc, char** argv)
       if (newSd == -1)
          throwError("Socket Connection Error", errno, serverSd);
 
-      // create a new thread
+      // create a new thread to handle this connection
       pthread_t newThread;
       struct thread_data* data = new thread_data;
       data->sd = newSd;
@@ -65,14 +88,22 @@ int main(int argc, char** argv)
    }
 }
 
+/**
+ * @brief
+ *
+ * @param ptr
+ * @return void*
+ */
 void* clientSession(void* ptr)
 {
    thread_data* data = (thread_data*)ptr;
    int sd = data->sd;
    SessionDB* sessionDB = data->sessionDB;
+   // make a session to handle this connection
    Session* session = sessionDB->makeSession(sd);
    parseCommand("print", session);
 
+   // continuously recieve commands from client until they exit
    while (1) {
       string command = recieve(sd);
       cerr << "Menu[" << session->getMenu()->getType()

@@ -75,6 +75,8 @@ int RecordDB::encrypt(string password)
    return (int)(number % HASH_NUMBER);
 }
 
+// Turns a variable length string into a 32-bit number
+// Struggles but attempts to use all 32 bits well
 unsigned int RecordDB::turnToInt(string password)
 {
    unsigned int toReturn = 0;

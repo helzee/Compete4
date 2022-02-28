@@ -9,6 +9,7 @@ using namespace std;
 
 int establishConnection(const char* serverName, const char* serverPort);
 void* serverListen(void* ptr);
+void throwError(const char* message, int value);
 
 struct thread_data {
    int sd;
@@ -38,15 +39,13 @@ int main(int argc, char** argv)
    data->sd = clientSd;
    int iret = pthread_create(&listenThread, NULL, serverListen, (void*)data);
    if (iret != 0) {
-      cerr << "Thread creations error: " << iret << endl;
       close(clientSd);
-      exit(EXIT_FAILURE);
+      throwError("Thread Creation Error", iret, clientSd);
    }
 
    // This is the buffer that will store messages
    // This stores messages to send and recieved messages.
-   char sendBuffer[MAX_MSG_SIZE];
-   string command;
+   char readBuf[MAX_MSG_SIZE];
 
    /** Initialization is completed. Socket is ready to use
     * While loop is used until program termination.
@@ -54,12 +53,8 @@ int main(int argc, char** argv)
     * receives and displays messages from the server.
     */
    while (1) {
-      if (fgets(sendBuffer, MAX_MSG_SIZE, stdin) != NULL) {
-         command = (string)sendBuffer;
-         // get rid of ending \n
-         // command = command.substr(0, command.length() - 1);
-         send(command, clientSd);
-      }
+      if (fgets(readBuf, MAX_MSG_SIZE, stdin) != NULL)
+         send((string)readBuf, clientSd);
    }
 
    pthread_exit(NULL);
@@ -73,7 +68,7 @@ void* serverListen(void* ptr)
    string response;
 
    while (true) {
-      response = recieve(clientSd);
+      response = receive(clientSd);
       cout << response << endl;
 
       if (cmp(response, "exit"))
@@ -93,25 +88,26 @@ int establishConnection(const char* serverName, const char* serverPort)
 
    // call getaddrinfo() to update servInfo
    int error = getaddrinfo(serverName, serverPort, &hints, &servInfo);
-   if (error != 0) {
-      cerr << "getaddrinfo() Error!: " << gai_strerror(error) << endl;
-      exit(EXIT_FAILURE);
-   }
+   if (error != 0)
+      throwError("getaddrinfo() Error", gai_strerror(error));
 
    // make a socket
    int clientSd = socket(servInfo->ai_family, servInfo->ai_socktype,
                          servInfo->ai_protocol);
-   if (clientSd == -1) {
-      cerr << "Socket creation error!: " << errno << endl;
-      exit(EXIT_FAILURE);
-   }
+   if (clientSd == -1)
+      throwError("Socket creation error!", errno);
+
    // lose pesky "Address already in use" error message
    int status = connect(clientSd, servInfo->ai_addr, servInfo->ai_addrlen);
-   if (status < 0) {
-      cerr << "Failed to connect to the server: " << errno << endl;
-      exit(EXIT_FAILURE);
-   }
+   if (status < 0)
+      throwError("Failed to connect to the server", errno);
 
-   cerr << "Connected!\n";
+   cerr << "Connected!" << endl;
    return clientSd;
+}
+
+void throwError(const char* message, int value)
+{
+   cerr << message << " : " << value << endl;
+   exit(EXIT_FAILURE);
 }

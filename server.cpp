@@ -30,10 +30,10 @@
 using namespace std;
 
 // Declarations
+void* clientSession(void* ptr);
 int establishServer(const char* serverPort);
 void throwError(const char* message, int value);
 void throwError(const char* message, int value, int serverSd);
-void* clientSession(void* ptr);
 
 struct thread_data {
    int sd; // socket number
@@ -65,12 +65,13 @@ int main(int argc, char** argv)
    // accept incoming connections
    struct sockaddr_storage cliAddr;
    socklen_t cliAddrSize = sizeof(cliAddr);
+   int newSd, iret;
 
    // continuously wait for new connections
    while (1) {
 
       // accept and create a new socket for communication newSd
-      int newSd = accept(serverSd, (struct sockaddr*)&cliAddr, &cliAddrSize);
+      newSd = accept(serverSd, (struct sockaddr*)&cliAddr, &cliAddrSize);
       if (newSd == -1)
          throwError("Socket Connection Error", errno, serverSd);
 
@@ -79,12 +80,13 @@ int main(int argc, char** argv)
       struct thread_data* data = new thread_data;
       data->sd = newSd;
       data->sessionDB = sessionDB;
-      int iret = pthread_create(&newThread, NULL, clientSession, (void*)data);
-      cerr << "Connected to Client" << endl;
+
+      iret = pthread_create(&newThread, NULL, clientSession, (void*)data);
       if (iret != 0) {
          cerr << "Thread creations error: " << iret << endl;
          close(newSd);
       }
+      cerr << "Connected to Client" << endl;
    }
 }
 
@@ -98,6 +100,7 @@ void* clientSession(void* ptr)
 {
    thread_data* data = (thread_data*)ptr;
    int sd = data->sd;
+   string command;
    SessionDB* sessionDB = data->sessionDB;
    // make a session to handle this connection
    Session* session = sessionDB->makeSession(sd);
@@ -105,14 +108,14 @@ void* clientSession(void* ptr)
 
    // continuously recieve commands from client until they exit
    while (1) {
-      string command = recieve(sd);
+      command = receive(sd);
+
       cerr << "Menu[" << session->getMenu()->getType()
            << "]: Command= " << command << endl;
 
       // Returns false if the command was exit/quit
-      if (parseCommand(command, session) < 0) {
+      if (parseCommand(command, session) < 0)
          break;
-      }
    }
 
    cerr << "Closing Client Connection" << endl;

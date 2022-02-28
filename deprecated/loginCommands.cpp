@@ -1,23 +1,19 @@
 #include "loginCommands.h"
+#include "commandLexer.h"
 #include "commandParser.h"
 #include "globalFuncs.h"
-#include "commandLexer.h"
 #include "session.h"
 #include "userRecordDB.h"
 
-
 // I'm slowly turning these command functions into menus -Josh
 // planning to delete this file when finished
-
-
-
 
 bool signInAsGuestCommand(Session* session)
 {
    string input;
 
    send("Please enter desired guest name: ", session->clientSd);
-   input = recieve(session->clientSd);
+   input = receive(session->clientSd);
 
    if (cmp(input, "exit") || cmp(input, "quit"))
       return false;
@@ -43,4 +39,3 @@ bool checkReturn(string input, Session* session)
    }
    return false;
 }
-

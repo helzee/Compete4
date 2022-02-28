@@ -5,8 +5,8 @@
 
 using namespace std;
 
-int send(string, int);
-string recieve(int);
+void send(string, int);
+string receive(int);
 bool cmp(string, string);
 
 #endif

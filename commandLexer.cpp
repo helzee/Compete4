@@ -90,6 +90,5 @@ TokType CommandLexer::determineTok(const char* command) const
    } else if (regex_match(command, *regJoin)) { // JOIN
       return TOKJOIN;
    }
-
    return TOKBAD;
 }

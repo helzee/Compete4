@@ -1,16 +1,13 @@
 #include "globalFuncs.h"
 
-// this could be inside session?
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-int send(string message, int sd)
+void send(string message, int sd)
 {
    while (write(sd, message.c_str(), MAX_MSG_SIZE) != MAX_MSG_SIZE)
       ;
-
    return 0;
 }
 
-string recieve(int sd)
+string receive(int sd)
 {
    char rcvBuffer[MAX_MSG_SIZE];
 

@@ -25,6 +25,7 @@ public:
    void winGame();
    void loseGame();
    void tieGame();
+   int getGamesWon();
    float getRatio();
    int getGamesPlayed();
    static bool isUsernameValid(string username);

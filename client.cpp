@@ -40,7 +40,7 @@ int main(int argc, char** argv)
    int iret = pthread_create(&listenThread, NULL, serverListen, (void*)data);
    if (iret != 0) {
       close(clientSd);
-      throwError("Thread Creation Error", iret, clientSd);
+      throwError("Thread Creation Error", iret);
    }
 
    // This is the buffer that will store messages
@@ -88,8 +88,10 @@ int establishConnection(const char* serverName, const char* serverPort)
 
    // call getaddrinfo() to update servInfo
    int error = getaddrinfo(serverName, serverPort, &hints, &servInfo);
-   if (error != 0)
-      throwError("getaddrinfo() Error", gai_strerror(error));
+   if (error != 0) {
+      cerr << "getaddrinfo() error : " << gai_strerror(error) << endl;
+      exit(EXIT_FAILURE);
+   }
 
    // make a socket
    int clientSd = socket(servInfo->ai_family, servInfo->ai_socktype,

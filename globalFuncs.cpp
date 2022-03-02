@@ -4,7 +4,6 @@ void send(string message, int sd)
 {
    while (write(sd, message.c_str(), MAX_MSG_SIZE) != MAX_MSG_SIZE)
       ;
-   return 0;
 }
 
 string receive(int sd)

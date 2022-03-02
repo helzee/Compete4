@@ -135,3 +135,14 @@ bool Session::checkIfRecord(string username) const
 {
    return recordDB->checkIfRecord(username);
 }
+
+int Session::printLeaderboard() const
+{
+   string buffer = recordDB->printLeaderboard();
+   int totalBytesSent = buffer.length();
+   for (int i = 0; i < totalBytesSent; i += MAX_MSG_SIZE) {
+      this->send(buffer.substr(i, MAX_MSG_SIZE));
+   }
+
+   return totalBytesSent;
+}

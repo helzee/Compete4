@@ -46,6 +46,7 @@ public:
    bool isPasswordValid(string password) const;
    void setPossibleUsername(string username);
    void setGame(GameSession*);
+   int printLeaderboard() const;
 
 private:
    bool menuLocked; // Locks user to stay in current menu

@@ -54,6 +54,8 @@ void Record::tieGame() { gamesPlayed++; }
 
 float Record::getRatio() { return ((float)gamesWon) / gamesLost; }
 
+int Record::getGamesWon() { return gamesWon; }
+
 int Record::getGamesPlayed() { return gamesPlayed; }
 
 bool Record::isUsernameValid(string username)

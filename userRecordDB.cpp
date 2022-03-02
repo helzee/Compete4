@@ -10,7 +10,14 @@ RecordDB::RecordDB()
 {
    pthread_rwlock_init(&rwLock, NULL);
    pthread_rwlock_init(&fileLock, NULL);
+   pthread_rwlock_init(&lbLock, NULL);
    getRecordFromDisk();
+
+   // initialize leaderboard to be empty for now
+   filledSlotsInLB = 1;
+   for (int i = 1; i < LEADERBOARDSIZE; i++)
+      leaderboard[i] = nullptr;
+   leaderboard[0] = new Record("John Doe", 0);
 }
 
 int RecordDB::saveRecordToDisk()
@@ -181,4 +188,69 @@ bool RecordDB::checkIfRecord(string username)
    bool retval = recordMap.find(username) != recordMap.end();
    pthread_rwlock_unlock(&rwLock); // finished read
    return retval;
+}
+
+void RecordDB::updateLeaderboard(Record* record)
+{
+   pthread_rwlock_wrlock(&lbLock);
+
+   // If the leaderboard isn't full, just place it on
+   if (filledSlotsInLB < LEADERBOARDSIZE) {
+      leaderboard[filledSlotsInLB] = record;
+      filledSlotsInLB++;
+
+      // While record is better than the next one up, swap upwards
+      int nextPosUp = filledSlotsInLB - 2;
+      while (nextPosUp >= 0 && compareRecord(record, leaderboard[nextPosUp])) {
+         leaderboard[nextPosUp + 1] = leaderboard[nextPosUp];
+         leaderboard[nextPosUp] = record;
+         nextPosUp--;
+      }
+   }
+
+   // Otherwise, if it is doing well enough to belong on the leaderboard
+   else if (compareRecord(record, leaderboard[LEADERBOARDSIZE - 1])) {
+      // find its current position on leaderboard
+      int curPos = LEADERBOARDSIZE - 1;
+      for (; curPos >= 0; curPos--)
+         if (leaderboard[curPos] == record)
+            break;
+
+      // if not on leaderboard, put it in last place
+      if (curPos == -1) {
+         curPos = LEADERBOARDSIZE - 1;
+         leaderboard[curPos] = record;
+      }
+
+      int nextPosUp = curPos - 1;
+
+      // While record is better than the next one up, swap upwards
+      while (nextPosUp >= 0 && compareRecord(record, leaderboard[nextPosUp])) {
+         leaderboard[nextPosUp + 1] = leaderboard[nextPosUp];
+         leaderboard[nextPosUp] = record;
+         nextPosUp--;
+      }
+   }
+
+   pthread_rwlock_unlock(&lbLock);
+}
+
+string RecordDB::printLeaderboard() const
+{
+   string buffer = "WINS\tNAME\n";
+   Record* tempRecord;
+
+   for (int i = 0; i < filledSlotsInLB; i++) {
+      tempRecord = leaderboard[i];
+      buffer += to_string(tempRecord->getGamesWon()) + "\t" +
+                tempRecord->getName() + "\n";
+   }
+
+   return buffer;
+}
+
+// Returns true if the lhs is performing better than the rhs
+bool RecordDB::compareRecord(Record* lhs, Record* rhs)
+{
+   return lhs->getGamesWon() > rhs->getGamesWon();
 }

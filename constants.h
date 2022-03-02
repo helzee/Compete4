@@ -25,6 +25,7 @@
 #define BACKLOG 20
 
 #define MAX_NAME 20
+#define LEADERBOARDSIZE 10
 
 #define ARG_SERV_MESSAGE                                                       \
    "Invalid argument count. Requires at most 1 arg: (ServerPort)\n"            \

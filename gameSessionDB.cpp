@@ -11,11 +11,20 @@ void GameSessionDB::makeGame() {}
 // Hands off the gameSession object pointer to player's session
 GameSession* GameSessionDB::getGame(int id)
 {
-   if (id < gameList.size()) {
+   if (id < gameList.size() && id >= 0) {
       return gameList[id];
    }
 
    return nullptr;
+}
+
+bool GameSessionDB::joinGame(int id, Session* session)
+{
+   GameSession* game = this->getGame(id);
+   if (game == nullptr)
+      return false;
+
+   return game->connectPlayer(session);
 }
 
 bool GameSessionDB::removeGame(int id) { return false; }
@@ -36,7 +45,7 @@ string GameSessionDB::gamesList() const
    string buffer = "Index\tPlayers\n";
    int gameID, playerCount;
 
-   for (int i = 0; i < gameCounter; i++) {
+   for (int i = 0; i < gameList.size(); i++) {
       gameID = gameList[i]->gameID;
       playerCount = gameList[i]->getNumPlayers();
       buffer += to_string(gameID) + "\t" + to_string(playerCount) + "/2\n";

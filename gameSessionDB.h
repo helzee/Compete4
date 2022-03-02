@@ -13,6 +13,9 @@ class GameSessionDB
 public:
    GameSessionDB();
    GameSession* getGame(int);
+
+   bool joinGame(int, Session*);
+
    // Create a new gamesession
    // Add to the database/list
    // When scalable, return gameSession* for users making games

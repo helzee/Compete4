@@ -71,6 +71,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return guestCommand(comm, session);
    case TOKLIST:
       return listCommand(comm, session);
+   case TOKJOIN:
+      return joinCommand(comm, session);
    // insert command functions here
    default:
       return badCommand(comm, session);
@@ -208,4 +210,9 @@ int Menu::listCommand(CommandTok* comm, Session* session) const
    }
    session->listGames();
    return 1;
+}
+
+int Menu::joinCommand(CommandTok* comm, Session* session) const
+{
+   return sendBadCommand(session);
 }

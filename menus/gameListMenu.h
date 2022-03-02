@@ -9,7 +9,7 @@ class GameListMenu : public Menu
 {
 public:
    GameListMenu();
-   // string refresh(Session*, const GameSessionDB*) const;
+   virtual int joinCommand(CommandTok* comm, Session* session) const;
 
 private:
    virtual int backCommand(CommandTok* comm, Session* session) const;

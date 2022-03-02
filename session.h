@@ -48,6 +48,7 @@ public:
    void setGame(GameSession*);
    int printLeaderboard() const;
    void listGames() const;
+   int joinGame(CommandTok*);
 
 private:
    bool menuLocked; // Locks user to stay in current menu

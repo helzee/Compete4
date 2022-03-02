@@ -153,3 +153,18 @@ void Session::listGames() const
    for (int i = 0; i < buffer.length(); i += MAX_MSG_SIZE)
       this->send(buffer.substr(i, MAX_MSG_SIZE));
 }
+
+int Session::joinGame(CommandTok* comm)
+{
+   const char* command = comm->getLex();
+   int joinIndex = -1;
+   if (command[1] == 'o')
+      joinIndex = atoi(command + 5);
+   else
+      joinIndex = atoi(command + 2);
+
+   if (gameDB->joinGame(joinIndex, this))
+      return 0;
+   this->send("Failed to join game, try again");
+   return 1;
+}

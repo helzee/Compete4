@@ -32,7 +32,7 @@
 #define REGMAIN "(main)"
 #define REGGUEST "(g(uest)?)"
 #define REGLIST "((list)|(ls))"
-#define REGJOIN "(j(oin))"
+#define REGJOIN "(j(oin)? [[:digit:]]+)"
 
 using namespace std;
 

@@ -43,16 +43,18 @@ bool GameSession::connectPlayer(Session* player)
    // unlock read, lock write
    pthread_rwlock_wrlock(&lock);
    // Check player one slot
-   if (players[0] != nullptr) {
-      players[0] == player;
+   if (players[0] == nullptr) {
+      players[0] = player;
       player->setGame(this);
+      player->send("Joining Game " + to_string(gameID) + " as player 0");
       pthread_rwlock_unlock(&lock);
       return true;
    }
    // Check player two slot, if empty, add and set ingame to true
-   if (players[1] != nullptr) {
-      players[1] == player;
+   if (players[1] == nullptr) {
+      players[1] = player;
       player->setGame(this);
+      player->send("Joining Game " + to_string(gameID) + " as player 1");
       inGame = true;
       pthread_rwlock_unlock(&lock);
       // upon game-start, reset the game state

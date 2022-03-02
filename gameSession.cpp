@@ -23,6 +23,11 @@ GameSession::GameSession(int id)
    pthread_rwlock_init(&lock, NULL);
 }
 
+int GameSession::getNumPlayers() const
+{
+   return ((players[0] != nullptr) ? 1 : 0) + ((players[1] != nullptr) ? 1 : 0);
+}
+
 // Connect Player
 bool GameSession::connectPlayer(Session* player)
 {

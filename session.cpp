@@ -146,3 +146,10 @@ int Session::printLeaderboard() const
 
    return totalBytesSent;
 }
+
+void Session::listGames() const
+{
+   string buffer = gameDB->gamesList();
+   for (int i = 0; i < buffer.length(); i += MAX_MSG_SIZE)
+      this->send(buffer.substr(i, MAX_MSG_SIZE));
+}

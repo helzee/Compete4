@@ -47,6 +47,7 @@ public:
    void setPossibleUsername(string username);
    void setGame(GameSession*);
    int printLeaderboard() const;
+   void listGames() const;
 
 private:
    bool menuLocked; // Locks user to stay in current menu

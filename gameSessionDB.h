@@ -22,6 +22,8 @@ public:
    // Ensure deletion of pointers/heap clear
    bool removeGame(int);
 
+   string gamesList() const;
+
 private:
    // Game List
    // When scalable, change to an odered map or vector

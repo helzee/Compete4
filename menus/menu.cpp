@@ -203,7 +203,9 @@ int Menu::guestCommand(CommandTok* comm, Session* session) const
 int Menu::listCommand(CommandTok* comm, Session* session) const
 {
    if (changeMenu(session, GAMELIST)) {
+      session->listGames();
       return 0;
    }
+   session->listGames();
    return 1;
 }

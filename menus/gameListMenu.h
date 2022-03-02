@@ -9,6 +9,7 @@ class GameListMenu : public Menu
 {
 public:
    GameListMenu();
+   // string refresh(Session*, const GameSessionDB*) const;
 
 private:
    virtual int backCommand(CommandTok* comm, Session* session) const;

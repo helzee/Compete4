@@ -26,6 +26,7 @@ class GameSession
 {
 public:
    int gameID;
+   int getNumPlayers() const;
 
    bool connectPlayer(Session*);
    bool disconnectPlayer(Session*);

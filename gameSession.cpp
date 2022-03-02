@@ -48,6 +48,8 @@ bool GameSession::connectPlayer(Session* player)
       player->setGame(this);
       player->send("Joining Game " + to_string(gameID) + " as player 0");
       pthread_rwlock_unlock(&lock);
+
+      tryToStartGame();
       return true;
    }
    // Check player two slot, if empty, add and set ingame to true
@@ -55,10 +57,10 @@ bool GameSession::connectPlayer(Session* player)
       players[1] = player;
       player->setGame(this);
       player->send("Joining Game " + to_string(gameID) + " as player 1");
-      inGame = true;
       pthread_rwlock_unlock(&lock);
+
       // upon game-start, reset the game state
-      resetBoard();
+      tryToStartGame();
       return true;
    }
    // in case session get past inGame and then preempted, unlock and exit
@@ -66,6 +68,33 @@ bool GameSession::connectPlayer(Session* player)
    pthread_rwlock_unlock(&lock);
    player->send("Error Connecting: Game Full");
    return false;
+}
+
+void GameSession::tryToStartGame()
+{
+   if (getNumPlayers() != 2 || inGame)
+      return;
+
+   inGame = true;
+   resetBoard();
+   announceUpdate();
+}
+
+void GameSession::announceUpdate() const
+{
+   string toAnnounce = "It is " + getCurTurnName() + "'s turn\n";
+   toAnnounce += printBoard();
+
+   players[0]->send(toAnnounce);
+   players[1]->send(toAnnounce);
+}
+
+string GameSession::getCurTurnName() const
+{
+   if (turn)
+      return players[1]->getUserName();
+   else
+      return players[0]->getUserName();
 }
 
 // Disconnect Player
@@ -158,7 +187,7 @@ int GameSession::dropPiece(Session* player, int row)
     | TxTxToT T T |
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
-string GameSession::printBoard() { return board->print(); }
+string GameSession::printBoard() const { return board->print(); }
 
 // ----------------------------------------------------------------------------
 //  Private Methods

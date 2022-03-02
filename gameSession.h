@@ -33,7 +33,7 @@ public:
    void resetBoard();
 
    int dropPiece(Session*, int);
-   string printBoard();
+   string printBoard() const;
 
    GameSession(int);
 
@@ -44,10 +44,13 @@ private:
    bool turn;
    bool inGame;
 
+   void tryToStartGame();
    bool partOfGame(Session*);
    bool isTurn(Session*);
    bool checkWin();
-   void announceUpdate();
+   void announceUpdate() const;
+   string getCurTurnName() const;
+
    pthread_rwlock_t lock;
 };
 

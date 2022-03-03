@@ -125,6 +125,17 @@ bool Session::signinAsGuest()
    return true;
 }
 
+bool Session::signOut()
+{
+   if (record == nullptr)
+      return false;
+
+   username = "";
+   possibleUsername = "";
+   record = nullptr;
+   return true;
+}
+
 Record* Session::getRecord() const { return record; }
 
 bool Session::isUsernameValid(string username)

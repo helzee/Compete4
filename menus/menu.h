@@ -70,6 +70,7 @@ protected:
    virtual int backCommand(CommandTok* comm, Session* session) const;
    virtual int nameCommand(CommandTok* comm, Session* session) const;
    virtual int loginCommand(CommandTok* comm, Session* session) const;
+   virtual int logoutCommand(CommandTok* comm, Session* session) const;
    virtual int signinCommand(CommandTok* comm, Session* session) const;
    virtual int makeAcctCommand(CommandTok* comm, Session* session) const;
    virtual int lBoardCommand(CommandTok* comm, Session* session) const;
@@ -78,7 +79,6 @@ protected:
    virtual int listCommand(CommandTok* comm, Session* session) const;
    virtual int joinCommand(CommandTok* comm, Session* session) const;
    virtual int dropPieceCommand(CommandTok* comm, Session* session) const;
-
 
    virtual int sendGlobalHelp(Session* session) const;
 

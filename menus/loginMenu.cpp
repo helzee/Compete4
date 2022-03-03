@@ -9,7 +9,7 @@ LoginMenu::LoginMenu()
 {
    // swap l and s. l to login. s to signout
    header = "Please enter \"s\" to sign in, \"m\" to make account, \"g\" to "
-            "sign in as guest, \"l\" to log out.";
+            "sign in as guest, \"lo\" to log out.";
    this->type = LOGIN;
 }
 
@@ -31,15 +31,12 @@ int LoginMenu::guestCommand(CommandTok* comm, Session* session) const
    return changeMenu(session, GUEST);
 }
 
-// make logout command. change regex to allow for that without login confusion
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// rough of new algo
-// if (session->record != nullptr) {
-//    send("Signed out successfully.", session->clientSd);
-//    session->record = nullptr;
-// } else
-//    send("You are not signed in.", session->clientSd);
+int LoginMenu::logoutCommand(CommandTok* comm, Session* session) const
+{
+   if (session->signOut())
+      session->send("Signed out successfully.");
+   else
+      session->send("You are not signed in.");
 
-// send("Going to main menu.", session->clientSd);
-// session->currMenu = MAIN;
-// return true;
+   return changeMenu(session, MAIN);
+}

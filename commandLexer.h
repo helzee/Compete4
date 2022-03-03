@@ -27,6 +27,7 @@
 #define REGBACK "(b(ack)?)"
 #define REGNAME "(n(ame)?)"
 #define REGLOGIN "(l(ogin)?)"
+#define REGLOGOUT "(lo(gout)?)"
 #define REGLBOARD "(leaderboard|lb)"
 #define REGSIGNIN "(s(ignin)?)"
 #define REGMAKEACCT "(m(akeaccount)?)"
@@ -47,6 +48,7 @@ enum TokType {
    TOKBACK,
    TOKNAME,
    TOKLOGIN,
+   TOKLOGOUT,
    TOKSIGNIN,
    TOKMAKEACCT,
    TOKLBOARD,
@@ -106,6 +108,7 @@ private:
    regex* regBack;
    regex* regName;
    regex* regLogin;
+   regex* regLogout;
    regex* regSignin;
    regex* regMakeAcct;
    regex* regLBoard;
@@ -113,7 +116,7 @@ private:
    regex* regGuest;
    regex* regList;
    regex* regJoin;
-   
+
    regex* regDP;
 
    TokType determineTok(string command) const;

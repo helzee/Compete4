@@ -26,6 +26,7 @@ CommandLexer::CommandLexer()
    regBack = new regex(REGPREFIX REGBACK REGSUFFIX);
    regName = new regex(REGPREFIX REGNAME REGSUFFIX);
    regLogin = new regex(REGPREFIX REGLOGIN REGSUFFIX);
+   regLogout = new regex(REGPREFIX REGLOGOUT REGSUFFIX);
    regSignin = new regex(REGPREFIX REGSIGNIN REGSUFFIX);
    regMakeAcct = new regex(REGPREFIX REGMAKEACCT REGSUFFIX);
    regLBoard = new regex(REGPREFIX REGLBOARD REGSUFFIX);
@@ -75,6 +76,8 @@ TokType CommandLexer::determineTok(string command) const
       return TOKLBOARD;
    } else if (regex_match(command, *regLogin)) { // LOGIN
       return TOKLOGIN;
+   } else if (regex_match(command, *regLogout)) { // LOGOUT
+      return TOKLOGOUT;
    } else if (regex_match(command, *regSignin)) { // SIGNIN
       return TOKSIGNIN;
    } else if (regex_match(command, *regMakeAcct)) { // MAKE ACCT
@@ -91,7 +94,7 @@ TokType CommandLexer::determineTok(string command) const
    } else if (regex_match(command, *regJoin)) { // JOIN
       return TOKJOIN;
    }
-   
+
    else if (regex_match(command, *regDP)) // DROP PIECE
    {
       return TOKDP;

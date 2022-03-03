@@ -43,6 +43,7 @@ public:
    bool makeRecord(string user);
    bool signin(string password);
    bool signinAsGuest();
+   bool signOut();
    bool isUsernameValid(string username);
    bool isPasswordValid(string password) const;
    void setPossibleUsername(string username);

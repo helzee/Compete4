@@ -59,6 +59,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return nameCommand(comm, session);
    case TOKLOGIN:
       return loginCommand(comm, session);
+   case TOKLOGOUT:
+      return logoutCommand(comm, session);
    case TOKSIGNIN:
       return signinCommand(comm, session);
    case TOKMAKEACCT:
@@ -171,6 +173,11 @@ int Menu::nameCommand(CommandTok* comm, Session* session) const
 }
 
 int Menu::loginCommand(CommandTok* comm, Session* session) const
+{
+   return sendBadCommand(session);
+}
+
+int Menu::logoutCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
 }

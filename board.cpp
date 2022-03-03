@@ -13,6 +13,9 @@
  * @return true if valid move
  * @return false if invalid move
  */
+
+// TIE HOTFIX: returns int, -1 for failure, 0 for successful drop, 
+
 bool Board::dropPiece(int col, Owner player)
 {
    if (col < 0 || col > NUMCOLS - 1 || isFinished) {

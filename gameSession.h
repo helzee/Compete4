@@ -32,7 +32,7 @@ public:
    bool disconnectPlayer(Session*);
    void resetBoard();
 
-   int dropPiece(Session*, int);
+   bool dropPiece(Session*, int);
    string printBoard() const;
 
    GameSession(int);
@@ -45,10 +45,8 @@ private:
    bool inGame;
 
    void tryToStartGame();
-   bool partOfGame(Session*);
-   bool isTurn(Session*);
-   bool checkWin();
    void announceUpdate() const;
+   void announceWinner();
    string getCurTurnName() const;
 
    pthread_rwlock_t lock;

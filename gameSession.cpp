@@ -105,6 +105,8 @@ bool GameSession::disconnectPlayer(Session* player)
    // locked for writing
    pthread_rwlock_wrlock(&lock);
    if (players[0]->getSessionID() == player->getSessionID()) {
+      // change commands menu for player from ingame to menu
+      players[0]->changeMenu(MAIN);
 
       // disconnect players and player's current game
       player->setGame(nullptr);
@@ -115,6 +117,8 @@ bool GameSession::disconnectPlayer(Session* player)
    }
    // check player two
    else if (players[1]->getSessionID() == player->getSessionID()) {
+      // change commands menu for player from ingame to menu
+      players[1]->changeMenu(MAIN);
 
       // disconnect players and player's current game
       player->setGame(nullptr);
@@ -158,19 +162,88 @@ void GameSession::resetBoard() { board->reset(); }
  * @param row
  * @return int
  */
-int GameSession::dropPiece(Session* player, int row)
+bool GameSession::dropPiece(Session* player, int col)
 {
-   // INCOMPLETE!
+   // OVERVIEW
+   // ------------------------------------------
+   // drop piece in board
+   // check for win or tie
+   // announce the winner/tie
+   // update player records
+   // change player menus
+   // end by disconnecting users
+   // ------------------------------------------
+
+   bool completed;
+
    Session* player1 = players[0];
    Session* player2 = players[1];
    // check for player number and if mutex (turn) is available
-   if (player == player1 && turn == 0) {
-      board->dropPiece(row, PLAYER1);
-   } else if (player == player2 && turn == 1) {
-      board->dropPiece(row, PLAYER2);
+   if (player == player1 && turn == 0) 
+   {
+      completed = dropPiece(col, PLAYER1);
+      if(board->isFinished())
+      {
+         announceWinner();
+      }
+      turn = 1;
+   } 
+   else if (player == player2 && turn == 1) 
+   {
+      completed = dropPiece(col, PLAYER2);
+      if(board->isFinished())
+      {
+         announceWinner();
+      }
+      turn = 0;
    }
 
-   return 0;
+   return completed;
+}
+
+void GameSession::announceWinner() 
+{
+   // end condition message
+   string toAnnounce;
+
+   // winner, null if tie
+   Owner winner = nullptr;
+
+   // records
+   Record* p1 = players[0]->getRecord();
+   Record* p2 = players[1]->getRecord();
+
+   // determine winner or tie
+   if (board->haveWinner())
+      winner = board->getWinner();
+
+   // Update winner records
+   if (winner == PLAYER1) {
+      // p1 win
+      toAnnounce = "Game Over : P1 (" + getCurTurnName() + ") Wins!\n"; 
+      p1.winGame();
+      p2.loseGame();
+      players[0]->send(toAnnounce);
+      players[1]->send(toAnnounce);
+   } else if (winner == PLAYER2) { 
+      // p2 win
+      toAnnounce = "Game Over : P2 (" + getCurTurnName() + ") Wins!\n"; 
+      p2.winGame();
+      p1.loseGame();
+      players[0]->send(toAnnounce);
+      players[1]->send(toAnnounce);
+   } else if (winner = nullptr) {
+      // tie 
+      toAnnounce = "Game Over : Game was a tie!\n";
+      p1.tieGame();
+      p2.tieGame();
+      players[0]->send(toAnnounce);
+      players[1]->send(toAnnounce);
+   }
+
+   // Disconnect player, menu switched within method
+   disconnectPlayer(players[0]);
+   disconnectPlayer(players[1]);
 }
 
 // Print Board
@@ -189,50 +262,3 @@ int GameSession::dropPiece(Session* player, int row)
 */
 string GameSession::printBoard() const { return board->print(); }
 
-// ----------------------------------------------------------------------------
-//  Private Methods
-// ----------------------------------------------------------------------------
-
-// Part of game
-// Determines if session attempting to change the gamestate is an active player
-// within the game
-bool GameSession::partOfGame(Session* sender)
-{
-   // Check players one and two
-   pthread_rwlock_rdlock(&lock);
-   if (players[0]->getSessionID() == sender->getSessionID()) {
-      pthread_rwlock_unlock(&lock);
-      return true;
-   } else if (players[1]->getSessionID() == sender->getSessionID()) {
-      pthread_rwlock_unlock(&lock);
-      return true;
-   }
-   pthread_rwlock_unlock(&lock);
-   return false;
-}
-
-// Determines if the player sending information is allowed to move
-// Helper used in droppiece
-bool GameSession::isTurn(Session* player)
-{
-   // Determine if player is p1 or p2 slot
-   // Compare with turn boolean: false = p1, true = p2
-   if (players[0]->getSessionID() == player->getSessionID()) {
-      if (!isTurn(player)) {
-         return true;
-      }
-
-   } else if (players[1]->getSessionID() == player->getSessionID()) {
-      return true;
-   }
-   return false;
-}
-
-// Checks for the win condition
-// Used after every droppiece so if connect four is achieved, the game is over
-bool GameSession::checkWin() { return false; }
-
-// Announce Update
-// Print out board after a move is made to both players
-// When game is completed, announce the winnder to both players
-// TBD

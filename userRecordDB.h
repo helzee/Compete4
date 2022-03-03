@@ -22,6 +22,7 @@ public:
    Record* getRecord(string, string);
 
    bool checkIfRecord(string);
+   bool checkIfInUse(string);
 
    unsigned int turnToInt(string password);
    Record* makeRecord(string username, string password);

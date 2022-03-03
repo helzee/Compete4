@@ -71,6 +71,12 @@ int Session::send(string message) const
 void Session::setPossibleUsername(string username)
 {
    possibleUsername = username;
+
+   if (recordDB->checkIfInUse(username)) {
+      this->send("Username is in use at the moment. If this is an issue, "
+                 "please contact the administators.");
+      changeMenu(LOGIN);
+   }
 }
 
 bool Session::makeRecord(string password)
@@ -110,12 +116,20 @@ bool Session::isPasswordValid(string password) const
 bool Session::signin(string password)
 {
    Record* record = recordDB->getRecord(possibleUsername, password);
-   if (record != nullptr) {
-      this->record = record;
-      this->username = possibleUsername;
-      return true;
+   if (record == nullptr)
+      return false;
+
+   if (record->inUse) {
+      this->send("Username is in use at the moment. If this is an issue, "
+                 "please contact the administators.");
+      changeMenu(LOGIN);
+      return false;
    }
-   return false;
+
+   this->record = record;
+   this->username = possibleUsername;
+   record->inUse = true;
+   return true;
 }
 
 bool Session::signinAsGuest()
@@ -132,6 +146,7 @@ bool Session::signOut()
 
    username = "";
    possibleUsername = "";
+   record->inUse = false;
    record = nullptr;
    return true;
 }

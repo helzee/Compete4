@@ -31,6 +31,8 @@ public:
    static bool isUsernameValid(string username);
    static bool isPasswordValid(string password);
 
+   bool inUse;
+
 private:
    int gamesWon;
    int gamesLost;

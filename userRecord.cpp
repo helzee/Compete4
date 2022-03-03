@@ -10,6 +10,7 @@ Record::Record(string username, int encryptedPassword)
 {
    this->username = username;
    this->encryptedPassword = encryptedPassword;
+   inUse = false;
    gamesWon = gamesLost = gamesPlayed = 0;
 }
 

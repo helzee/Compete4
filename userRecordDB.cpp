@@ -190,6 +190,15 @@ bool RecordDB::checkIfRecord(string username)
    return retval;
 }
 
+bool RecordDB::checkIfInUse(string username)
+{
+   auto recordHolder = recordMap.find(username);
+   if (recordHolder == recordMap.end())
+      return true;
+
+   return ((Record*)recordHolder->second)->inUse;
+}
+
 void RecordDB::updateLeaderboard(Record* record)
 {
    pthread_rwlock_wrlock(&lbLock);

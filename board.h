@@ -39,6 +39,7 @@ class Board
 public:
    Board();
    bool dropPiece(int, Owner);
+   bool getIsFinished() const;
    string print() const;
 
    Owner getWinner() const;

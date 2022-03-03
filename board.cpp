@@ -14,7 +14,7 @@
  * @return false if invalid move
  */
 
-// TIE HOTFIX: returns int, -1 for failure, 0 for successful drop, 
+// TIE HOTFIX: returns int, -1 for failure, 0 for successful drop,
 
 bool Board::dropPiece(int col, Owner player)
 {
@@ -37,6 +37,8 @@ bool Board::dropPiece(int col, Owner player)
 
    return false;
 }
+
+bool Board::getIsFinished() const { return isFinished; }
 
 /**
  * @brief Construct a new Board:: Board object. Initialize it.

@@ -49,6 +49,8 @@ public:
    int printLeaderboard() const;
    void listGames() const;
    int joinGame(CommandTok*);
+   bool dropPiece(CommandTok*);
+   int printBoard() const;
 
 private:
    bool menuLocked; // Locks user to stay in current menu
@@ -60,9 +62,9 @@ private:
                             // username before proper password is given
 
    Record* record;                 // 1 to 1 access to store player information
-   GameSession* currGame;          // synchronized access (2 sessions)
    RecordDB* recordDB;             // synchronized access (all sessions)
    GameSessionDB* gameDB;          // synchronized access (all sessions)
+   GameSession* currGame;          // synchronized access (2 sessions)
    const MenuManager* menuManager; // const access by all sessions
    const Menu* currMenu;           // const access by all sessions
 };

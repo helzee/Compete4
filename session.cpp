@@ -168,3 +168,17 @@ int Session::joinGame(CommandTok* comm)
    this->send("Failed to join game, try again");
    return 1;
 }
+
+bool Session::dropPiece(CommandTok* comm)
+{
+   return currGame->dropPiece(this, stoi(comm->getLex()));
+}
+
+int Session::printBoard() const
+{
+   if (currGame == nullptr)
+      return 1;
+
+   this->send(currGame->printBoard());
+   return 0;
+}

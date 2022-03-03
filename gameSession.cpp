@@ -1,6 +1,7 @@
 #include "gameSession.h"
 #include "board.h"
 #include "session.h"
+#include "userRecord.h"
 #include <string>
 
 // ----------------------------------------------------------------------------
@@ -82,7 +83,9 @@ void GameSession::tryToStartGame()
 
 void GameSession::announceUpdate() const
 {
-   string toAnnounce = "It is " + getCurTurnName() + "'s turn.\n Please enter the column you'd like to drop into.";
+   string toAnnounce =
+       "It is " + getCurTurnName() +
+       "'s turn.\n Please enter the column you'd like to drop into.";
    toAnnounce += printBoard();
 
    players[0]->send(toAnnounce);
@@ -179,36 +182,33 @@ bool GameSession::dropPiece(Session* player, int col)
    Session* player1 = players[0];
    Session* player2 = players[1];
    // check for player number and if mutex (turn) is available
-   if (player == player1 && turn == 0) 
-   {
-      completed = dropPiece(col, PLAYER1);
-      if(board->isFinished())
-      {
+   if (player == player1 && turn == 0) {
+      completed = board->dropPiece(col, PLAYER1);
+      if (board->getIsFinished()) {
          announceWinner();
       }
       turn = 1;
-   } 
-   else if (player == player2 && turn == 1) 
-   {
-      completed = dropPiece(col, PLAYER2);
-      if(board->isFinished())
-      {
+   }
+
+   else if (player == player2 && turn == 1) {
+      completed = board->dropPiece(col, PLAYER2);
+      if (board->getIsFinished()) {
          announceWinner();
       }
       turn = 0;
    }
-   
+
    announceUpdate();
    return completed;
 }
 
-void GameSession::announceWinner() 
+void GameSession::announceWinner()
 {
    // end condition message
    string toAnnounce;
 
    // winner, null if tie
-   Owner winner = nullptr;
+   Owner winner = EMPTY;
 
    // records
    Record* p1 = players[0]->getRecord();
@@ -221,23 +221,23 @@ void GameSession::announceWinner()
    // Update winner records
    if (winner == PLAYER1) {
       // p1 win
-      toAnnounce = "Game Over : P1 (" + getCurTurnName() + ") Wins!\n"; 
-      p1.winGame();
-      p2.loseGame();
+      toAnnounce = "Game Over : P1 (" + getCurTurnName() + ") Wins!\n";
+      p1->winGame();
+      p2->loseGame();
       players[0]->send(toAnnounce);
       players[1]->send(toAnnounce);
-   } else if (winner == PLAYER2) { 
+   } else if (winner == PLAYER2) {
       // p2 win
-      toAnnounce = "Game Over : P2 (" + getCurTurnName() + ") Wins!\n"; 
-      p2.winGame();
-      p1.loseGame();
+      toAnnounce = "Game Over : P2 (" + getCurTurnName() + ") Wins!\n";
+      p2->winGame();
+      p1->loseGame();
       players[0]->send(toAnnounce);
       players[1]->send(toAnnounce);
-   } else if (winner = nullptr) {
-      // tie 
+   } else if (winner == EMPTY) {
+      // tie
       toAnnounce = "Game Over : Game was a tie!\n";
-      p1.tieGame();
-      p2.tieGame();
+      p1->tieGame();
+      p2->tieGame();
       players[0]->send(toAnnounce);
       players[1]->send(toAnnounce);
    }
@@ -262,4 +262,3 @@ void GameSession::announceWinner()
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
 string GameSession::printBoard() const { return board->print(); }
-

@@ -8,18 +8,19 @@ using namespace std;
 
 InGameMenu::InGameMenu()
 {
-   header = "You are currently in a gamesession\n------------------------------------------------";
+   header = "You are currently in a "
+            "gamesession\n------------------------------------------------";
    type = INGAME;
 }
 
 int InGameMenu::dropPieceCommand(CommandTok* comm, Session* session) const
 {
-   return session->currGame->dropPiece(session, stoi(comm->lex))
+   return session->dropPiece(comm);
 }
 
-int InGameMenu::printCommand(CommandTok* comm, Session* session) const 
+int InGameMenu::printCommand(CommandTok* comm, Session* session) const
 {
-   return session->send(session->currGame->printBoard());
+   return session->printBoard();
 }
 
 int InGameMenu::backCommand(CommandTok* comm, Session* session) const

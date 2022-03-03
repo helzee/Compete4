@@ -16,6 +16,7 @@ protected:
    virtual int dropPieceCommand(CommandTok* comm, Session* session) const;
    virtual int printCommand(CommandTok* comm, Session* session) const;
    virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int badCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

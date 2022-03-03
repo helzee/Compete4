@@ -25,5 +25,12 @@ int InGameMenu::printCommand(CommandTok* comm, Session* session) const
 
 int InGameMenu::backCommand(CommandTok* comm, Session* session) const
 {
+   // Need to update at some point to require confirmation and accept losing
+   // game
    return changeMenu(session, MAIN);
+}
+
+int InGameMenu::badCommand(CommandTok* comm, Session* session) const
+{
+   return 0; // return session->sendChat(comm);
 }

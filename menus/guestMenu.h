@@ -2,17 +2,18 @@
 #define GUESTMENU_H
 #include "../constants.h"
 #include "menu.h"
-
-// should we take the time to implement guest login? is it necessary?
+#include "restrictedMenu.h"
 
 using namespace std;
 
-class GuestMenu : public Menu
+class GuestMenu : public RestrictedMenu
 {
 public:
    GuestMenu();
 
-private:
+protected:
+   virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int badCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

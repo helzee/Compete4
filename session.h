@@ -42,6 +42,7 @@ public:
    bool checkIfRecord(string username) const; // synchronized read of recordDB
    bool makeRecord(string user);
    bool signin(string password);
+   bool signinAsGuest();
    bool isUsernameValid(string username);
    bool isPasswordValid(string password) const;
    void setPossibleUsername(string username);

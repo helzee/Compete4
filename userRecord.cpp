@@ -68,9 +68,14 @@ bool Record::isUsernameValid(string username)
       size++;
       lexeme++;
    }
-   if (size < MIN_UNAME || size > MAX_UNAME) {
+
+   if (size < MIN_UNAME || size > MAX_UNAME)
       return false;
-   }
+
+   // Cannot be formatted like a guest account
+   if (lexeme[0] == 'G' && lexeme[1] == ':' && lexeme[2] == ' ')
+      return false;
+
    return true;
 }
 

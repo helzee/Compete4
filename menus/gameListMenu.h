@@ -9,10 +9,11 @@ class GameListMenu : public Menu
 {
 public:
    GameListMenu();
-   virtual int joinCommand(CommandTok* comm, Session* session) const;
 
-private:
+protected:
+   virtual int joinCommand(CommandTok* comm, Session* session) const;
    virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int listCommand(CommandTok* comm, Session* session) const;
 };
 
 #endif

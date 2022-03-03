@@ -74,7 +74,7 @@ int Menu::navigate(CommandTok* comm, Session* session) const
    case TOKJOIN:
       return joinCommand(comm, session);
    case TOKDP:
-      return dropPieceCommand( comm, session);
+      return dropPieceCommand(comm, session);
    // insert command functions here
    default:
       return badCommand(comm, session);
@@ -192,7 +192,6 @@ int Menu::lBoardCommand(CommandTok* comm, Session* session) const
 
 int Menu::mainCommand(CommandTok* comm, Session* session) const
 {
-
    if (changeMenu(session, MAIN)) {
       return 0;
    }
@@ -206,12 +205,7 @@ int Menu::guestCommand(CommandTok* comm, Session* session) const
 
 int Menu::listCommand(CommandTok* comm, Session* session) const
 {
-   if (changeMenu(session, GAMELIST)) {
-      session->listGames();
-      return 0;
-   }
-   session->listGames();
-   return 1;
+   return sendBadCommand(session);
 }
 
 int Menu::joinCommand(CommandTok* comm, Session* session) const

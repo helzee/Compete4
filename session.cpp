@@ -118,6 +118,13 @@ bool Session::signin(string password)
    return false;
 }
 
+bool Session::signinAsGuest()
+{
+   username = possibleUsername;
+   record = new Record(username, 0);
+   return true;
+}
+
 Record* Session::getRecord() const { return record; }
 
 bool Session::isUsernameValid(string username)

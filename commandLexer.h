@@ -33,6 +33,7 @@
 #define REGGUEST "(g(uest)?)"
 #define REGLIST "((list)|(ls))"
 #define REGJOIN "(j(oin)? [[:digit:]]+)"
+#define REGDP "([[:digit:]]+)"
 
 using namespace std;
 
@@ -52,6 +53,7 @@ enum TokType {
    TOKGUEST,
    TOKLIST,
    TOKJOIN,
+   TOKDP,
 };
 
 class CommandTok
@@ -110,6 +112,8 @@ private:
    regex* regGuest;
    regex* regList;
    regex* regJoin;
+   
+   regex* regDP;
 
    TokType determineTok(const char* command) const;
 };

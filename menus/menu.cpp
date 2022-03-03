@@ -73,6 +73,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return listCommand(comm, session);
    case TOKJOIN:
       return joinCommand(comm, session);
+   case TOKDP:
+      return dropPieceCommand( comm, session);
    // insert command functions here
    default:
       return badCommand(comm, session);
@@ -213,6 +215,11 @@ int Menu::listCommand(CommandTok* comm, Session* session) const
 }
 
 int Menu::joinCommand(CommandTok* comm, Session* session) const
+{
+   return sendBadCommand(session);
+}
+
+int Menu::dropPieceCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
 }

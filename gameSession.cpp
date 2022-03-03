@@ -82,7 +82,7 @@ void GameSession::tryToStartGame()
 
 void GameSession::announceUpdate() const
 {
-   string toAnnounce = "It is " + getCurTurnName() + "'s turn\n";
+   string toAnnounce = "It is " + getCurTurnName() + "'s turn.\n Please enter the column you'd like to drop into.";
    toAnnounce += printBoard();
 
    players[0]->send(toAnnounce);
@@ -197,7 +197,8 @@ bool GameSession::dropPiece(Session* player, int col)
       }
       turn = 0;
    }
-
+   
+   announceUpdate();
    return completed;
 }
 

@@ -156,7 +156,7 @@ void Session::listGames() const
 
 int Session::joinGame(CommandTok* comm)
 {
-   const char* command = comm->getLex();
+   const char* command = comm->getLex().c_str();
    int joinIndex = -1;
    if (command[1] == 'o')
       joinIndex = atoi(command + 5);

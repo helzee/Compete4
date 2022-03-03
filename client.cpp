@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     */
    while (1) {
       if (fgets(readBuf, MAX_MSG_SIZE, stdin) != NULL)
-         send((string)readBuf, clientSd);
+         send(readBuf, clientSd);
    }
 
    pthread_exit(NULL);

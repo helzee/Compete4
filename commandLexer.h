@@ -11,6 +11,7 @@
 
 #include "constants.h"
 #include <regex>
+#include <string>
 
 #ifndef COMMANDLEXER_H
 #define COMMANDLEXER_H
@@ -61,11 +62,11 @@ class CommandTok
 public:
    CommandTok();
    TokType getType() const;
-   const char* getLex() const;
+   string getLex() const;
 
 private:
    TokType type;
-   const char* lex;
+   string lex;
 };
 
 /** NOTE: CommandLexer is meant to be used as a static class! It is instantiated
@@ -94,7 +95,7 @@ class CommandLexer
 {
 public:
    CommandLexer();
-   CommandTok* lexCommand(const char* command) const;
+   CommandTok* lexCommand(string command) const;
 
 private:
    regex* regHelp;
@@ -111,7 +112,7 @@ private:
    regex* regList;
    regex* regJoin;
 
-   TokType determineTok(const char* command) const;
+   TokType determineTok(string command) const;
 };
 
 static const CommandLexer commandLexer;

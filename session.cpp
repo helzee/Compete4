@@ -1,5 +1,6 @@
 #include "session.h"
 #include "commandLexer.h"
+#include "gameSession.h"
 #include "gameSessionDB.h"
 #include "menus/menu.h"
 #include "menus/menuManager.h"

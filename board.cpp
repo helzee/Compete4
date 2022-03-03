@@ -14,6 +14,8 @@
  * @return false if invalid move
  */
 
+#include <iostream>
+
 // TIE HOTFIX: returns int, -1 for failure, 0 for successful drop,
 
 bool Board::dropPiece(int col, Owner player)
@@ -25,6 +27,7 @@ bool Board::dropPiece(int col, Owner player)
       Slot &slot = board[row][col];
       if (!board[row][col].isOccupied()) {
          slot.setOwner(player);
+         std::cerr << "Set slot " << row << " " << col << std::endl;
          incrementTurn();
          if (checkWin(player, row, col)) {
 
@@ -225,8 +228,8 @@ string Board::print() const
       connectBoard += "|";
       for (int j = 0; j < (NUMCOLS * 2) - 1; j++) {
          // is a seperator char
-         if (j % 2 == 0) {
-            connectBoard += "T";
+         if (j % 2 == 1) {
+            connectBoard += ":";
          }
          // is a token slot
          else {
@@ -251,7 +254,11 @@ void Board::Slot::reset() { owner = EMPTY; }
 
 bool Board::Slot::isOccupied() const { return owner != EMPTY; }
 bool Board::Slot::isOccupied(Owner player) const { return player == owner; }
-void Board::Slot::setOwner(Owner player) { owner = player; }
+void Board::Slot::setOwner(Owner player)
+{
+   owner = player;
+   symbol = (Symbol)owner;
+}
 
 /**
  * @brief Prints this slot's symbol as a character (defined in slotSymbols array

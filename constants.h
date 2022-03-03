@@ -21,7 +21,7 @@
 
 #define DEFAULT_SERVER "csslab7.uwb.edu"
 #define DEFAULT_PORT "13337"
-#define MAX_MSG_SIZE 128
+#define MAX_MSG_SIZE 512
 #define BACKLOG 20
 
 #define MAX_NAME 20

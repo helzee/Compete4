@@ -2,6 +2,7 @@
 #include "../constants.h"
 #include "gameListMenu.h"
 #include "guestMenu.h"
+#include "ingameMenu.h"
 #include "loginMenu.h"
 #include "mainMenu.h"
 #include "makeAccMenu.h"
@@ -30,4 +31,5 @@ void MenuManager::buildMenus()
    allMenus[PASSWORD] = new PasswordMenu();
    allMenus[MAKEPASSWORD] = new MakePasswordMenu();
    allMenus[GAMELIST] = new GameListMenu();
+   allMenus[INGAME] = new InGameMenu();
 }

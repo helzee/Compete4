@@ -85,7 +85,7 @@ void GameSession::announceUpdate() const
 {
    string toAnnounce =
        "It is " + getCurTurnName() +
-       "'s turn.\n Please enter the column you'd like to drop into.";
+       "'s turn.\nPlease enter the column you'd like to drop into.\n";
    toAnnounce += printBoard();
 
    players[0]->send(toAnnounce);

@@ -14,7 +14,8 @@ GameListMenu::GameListMenu()
 
 int GameListMenu::joinCommand(CommandTok* comm, Session* session) const
 {
-   return session->joinGame(comm);
+   session->joinGame(comm);
+   return changeMenu(session, INGAME);
 }
 
 int GameListMenu::backCommand(CommandTok* comm, Session* session) const

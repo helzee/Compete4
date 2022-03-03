@@ -50,6 +50,7 @@ enum MenuType {
    PASSWORD,
    MAKEPASSWORD,
    GAMELIST,
+   INGAME,
    NUM_OF_MENUS
 };
 

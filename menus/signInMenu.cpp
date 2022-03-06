@@ -20,14 +20,24 @@ SignInMenu::SignInMenu()
 
 int SignInMenu::badCommand(CommandTok* comm, Session* session) const
 {
+   // Ensure the username meets basic requirements
    if (!session->isUsernameValid(comm->getLex())) {
       return 1;
    }
+
+   // Then ensure the username exists
    if (!session->checkIfRecord(comm->getLex())) {
       return session->send("Username not registered.");
    }
 
-   session->send("Username found.");
+   // Then ensure the account is not in use
+   if (session->isUsernameInUse(comm->getLex())) {
+      session->send("Username is in use at the moment. If this is an issue, "
+                    "please contact the administators.");
+      return 1;
+   }
+
+   session->send("Username found and accepted.");
 
    return changeMenu(session, PASSWORD);
 

@@ -194,7 +194,7 @@ bool RecordDB::checkIfInUse(string username)
 {
    auto recordHolder = recordMap.find(username);
    if (recordHolder == recordMap.end())
-      return true;
+      return false;
 
    return ((Record*)recordHolder->second)->inUse;
 }

@@ -21,9 +21,13 @@ int MakeAcctMenu::backCommand(CommandTok* comm, Session* session) const
 int MakeAcctMenu::badCommand(CommandTok* comm, Session* session) const
 {
    string username = comm->getLex();
+
+   // Ensure the username meets basic requirements
    if (!session->isUsernameValid(username)) {
       return 1;
    }
+
+   // Then ensure username is not taken
    if (session->checkIfRecord(comm->getLex())) {
       string sendMsg = "Username \"" + username + "\" already exists.";
       return session->send(sendMsg);

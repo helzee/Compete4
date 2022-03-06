@@ -71,12 +71,11 @@ int Session::send(string message) const
 void Session::setPossibleUsername(string username)
 {
    possibleUsername = username;
+}
 
-   if (recordDB->checkIfInUse(username)) {
-      this->send("Username is in use at the moment. If this is an issue, "
-                 "please contact the administators.");
-      changeMenu(LOGIN);
-   }
+bool Session::isUsernameInUse(string username)
+{
+   return recordDB->checkIfInUse(username);
 }
 
 bool Session::makeRecord(string password)
@@ -113,23 +112,23 @@ bool Session::isPasswordValid(string password) const
  * @return false if signin was unsuccessful (password did not match that on
  * record)
  */
-bool Session::signin(string password)
+int Session::signin(string password)
 {
    Record* record = recordDB->getRecord(possibleUsername, password);
    if (record == nullptr)
-      return false;
+      return 1;
 
    if (record->inUse) {
       this->send("Username is in use at the moment. If this is an issue, "
                  "please contact the administators.");
       changeMenu(LOGIN);
-      return false;
+      return 2;
    }
 
    this->record = record;
    this->username = possibleUsername;
    record->inUse = true;
-   return true;
+   return 0;
 }
 
 bool Session::signinAsGuest()

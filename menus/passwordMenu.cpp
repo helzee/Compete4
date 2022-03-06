@@ -13,9 +13,15 @@ PasswordMenu::PasswordMenu()
 
 int PasswordMenu::checkPassword(CommandTok* comm, Session* session) const
 {
-   if (!session->signin(comm->getLex())) {
+   int errCode = session->session->signin(comm->getLex());
+
+   if (errCode == 1)
       return session->send("Password incorrect.");
-   }
+   if (errCode == 2)
+      return session->send(
+          "Username is in use at the moment. If this is an issue, "
+          "please contact the administators.");
+
    session->send("Signed in successfully. Going to main menu.");
    return changeMenu(session, MAIN);
 }

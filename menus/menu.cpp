@@ -100,8 +100,7 @@ int Menu::sendWelcome(Session* session) const { return session->send(header); }
  */
 int Menu::sendGlobalHelp(Session* session) const
 {
-   session->send(HELP_TEXT1);
-   return session->send(HELP_TEXT2);
+   return session->send(HELP_TEXT);
 }
 
 /**

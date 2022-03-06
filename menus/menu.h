@@ -82,15 +82,21 @@ protected:
 
    virtual int sendGlobalHelp(Session* session) const;
 
-   const char* HELP_TEXT1 = "List of global commands:\n"
-                            "help (h): self explanatory\n"
-                            "exit (quit, q) : quit the game\n"
-                            "leaderboard (lb) : view leaderboard";
-   const char* HELP_TEXT2 = "print (p) : re-print the current menu\n"
-                            "name (n) : print your username\n"
-                            "back (b) : go back to previous menu";
+   const char* HELP_TEXT =
+       "---List of global commands---\n"
+       "Format is \"name (valid other ways to type it): explanation\"\n\n"
 
-   const char* LBOARD_TEXT = "You are viewing the leaderboard";
+       "list (ls): go to the games list menu (available in main menu)\n"
+       "login (l): go to the login menu (available in main menu\n"
+       "main: go to the main menu (available in other menus)\n\n"
+
+       "help (h): self explanatory\n"
+       "exit (quit, q) : quit the game\n"
+       "leaderboard (lb) : view leaderboard"
+       "print (p) : re-print the current menu\n"
+       "name (n) : print your username\n"
+       "back (b) : go back to previous menu";
+
    const char* BADCOMMAND_TEXT = "Not a recognized command, try again.";
 
    MenuType type;

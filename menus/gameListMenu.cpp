@@ -23,6 +23,11 @@ int GameListMenu::backCommand(CommandTok* comm, Session* session) const
    return changeMenu(session, MAIN);
 }
 
+int GameListMenu::helpCommand(CommandTok* comm, Session* session) const
+{
+   return session->send(LIST_HELP_TEXT);
+}
+
 int GameListMenu::listCommand(CommandTok* comm, Session* session) const
 {
    if (session->getRecord() == nullptr) {

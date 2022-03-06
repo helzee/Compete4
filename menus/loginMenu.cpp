@@ -19,6 +19,11 @@ int LoginMenu::backCommand(CommandTok* comm, Session* session) const
    return changeMenu(session, MAIN);
 }
 
+int LoginMenu::helpCommand(CommandTok* comm, Session* session) const
+{
+   return session->send(LOGIN_HELP_TEXT);
+}
+
 int LoginMenu::signinCommand(CommandTok* comm, Session* session) const
 {
    return changeMenu(session, SIGNIN);

@@ -8,8 +8,7 @@ using namespace std;
 
 InGameMenu::InGameMenu()
 {
-   header = "You are currently in a "
-            "gamesession\n------------------------------------------------";
+   header = "\n------You are now in a Game------\n";
    type = INGAME;
 }
 

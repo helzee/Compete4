@@ -8,7 +8,7 @@ using namespace std;
 
 MainMenu::MainMenu()
 {
-   header = "------MAIN MENU------\n"
+   header = "\n------MAIN MENU------\n"
             "login (l): to login or switch current acount";
    type = MAIN;
    // menuManager.addMenu(this, MAIN);

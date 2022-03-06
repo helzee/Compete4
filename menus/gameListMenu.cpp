@@ -8,7 +8,7 @@ using namespace std;
 
 GameListMenu::GameListMenu()
 {
-   header = "List of available games:\n------------------------";
+   header = "\n------Games List Menu------\n";
    type = GAMELIST;
 }
 

@@ -42,3 +42,13 @@ int GameListMenu::listCommand(CommandTok* comm, Session* session) const
    session->listGames();
    return 1;
 }
+
+int GameListMenu::createCommand(CommandTok* comm, Session* session) const
+{
+   if (session->getRecord() == nullptr) {
+      session->send("You must sign in before joining a game.");
+      return 1;
+   }
+
+   return session->createGame();
+}

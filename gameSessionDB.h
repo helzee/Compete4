@@ -5,6 +5,8 @@
 #include <pthread.h>
 #include <vector>
 
+#define MAXGAMES 30
+
 using namespace std;
 class GameSession;
 
@@ -19,7 +21,7 @@ public:
    // Create a new gamesession
    // Add to the database/list
    // When scalable, return gameSession* for users making games
-   void makeGame();
+   int makeGame();
 
    // When scalable add
    // Ensure deletion of pointers/heap clear

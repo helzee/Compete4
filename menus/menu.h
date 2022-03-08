@@ -77,6 +77,7 @@ protected:
    virtual int mainCommand(CommandTok* comm, Session* session) const;
    virtual int guestCommand(CommandTok* comm, Session* session) const;
    virtual int listCommand(CommandTok* comm, Session* session) const;
+   virtual int createCommand(CommandTok* comm, Session* session) const;
    virtual int joinCommand(CommandTok* comm, Session* session) const;
    virtual int dropPieceCommand(CommandTok* comm, Session* session) const;
    virtual int chatCommand(CommandTok* comm, Session* session) const;

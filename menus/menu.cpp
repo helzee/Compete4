@@ -152,7 +152,15 @@ int Menu::helpCommand(CommandTok* comm, Session* session) const
    return sendGlobalHelp(session);
 }
 
-int Menu::exitCommand(CommandTok* comm, Session* session) const { return -1; }
+int Menu::exitCommand(CommandTok* comm, Session* session) const
+{
+   if (!session->allowedToExit)
+      return -1;
+   else {
+      session->allowedToExit();
+      return 0;
+   }
+}
 
 int Menu::printCommand(CommandTok* comm, Session* session) const
 {

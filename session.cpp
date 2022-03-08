@@ -12,6 +12,7 @@ Session::Session(int clientSd, int sessionID, const MenuManager* menuManager,
 {
 
    menuLocked = false;
+   allowedToExit = false;
    this->clientSd = clientSd;
    this->sessionID = sessionID;
    this->menuManager = menuManager;
@@ -31,9 +32,17 @@ bool Session::changeMenu(MenuType menu)
 {
    if (!isMenuLocked()) {
       currMenu = menuManager->getMenu(menu);
+      allowedToExit = false;
       return true;
    }
    return false;
+}
+
+void Session::askToLeave()
+{
+   this->send("Are you sure you want to leave? Type your command again "
+              "to leave.");
+   allowedToExit = true;
 }
 
 string Session::getUserName() const { return username; }
@@ -221,14 +230,10 @@ bool Session::sendChat(CommandTok* comm)
    // if message section of command string is empty, return false
    // "" is not a valid chat to send, check for spaces
    string message = comm->getLex;
-   if(!regex_match(message, "([[:space:]]+)")) 
-   {
+   if (!regex_match(message, "([[:space:]]+)")) {
       return currGame->chat(this, comm->getLex);
-   }
-   else 
-   {
+   } else {
       this->send("Empty chat messages or  are not allowed");
       return false;
    }
-
 }

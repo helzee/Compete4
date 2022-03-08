@@ -25,7 +25,12 @@ int RestrictedMenu::helpCommand(CommandTok* comm, Session* session) const
 }
 int RestrictedMenu::exitCommand(CommandTok* comm, Session* session) const
 {
-   return -1;
+   if (!session->allowedToExit)
+      return -1;
+   else {
+      session->askToLeave();
+      return 0;
+   }
 }
 int RestrictedMenu::printCommand(CommandTok* comm, Session* session) const
 {

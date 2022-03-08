@@ -56,6 +56,9 @@ public:
    int printBoard() const;
    bool sendChat(CommandTok*);
 
+   void askToLeave();
+   bool allowedToExit;
+
 private:
    bool menuLocked; // Locks user to stay in current menu
    int sessionID;

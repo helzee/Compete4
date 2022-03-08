@@ -212,6 +212,23 @@ int Session::printBoard() const
    if (currGame == nullptr)
       return 1;
 
-   this->send(currGame->printBoard());
+   this->send(currGame->announceUpdate());
    return 0;
+}
+
+bool Session::sendChat(CommandTok* comm)
+{
+   // if message section of command string is empty, return false
+   // "" is not a valid chat to send, check for spaces
+   string message = comm->getLex;
+   if(!regex_match(message, "([[:space:]]+)")) 
+   {
+      return currGame->chat(this, comm->getLex);
+   }
+   else 
+   {
+      this->send("Empty chat messages or  are not allowed");
+      return false;
+   }
+
 }

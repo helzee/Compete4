@@ -36,7 +36,7 @@ bool GameSession::connectPlayer(Session* player)
    pthread_rwlock_rdlock(&lock);
    // if ingame, two players already connected
    if (inGame) {
-      player->send("Error Connecting: Game Full");
+      player->send("Error Connecting: Game Full\n");
       pthread_rwlock_unlock(&lock);
       return false;
    }
@@ -67,7 +67,7 @@ bool GameSession::connectPlayer(Session* player)
    // in case session get past inGame and then preempted, unlock and exit
    // here.
    pthread_rwlock_unlock(&lock);
-   player->send("Error Connecting: Game Full");
+   player->send("\nError Connecting: Game Full\n");
    return false;
 }
 
@@ -115,7 +115,7 @@ bool GameSession::disconnectPlayer(Session* player)
       player->setGame(nullptr);
       players[0] == nullptr;
       pthread_rwlock_unlock(&lock);
-      player->send("Successfully disconnected from game");
+      player->send("\nSuccessfully disconnected from game\n");
       return true;
    }
    // check player two
@@ -127,11 +127,11 @@ bool GameSession::disconnectPlayer(Session* player)
       player->setGame(nullptr);
       players[1] == nullptr;
       pthread_rwlock_unlock(&lock);
-      player->send("Successfully disconnected from game");
+      player->send("\nSuccessfully disconnected from game\n");
       return true;
    }
    pthread_rwlock_unlock(&lock);
-   player->send("Error Disconnecting: Not player not in target game");
+   player->send("\nError Disconnecting: Not player not in target game\n");
    return false;
 }
 
@@ -176,6 +176,11 @@ bool GameSession::dropPiece(Session* player, int col)
    // change player menus
    // end by disconnecting users
    // ------------------------------------------
+
+   if (col > NUMROWS || col < 0) {
+      player->send("Error: Invalid column number indicated to drop piece\n");
+      return false;
+   }
 
    bool completed;
 
@@ -262,3 +267,39 @@ void GameSession::announceWinner()
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
 string GameSession::printBoard() const { return board->print(); }
+
+bool GameSession::chat(Session* player, string message) 
+{
+
+   string toSend = "[" + player->getUserName + "]: " + message.substr(1);
+
+   // is sending player in the game?
+   // is sender player one?
+   if(player == players[0]) 
+   {
+      // does game have a recipient?
+      if(getNumPlayers == 2)
+      {
+         players[1]->send(toSend);
+      }
+   }
+
+   // is sending player in the game?
+   // is sender player two?
+   else if (player == players[1]) 
+   {
+      // does game have a recipient?
+      if(getNumPlayers == 2)
+      {
+         players[0]->send(toSend);
+      }
+   }
+
+   // if not full send message to player that game empty
+   toSend = "Error: No Opponent In-Game\n";
+   player->send(toSend);
+
+   // necessary return value to session->ingamemenu
+   return false;
+
+}

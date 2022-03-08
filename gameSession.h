@@ -34,6 +34,7 @@ public:
 
    bool dropPiece(Session*, int);
    string printBoard() const;
+   bool chat(Session*, string);
 
    GameSession(int);
 

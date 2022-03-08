@@ -36,6 +36,7 @@
 #define REGLIST "((list)|(ls))"
 #define REGJOIN "(j(oin)? [[:digit:]]+)"
 #define REGDP "([[:digit:]]+)"
+#define REGCHAT "(>[[:print:]]*)"
 
 using namespace std;
 
@@ -57,6 +58,7 @@ enum TokType {
    TOKLIST,
    TOKJOIN,
    TOKDP,
+   TOKCHAT,
 };
 
 class CommandTok
@@ -118,6 +120,7 @@ private:
    regex* regJoin;
 
    regex* regDP;
+   regex* regChat;
 
    TokType determineTok(string command) const;
 };

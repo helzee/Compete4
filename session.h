@@ -54,6 +54,7 @@ public:
    int joinGame(CommandTok*);
    bool dropPiece(CommandTok*);
    int printBoard() const;
+   bool sendChat(CommandTok*);
 
 private:
    bool menuLocked; // Locks user to stay in current menu

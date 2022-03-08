@@ -17,9 +17,19 @@ int InGameMenu::dropPieceCommand(CommandTok* comm, Session* session) const
    return session->dropPiece(comm);
 }
 
+int chatCommand(CommandTok* comm, Session* session) const
+{
+   return session->sendChat(comm);
+}
+
 int InGameMenu::printCommand(CommandTok* comm, Session* session) const
 {
    return session->printBoard();
+}
+
+int GameListMenu::helpCommand(CommandTok* comm, Session* session) const
+{
+   return session->send(GAME_HELP_TEXT);
 }
 
 int InGameMenu::backCommand(CommandTok* comm, Session* session) const

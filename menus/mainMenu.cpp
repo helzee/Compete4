@@ -9,7 +9,7 @@ using namespace std;
 MainMenu::MainMenu()
 {
    header = "\n------MAIN MENU------\n"
-            "login (l): to login or switch current acount";
+            "Type help or h to see the help menu";
    type = MAIN;
    // menuManager.addMenu(this, MAIN);
 }

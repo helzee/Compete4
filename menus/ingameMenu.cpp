@@ -17,7 +17,7 @@ int InGameMenu::dropPieceCommand(CommandTok* comm, Session* session) const
    return session->dropPiece(comm);
 }
 
-int chatCommand(CommandTok* comm, Session* session) const
+int InGameMenu::chatCommand(CommandTok* comm, Session* session) const
 {
    return session->sendChat(comm);
 }
@@ -27,7 +27,7 @@ int InGameMenu::printCommand(CommandTok* comm, Session* session) const
    return session->printBoard();
 }
 
-int GameListMenu::helpCommand(CommandTok* comm, Session* session) const
+int InGameMenu::helpCommand(CommandTok* comm, Session* session) const
 {
    return session->send(GAME_HELP_TEXT);
 }
@@ -37,7 +37,7 @@ int InGameMenu::backCommand(CommandTok* comm, Session* session) const
    // Need to update at some point to require confirmation and accept losing
    // game
    if (session->allowedToExit)
-      return session->changeMenu(session, MAIN);
+      return changeMenu(session, MAIN);
    else {
       session->askToLeave();
       return 0;

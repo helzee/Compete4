@@ -31,11 +31,21 @@ const Menu* Session::getMenu() const { return currMenu; }
 bool Session::changeMenu(MenuType menu)
 {
    if (!isMenuLocked()) {
+      if (currMenu->getType() == INGAME && currGame != nullptr) {
+         currGame->disconnectPlayer(this);
+      }
       currMenu = menuManager->getMenu(menu);
       allowedToExit = false;
       return true;
    }
    return false;
+}
+
+void Session::leaveGame(MenuType menu)
+{
+   currMenu = menuManager->getMenu(menu);
+   currGame = nullptr;
+   allowedToExit = false;
 }
 
 void Session::askToLeave()
@@ -221,19 +231,23 @@ int Session::printBoard() const
    if (currGame == nullptr)
       return 1;
 
-   this->send(currGame->announceUpdate());
+   this->send(currGame->printBoard());
    return 0;
 }
 
-bool Session::sendChat(CommandTok* comm)
+int Session::sendChat(CommandTok* comm)
 {
    // if message section of command string is empty, return false
    // "" is not a valid chat to send, check for spaces
-   string message = comm->getLex;
-   if (!regex_match(message, "([[:space:]]+)")) {
-      return currGame->chat(this, comm->getLex);
+   string message = comm->getLex();
+   auto regClear = new regex("(>[[:space:]]+)");
+
+   if (!regex_match(message, *regClear)) {
+      if (currGame->chat(this, comm->getLex()))
+         return 0;
+      return 1;
    } else {
       this->send("Empty chat messages or  are not allowed");
-      return false;
+      return 1;
    }
 }

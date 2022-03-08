@@ -6,6 +6,7 @@
 #define SESSION_H
 
 #include "constants.h"
+#include <regex>
 
 class GameSession;
 class Record;
@@ -32,6 +33,7 @@ public:
    int send(string msg) const;
 
    bool changeMenu(MenuType menu);
+   void leaveGame(MenuType menu);
    bool isMenuLocked() const;
 
    int getSessionID() const;
@@ -54,7 +56,7 @@ public:
    int joinGame(CommandTok*);
    bool dropPiece(CommandTok*);
    int printBoard() const;
-   bool sendChat(CommandTok*);
+   int sendChat(CommandTok*);
 
    void askToLeave();
    bool allowedToExit;

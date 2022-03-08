@@ -13,7 +13,7 @@ PasswordMenu::PasswordMenu()
 
 int PasswordMenu::checkPassword(CommandTok* comm, Session* session) const
 {
-   int errCode = session->session->signin(comm->getLex());
+   int errCode = session->signin(comm->getLex());
 
    if (errCode == 1)
       return session->send("Password incorrect.");

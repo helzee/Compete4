@@ -157,7 +157,7 @@ int Menu::exitCommand(CommandTok* comm, Session* session) const
    if (!session->allowedToExit)
       return -1;
    else {
-      session->allowedToExit();
+      session->askToLeave();
       return 0;
    }
 }
@@ -234,7 +234,7 @@ int Menu::dropPieceCommand(CommandTok* comm, Session* session) const
    return sendBadCommand(session);
 }
 
-int chatCommand(CommandTok* comm, Session* session) const
+int Menu::chatCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
 }

@@ -103,36 +103,43 @@ string GameSession::getCurTurnName() const
 // Disconnect Player
 bool GameSession::disconnectPlayer(Session* player)
 {
-   // doesn't matter if ingame
-   // check player one
-   // locked for writing
-   pthread_rwlock_wrlock(&lock);
+   int thisPlayer, otherPlayer;
    if (players[0]->getSessionID() == player->getSessionID()) {
-      // change commands menu for player from ingame to menu
-      players[0]->changeMenu(MAIN);
-
-      // disconnect players and player's current game
-      player->setGame(nullptr);
-      players[0] == nullptr;
-      pthread_rwlock_unlock(&lock);
-      player->send("\nSuccessfully disconnected from game\n");
-      return true;
+      thisPlayer = 0;
+      otherPlayer = 1;
+   } else if (players[1]->getSessionID() == player->getSessionID()) {
+      thisPlayer = 1;
+      otherPlayer = 0;
+   } else {
+      player->send("\nError Disconnecting: Not player not in target game\n");
+      return false;
    }
-   // check player two
-   else if (players[1]->getSessionID() == player->getSessionID()) {
-      // change commands menu for player from ingame to menu
-      players[1]->changeMenu(MAIN);
 
-      // disconnect players and player's current game
-      player->setGame(nullptr);
-      players[1] == nullptr;
-      pthread_rwlock_unlock(&lock);
-      player->send("\nSuccessfully disconnected from game\n");
-      return true;
+   if (!player->allowedToExit) {
+      player->askToLeave();
+      return false;
    }
+
+   // change commands menu for player from ingame to menu
+   // disconnect players and player's current game
+   pthread_rwlock_wrlock(&lock);
+
+   players[thisPlayer]->leaveGame(MAIN);
+   players[thisPlayer]->getRecord()->loseGame();
+   players[thisPlayer] = nullptr;
+
+   if (players[otherPlayer] != nullptr) {
+      players[otherPlayer]->send(
+          "Other player has left the game, you win! Disconnecting you now.");
+      players[otherPlayer]->getRecord()->winGame();
+      players[otherPlayer]->leaveGame(MAIN);
+      players[otherPlayer] = nullptr;
+   }
+
    pthread_rwlock_unlock(&lock);
-   player->send("\nError Disconnecting: Not player not in target game\n");
-   return false;
+
+   player->send("\nSuccessfully disconnected from game\n");
+   return true;
 }
 
 // Resets board when both players have connected to the game
@@ -190,7 +197,9 @@ bool GameSession::dropPiece(Session* player, int col)
    if (player == player1 && turn == 0) {
       completed = board->dropPiece(col, PLAYER1);
       if (board->getIsFinished()) {
+         announceUpdate();
          announceWinner();
+         return completed;
       }
       turn = 1;
    }
@@ -198,7 +207,9 @@ bool GameSession::dropPiece(Session* player, int col)
    else if (player == player2 && turn == 1) {
       completed = board->dropPiece(col, PLAYER2);
       if (board->getIsFinished()) {
+         announceUpdate();
          announceWinner();
+         return completed;
       }
       turn = 0;
    }
@@ -268,30 +279,28 @@ void GameSession::announceWinner()
 */
 string GameSession::printBoard() const { return board->print(); }
 
-bool GameSession::chat(Session* player, string message) 
+bool GameSession::chat(Session* player, string message)
 {
 
-   string toSend = "[" + player->getUserName + "]: " + message.substr(1);
+   string toSend = "[" + player->getUserName() + "]: " + message.substr(1);
 
    // is sending player in the game?
    // is sender player one?
-   if(player == players[0]) 
-   {
+   if (player == players[0]) {
       // does game have a recipient?
-      if(getNumPlayers == 2)
-      {
+      if (getNumPlayers() == 2) {
          players[1]->send(toSend);
+         return true;
       }
    }
 
    // is sending player in the game?
    // is sender player two?
-   else if (player == players[1]) 
-   {
+   else if (player == players[1]) {
       // does game have a recipient?
-      if(getNumPlayers == 2)
-      {
+      if (getNumPlayers() == 2) {
          players[0]->send(toSend);
+         return true;
       }
    }
 
@@ -301,5 +310,4 @@ bool GameSession::chat(Session* player, string message)
 
    // necessary return value to session->ingamemenu
    return false;
-
 }

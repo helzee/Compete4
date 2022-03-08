@@ -53,6 +53,7 @@ public:
    void setGame(GameSession*);
    int printLeaderboard() const;
    void listGames() const;
+   int createGame();
    int joinGame(CommandTok*);
    bool dropPiece(CommandTok*);
    int printBoard() const;

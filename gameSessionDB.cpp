@@ -6,7 +6,19 @@ using namespace std;
 
 // Create a new gamesession
 // Add to the database/list
-void GameSessionDB::makeGame() {}
+int GameSessionDB::makeGame()
+{
+   int newGame = -1;
+
+   pthread_rwlock_wrlock(&listLock);
+   if (gameCounter < MAXGAMES) {
+      newGame = gameCounter;
+      gameList.push_back(new GameSession(gameCounter++));
+   }
+   pthread_rwlock_unlock(&listLock);
+
+   return newGame;
+}
 
 // Hands off the gameSession object pointer to player's session
 GameSession* GameSessionDB::getGame(int id)
@@ -46,9 +58,12 @@ string GameSessionDB::gamesList() const
    int gameID, playerCount;
 
    for (int i = 0; i < gameList.size(); i++) {
-      gameID = gameList[i]->gameID;
       playerCount = gameList[i]->getNumPlayers();
-      buffer += to_string(gameID) + "\t" + to_string(playerCount) + "/2\n";
+
+      if (playerCount < 2) {
+         gameID = gameList[i]->gameID;
+         buffer += to_string(gameID) + "\t" + to_string(playerCount) + "/2\n";
+      }
    }
    return buffer;
 }

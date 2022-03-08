@@ -34,6 +34,7 @@
 #define REGMAIN "(main)"
 #define REGGUEST "(g(uest)?)"
 #define REGLIST "((list)|(ls))"
+#define REGCREATE "((c(reate)?))"
 #define REGJOIN "(j(oin)? [[:digit:]]+)"
 #define REGDP "([[:digit:]]+)"
 #define REGCHAT "(>[[:print:]]*)"
@@ -56,6 +57,7 @@ enum TokType {
    TOKMAIN,
    TOKGUEST,
    TOKLIST,
+   TOKCREATE,
    TOKJOIN,
    TOKDP,
    TOKCHAT,
@@ -117,8 +119,8 @@ private:
    regex* regMain;
    regex* regGuest;
    regex* regList;
+   regex* regCreate;
    regex* regJoin;
-
    regex* regDP;
    regex* regChat;
 

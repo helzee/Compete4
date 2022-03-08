@@ -73,6 +73,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return guestCommand(comm, session);
    case TOKLIST:
       return listCommand(comm, session);
+   case TOKCREATE:
+      return createCommand(comm, session);
    case TOKJOIN:
       return joinCommand(comm, session);
    case TOKDP:
@@ -220,6 +222,11 @@ int Menu::guestCommand(CommandTok* comm, Session* session) const
 }
 
 int Menu::listCommand(CommandTok* comm, Session* session) const
+{
+   return sendBadCommand(session);
+}
+
+int Menu::createCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
 }

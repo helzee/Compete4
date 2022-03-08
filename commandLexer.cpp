@@ -33,6 +33,7 @@ CommandLexer::CommandLexer()
    regMain = new regex(REGPREFIX REGMAIN REGSUFFIX);
    regGuest = new regex(REGPREFIX REGGUEST REGSUFFIX);
    regList = new regex(REGPREFIX REGLIST REGSUFFIX);
+   regCreate = new regex(REGPREFIX REGCREATE REGSUFFIX);
    regJoin = new regex(REGPREFIX REGJOIN REGSUFFIX);
    regDP = new regex(REGPREFIX REGDP REGSUFFIX);
    regChat = new regex(REGPREFIX REGCHAT REGSUFFIX);
@@ -83,7 +84,6 @@ TokType CommandLexer::determineTok(string command) const
       return TOKSIGNIN;
    } else if (regex_match(command, *regMakeAcct)) { // MAKE ACCT
       return TOKMAKEACCT;
-
    } else if (regex_match(command, *regName)) { // NAME
       return TOKNAME;
    } else if (regex_match(command, *regMain)) { // MAIN
@@ -92,16 +92,13 @@ TokType CommandLexer::determineTok(string command) const
       return TOKGUEST;
    } else if (regex_match(command, *regList)) { // LIST
       return TOKLIST;
+   } else if (regex_match(command, *regCreate)) { // CREATE
+      return TOKCREATE;
    } else if (regex_match(command, *regJoin)) { // JOIN
       return TOKJOIN;
-   }
-
-   else if (regex_match(command, *regDP)) // DROP PIECE
-   {
+   } else if (regex_match(command, *regDP)) { // DROP PIECE
       return TOKDP;
-   }
-   else if (regex_match(command, *regChat))
-   {
+   } else if (regex_match(command, *regChat)) {
       return TOKCHAT;
    }
 

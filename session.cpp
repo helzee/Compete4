@@ -199,11 +199,18 @@ int Session::printLeaderboard() const
    return totalBytesSent;
 }
 
-void Session::listGames() const
+void Session::listGames() const { this->send(gameDB->gamesList()); }
+
+int Session::createGame()
 {
-   string buffer = gameDB->gamesList();
-   for (int i = 0; i < buffer.length(); i += MAX_MSG_SIZE)
-      this->send(buffer.substr(i, MAX_MSG_SIZE));
+   int newGameIndex = gameDB->makeGame();
+   if (newGameIndex == -1)
+      return 1;
+   if (gameDB->joinGame(newGameIndex, this))
+      return 0;
+
+   this->send("Failed to join game, try again");
+   return 1;
 }
 
 int Session::joinGame(CommandTok* comm)

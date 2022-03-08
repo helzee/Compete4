@@ -15,6 +15,7 @@ protected:
    virtual int backCommand(CommandTok* comm, Session* session) const;
    virtual int helpCommand(CommandTok* comm, Session* session) const;
    virtual int listCommand(CommandTok* comm, Session* session) const;
+   virtual int createCommand(CommandTok* comm, Session* session) const;
 
    const char* LIST_HELP_TEXT =
        "\n---List of Games List commands---\n"
@@ -22,6 +23,7 @@ protected:
 
        "list (ls): re-print/refresh list of games\n"
        "join <#> (j <#>): tries to join the game with the index <#>\n"
+       "create (c): tries to create a new game and joins it automatically"
        "main: go to the main menu\n\n"
 
        "help (h): self explanatory\n"

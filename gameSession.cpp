@@ -195,7 +195,7 @@ bool GameSession::dropPiece(Session* player, int col)
    Session* player2 = players[1];
    // check for player number and if mutex (turn) is available
    if (player == player1 && turn == 0) {
-      completed = board->dropPiece(col, PLAYER1);
+      completed = board->dropPiece(col-1, PLAYER1);
       if (board->getIsFinished()) {
          announceUpdate();
          announceWinner();
@@ -205,7 +205,7 @@ bool GameSession::dropPiece(Session* player, int col)
    }
 
    else if (player == player2 && turn == 1) {
-      completed = board->dropPiece(col, PLAYER2);
+      completed = board->dropPiece(col-1, PLAYER2);
       if (board->getIsFinished()) {
          announceUpdate();
          announceWinner();

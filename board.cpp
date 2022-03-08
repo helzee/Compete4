@@ -221,6 +221,7 @@ string Board::print() const
 {
    string connectBoard = "";
    // Print Board Top
+   connectBoard += "|1|2|3|4|5|6|7|\n";
    connectBoard += "|_._._._._._._|\n";
    // Board print per row
    // prints out 2x colnum characters

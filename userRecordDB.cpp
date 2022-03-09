@@ -63,6 +63,8 @@ int RecordDB::getRecordFromDisk()
       pthread_rwlock_wrlock(&rwLock);
       recordMap.insert({rec->getName(), (void*)rec});
       pthread_rwlock_unlock(&rwLock);
+
+      updateLeaderboard(rec);
    }
    file.close();
    pthread_rwlock_unlock(&fileLock);

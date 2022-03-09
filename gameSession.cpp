@@ -225,10 +225,10 @@ bool GameSession::dropPiece(Session* player, int col)
    // end by disconnecting users
    // ------------------------------------------
 
-   if (col > NUMCOLS || col <= 0) {
-      player->send("Error: Invalid column number indicated to drop piece\n");
-      return false;
-   }
+   // if (col > NUMCOLS || col <= 0) {
+   //    player->send("Error: Invalid column number indicated to drop piece\n");
+   //    return false;
+   // }
 
    bool completed;
 
@@ -242,7 +242,13 @@ bool GameSession::dropPiece(Session* player, int col)
          announceWinner();
          return completed;
       }
-      turn = 1;
+      if (completed) {
+
+         turn = 1;
+      } else {
+         player->send("Invalid move.");
+      }
+
    }
 
    else if (player == player2 && turn == 1) {
@@ -252,7 +258,12 @@ bool GameSession::dropPiece(Session* player, int col)
          announceWinner();
          return completed;
       }
-      turn = 0;
+      if (completed) {
+
+         turn = 0;
+      } else {
+         player->send("Invalid move.");
+      }
    }
 
    announceUpdate();

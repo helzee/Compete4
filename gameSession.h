@@ -30,6 +30,7 @@ public:
 
    bool connectPlayer(Session*);
    bool disconnectPlayer(Session*);
+   bool leaveLobby(Session*);
    void resetBoard();
 
    bool dropPiece(Session*, int);

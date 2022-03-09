@@ -30,15 +30,15 @@ const Menu* Session::getMenu() const { return currMenu; }
 
 bool Session::changeMenu(MenuType menu)
 {
-   if (!isMenuLocked()) {
-      if (currMenu->getType() == INGAME && currGame != nullptr) {
-         currGame->disconnectPlayer(this);
-      }
-      currMenu = menuManager->getMenu(menu);
-      allowedToExit = false;
-      return true;
-   }
-   return false;
+   if (isMenuLocked())
+      return false;
+
+   if (currMenu->getType() == INGAME && currGame != nullptr)
+      return currGame->disconnectPlayer(this);
+
+   currMenu = menuManager->getMenu(menu);
+   allowedToExit = false;
+   return true;
 }
 
 void Session::leaveGame(MenuType menu)
@@ -120,10 +120,10 @@ bool Session::isPasswordValid(string password) const
 
 /**
  * @brief Checks to see if the given password and (previously given) username
- * match a record. If so, that player is "signed in", in other words, the record
- * is pointed to by this session and the possibleUsername (that was stored
- * before pasword validation) is now stored as the actual username of the
- * client.
+ * match a record. If so, that player is "signed in", in other words, the
+ * record is pointed to by this session and the possibleUsername (that was
+ * stored before pasword validation) is now stored as the actual username of
+ * the client.
  *
  * @param password the password the client typed in.
  * @return true if sign in was successful (password matched the one in the

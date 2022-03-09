@@ -205,7 +205,13 @@ int Menu::makeAcctCommand(CommandTok* comm, Session* session) const
 
 int Menu::lBoardCommand(CommandTok* comm, Session* session) const
 {
-   return session->printLeaderboard();
+   session->printLeaderboard();
+   return 0;
+}
+
+int Menu::statsCommand(CommandTok* comm, Session* session) const
+{
+   return session->send(session->printStats());
 }
 
 int Menu::mainCommand(CommandTok* comm, Session* session) const

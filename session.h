@@ -51,14 +51,15 @@ public:
    bool isPasswordValid(string password) const;
    void setPossibleUsername(string username);
    void setGame(GameSession*);
-   int printLeaderboard() const;
+   void printLeaderboard() const;
+   void printStats() const;
    void listGames() const;
    int createGame();
    int joinGame(CommandTok*);
    bool dropPiece(CommandTok*);
    int printBoard() const;
    int sendChat(CommandTok*);
-   
+
    void updateLB();
 
    void askToLeave();

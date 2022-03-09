@@ -74,6 +74,7 @@ protected:
    virtual int signinCommand(CommandTok* comm, Session* session) const;
    virtual int makeAcctCommand(CommandTok* comm, Session* session) const;
    virtual int lBoardCommand(CommandTok* comm, Session* session) const;
+   virtual int statsCommand(CommandTok* comm, Session* session) const;
    virtual int mainCommand(CommandTok* comm, Session* session) const;
    virtual int guestCommand(CommandTok* comm, Session* session) const;
    virtual int listCommand(CommandTok* comm, Session* session) const;
@@ -95,6 +96,7 @@ protected:
        "help (h): self explanatory\n"
        "exit (quit, q) : quit the game\n"
        "leaderboard (lb) : view leaderboard"
+       "stats (st) : view personal statistics"
        "print (p) : re-print the current menu\n"
        "name (n) : print your username\n"
        "back (b) : go back to previous menu";

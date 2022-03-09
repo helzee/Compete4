@@ -29,6 +29,7 @@
 #define REGLOGIN "(l(ogin)?)"
 #define REGLOGOUT "(lo(gout)?)"
 #define REGLBOARD "(leaderboard|lb)"
+#define REGSTATS "(st(ats)?)"
 #define REGSIGNIN "(s(ignin)?)"
 #define REGMAKEACCT "(m(akeaccount)?)"
 #define REGMAIN "(main)"
@@ -54,6 +55,7 @@ enum TokType {
    TOKSIGNIN,
    TOKMAKEACCT,
    TOKLBOARD,
+   TOKSTATS,
    TOKMAIN,
    TOKGUEST,
    TOKLIST,
@@ -116,6 +118,7 @@ private:
    regex* regSignin;
    regex* regMakeAcct;
    regex* regLBoard;
+   regex* regStats;
    regex* regMain;
    regex* regGuest;
    regex* regList;

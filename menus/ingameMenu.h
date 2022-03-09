@@ -31,6 +31,7 @@ protected:
        "help (h): self explanatory\n"
        "exit (quit, q) : quit the game\n"
        "leaderboard (lb) : view leaderboard"
+       "stats (st) : view personal statistics"
        "print (p) : re-print the current game-board\n"
        "name (n) : print your username\n"
        "back (b) : go back to previous menu";

@@ -50,5 +50,7 @@ int GameListMenu::createCommand(CommandTok* comm, Session* session) const
       return 1;
    }
 
-   return session->createGame();
+   if (session->createGame() == 0)
+      return changeMenu(session, INGAME);
+   return 1;
 }

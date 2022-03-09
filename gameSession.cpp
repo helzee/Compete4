@@ -138,6 +138,9 @@ bool GameSession::disconnectPlayer(Session* player)
 
    pthread_rwlock_unlock(&lock);
 
+   // updates the leaderboard (in theory for both players)
+   players[thisPlayer]->updateLB();
+
    inGame = false;
 
    player->send("\nSuccessfully disconnected from game\n");
@@ -260,11 +263,16 @@ void GameSession::announceWinner()
       players[1]->send(toAnnounce);
    }
 
+   // updates the leaderboard (in theory for both players)
+   players[0]->updateLB();
+
    inGame = false;
 
    // Disconnect player, menu switched within method
-   disconnectPlayer(players[0]);
-   disconnectPlayer(players[1]);
+   players[0]->leaveGame(MAIN);
+   players[0] = nullptr;
+   players[1]->leaveGame(MAIN);
+   players[1] = nullptr;
 }
 
 // Print Board

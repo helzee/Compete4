@@ -58,6 +58,8 @@ public:
    bool dropPiece(CommandTok*);
    int printBoard() const;
    int sendChat(CommandTok*);
+   
+   void updateLB();
 
    void askToLeave();
    bool allowedToExit;

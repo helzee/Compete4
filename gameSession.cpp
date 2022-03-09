@@ -337,10 +337,19 @@ void GameSession::announceWinner()
     | TxTxToT T T |
     /‾‾‾‾‾‾‾‾‾‾‾‾‾/
 */
-string GameSession::printBoard() const { return board->print(); }
+string GameSession::printBoard() const
+{
+   if (!inGame)
+      return "The game has not started.";
+   return board->print();
+}
 
 bool GameSession::chat(Session* player, string message)
 {
+   if (!inGame) {
+      player->send("The game has not started.");
+      return false;
+   }
 
    string toSend = "[" + player->getUserName() + "]: " + message.substr(1);
 

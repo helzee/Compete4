@@ -289,4 +289,10 @@ int Session::sendChat(CommandTok* comm)
    }
 }
 
-void Session::updateLB() { recordDB->updateLeaderboard(record); }
+void Session::updateLB()
+{
+   if (username[0] == 'G' && username[1] == ':' && username[2] == ' ')
+      return;
+
+   recordDB->updateLeaderboard(record);
+}

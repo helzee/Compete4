@@ -48,9 +48,9 @@ bool GameSession::connectPlayer(Session* player)
       players[0] = player;
       player->setGame(this);
       player->send("Joining Game " + to_string(gameID) + " as player 0");
+      tryToStartGame();
       pthread_rwlock_unlock(&lock);
 
-      tryToStartGame();
       return true;
    }
    // Check player two slot, if empty, add and set ingame to true
@@ -58,10 +58,10 @@ bool GameSession::connectPlayer(Session* player)
       players[1] = player;
       player->setGame(this);
       player->send("Joining Game " + to_string(gameID) + " as player 1");
-      pthread_rwlock_unlock(&lock);
-
       // upon game-start, reset the game state
       tryToStartGame();
+      pthread_rwlock_unlock(&lock);
+
       return true;
    }
    // in case session get past inGame and then preempted, unlock and exit

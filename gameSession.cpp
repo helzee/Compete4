@@ -166,8 +166,8 @@ bool GameSession::disconnectPlayer(Session* player)
    players[thisPlayer] = nullptr;
 
    if (players[otherPlayer] != nullptr) {
-      players[otherPlayer]->send(
-          "Other player has left the game, you win! Disconnecting you now.");
+      players[otherPlayer]->send("Other player has left the game, meaning you "
+                                 "win! Disconnecting you now.");
 
       players[otherPlayer]->getRecord()->winGame();
       players[otherPlayer]->updateLB();
@@ -176,9 +176,9 @@ bool GameSession::disconnectPlayer(Session* player)
    }
 
    inGame = false;
-   player->send("\nSuccessfully disconnected from game\n");
-
    pthread_rwlock_unlock(&lock);
+
+   player->send("\nSuccessfully disconnected from game\n");
    return true;
 }
 

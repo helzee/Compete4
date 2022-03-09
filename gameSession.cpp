@@ -258,6 +258,8 @@ void GameSession::announceWinner()
       players[1]->send(toAnnounce);
    }
 
+   inGame = false;
+
    // Disconnect player, menu switched within method
    disconnectPlayer(players[0]);
    disconnectPlayer(players[1]);

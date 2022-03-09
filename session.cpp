@@ -216,8 +216,10 @@ void Session::listGames() const { this->send(gameDB->gamesList()); }
 int Session::createGame()
 {
    int newGameIndex = gameDB->makeGame();
-   if (newGameIndex == -1)
+   if (newGameIndex == -1) {
+      this->send("Could not create game, try joining one instead.");
       return 1;
+   }
    if (gameDB->joinGame(newGameIndex, this)) {
       this->changeMenu(INGAME);
       return 0;

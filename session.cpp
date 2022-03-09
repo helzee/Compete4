@@ -190,13 +190,12 @@ bool Session::checkIfRecord(string username) const
 
 string Session::printStats() const
 {
-   string buffer;
-   buffer = "You have won " + to_string(record->getGamesWon()) +
-            " games and lost " + to_string(record->getGamesLost()) +
-            " games in total.\nAcross all of your " +
-            to_string(record->getGamesPlayed()) +
-            " games played, you have a win/loss ratio of " +
-            to_string(record->getRatio()) + ".\n";
+   return "You have won " + to_string(record->getGamesWon()) +
+          " games and lost " + to_string(record->getGamesLost()) +
+          " games in total.\nAcross all of your " +
+          to_string(record->getGamesPlayed()) +
+          " games played, you have a win/loss ratio of " +
+          to_string(record->getRatio()) + ".\n";
 }
 
 void Session::printLeaderboard() const

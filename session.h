@@ -52,7 +52,7 @@ public:
    void setPossibleUsername(string username);
    void setGame(GameSession*);
    void printLeaderboard() const;
-   void printStats() const;
+   string printStats() const;
    void listGames() const;
    int createGame();
    int joinGame(CommandTok*);

@@ -175,7 +175,7 @@ int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
 bool Board::incrementTurn()
 {
    turnCount++;
-   if (turnCount > NUMROWS * NUMCOLS) {
+   if (turnCount > NUMROWS * NUMCOLS - 1) {
       isFinished = true;
       return false;
    }

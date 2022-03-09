@@ -251,7 +251,11 @@ Board::Slot::Slot()
    symbol = SYMEMPTY;
 }
 
-void Board::Slot::reset() { owner = EMPTY; }
+void Board::Slot::reset()
+{
+   owner = EMPTY;
+   symbol = SYMEMPTY;
+}
 
 bool Board::Slot::isOccupied() const { return owner != EMPTY; }
 bool Board::Slot::isOccupied(Owner player) const { return player == owner; }

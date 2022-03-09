@@ -11,9 +11,9 @@ int GameSessionDB::makeGame()
    int newGame = -1;
 
    pthread_rwlock_wrlock(&listLock);
-   if (gameCounter < MAXGAMES) {
-      newGame = gameCounter;
-      gameList.push_back(new GameSession(gameCounter++));
+   if (gameList.size() < MAXGAMES) {
+      newGame = gameList.size();
+      gameList.push_back(new GameSession(newGame));
    }
    pthread_rwlock_unlock(&listLock);
 
@@ -44,9 +44,8 @@ bool GameSessionDB::removeGame(int id) { return false; }
 GameSessionDB::GameSessionDB()
 {
    pthread_rwlock_init(&listLock, NULL);
-   gameCounter = 10;
    GameSession* temp;
-   for (int i = 0; i < gameCounter; i++) {
+   for (int i = 0; i < 10; i++) {
       temp = new GameSession(i);
       gameList.push_back(temp);
    }

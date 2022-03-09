@@ -33,7 +33,6 @@ private:
    // Game List
    // When scalable, change to an odered map or vector
    vector<GameSession*> gameList;
-   int gameCounter;
    pthread_rwlock_t listLock;
 };
 

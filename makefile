@@ -12,3 +12,5 @@ client:
 
 clean:
 	rm server client
+final:
+	g++ -pthread client.cpp globalFuncs.cpp -o compete4.out

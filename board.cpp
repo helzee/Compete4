@@ -137,7 +137,7 @@ int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
                           int col) const
 {
    // if out of bounds
-   if (row < 0 || row > NUMROWS - 1 || col < 0 || col > NUMROWS - 1) {
+   if (row < 0 || row > NUMROWS - 1 || col < 0 || col > NUMCOLS - 1) {
       return connected;
    }
 
@@ -175,7 +175,7 @@ int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
 bool Board::incrementTurn()
 {
    turnCount++;
-   if (turnCount >= NUMROWS * NUMCOLS) {
+   if (turnCount > NUMROWS * NUMCOLS) {
       isFinished = true;
       return false;
    }

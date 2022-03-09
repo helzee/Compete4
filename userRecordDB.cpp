@@ -271,13 +271,13 @@ void RecordDB::updateLeaderboard(Record* record)
 
 string RecordDB::printLeaderboard() const
 {
-   string buffer = "WINS\tNAME\n";
+   string buffer = "PLACE\tWINS\tNAME\n";
    Record* tempRecord;
 
    for (int i = 0; i < filledSlotsInLB; i++) {
       tempRecord = leaderboard[i];
-      buffer += to_string(tempRecord->getGamesWon()) + "\t" +
-                tempRecord->getName() + "\n";
+      buffer += to_string(i + 1) + "\t" + to_string(tempRecord->getGamesWon()) +
+                "\t" + tempRecord->getName() + "\n";
    }
 
    return buffer;

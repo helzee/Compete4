@@ -263,8 +263,9 @@ void GameSession::announceWinner()
       players[1]->send(toAnnounce);
    }
 
-   // updates the leaderboard (in theory for both players)
+   // updates the leaderboards
    players[0]->updateLB();
+   players[1]->updateLB();
 
    inGame = false;
 

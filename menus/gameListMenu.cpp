@@ -47,6 +47,11 @@ int GameListMenu::listCommand(CommandTok* comm, Session* session) const
    return 1;
 }
 
+int GameListMenu::printCommand(CommandTok* comm, Session* session) const
+{
+   return listCommand(comm, session);
+}
+
 int GameListMenu::createCommand(CommandTok* comm, Session* session) const
 {
    if (session->getRecord() == nullptr) {

@@ -14,6 +14,7 @@ protected:
    virtual int joinCommand(CommandTok* comm, Session* session) const;
    virtual int quickCommand(CommandTok* comm, Session* session) const;
    virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int printCommand(CommandTok* comm, Session* session) const;
    virtual int helpCommand(CommandTok* comm, Session* session) const;
    virtual int listCommand(CommandTok* comm, Session* session) const;
    virtual int createCommand(CommandTok* comm, Session* session) const;

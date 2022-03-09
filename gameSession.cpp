@@ -36,7 +36,7 @@ bool GameSession::connectPlayer(Session* player)
    pthread_rwlock_rdlock(&lock);
    // if ingame, two players already connected
    if (inGame) {
-      player->send("Error Connecting: Game Full\n");
+      player->send("Error Connecting: Game is in Session\n");
       pthread_rwlock_unlock(&lock);
       return false;
    }
@@ -139,6 +139,7 @@ bool GameSession::disconnectPlayer(Session* player)
    pthread_rwlock_unlock(&lock);
 
    inGame = false;
+   resetBoard();
 
    player->send("\nSuccessfully disconnected from game\n");
    return true;

@@ -206,8 +206,10 @@ int Session::createGame()
    int newGameIndex = gameDB->makeGame();
    if (newGameIndex == -1)
       return 1;
-   if (gameDB->joinGame(newGameIndex, this))
+   if (gameDB->joinGame(newGameIndex, this)) {
+      this->changeMenu(INGAME);
       return 0;
+   }
 
    this->send("Failed to join game, try again");
    return 1;
@@ -222,8 +224,10 @@ int Session::joinGame(CommandTok* comm)
    else
       joinIndex = atoi(command + 2);
 
-   if (gameDB->joinGame(joinIndex, this))
+   if (gameDB->joinGame(joinIndex, this)) {
+      this->changeMenu(INGAME);
       return 0;
+   }
 
    this->send("Failed to join game, try again");
    return 1;

@@ -14,9 +14,7 @@ GameListMenu::GameListMenu()
 
 int GameListMenu::joinCommand(CommandTok* comm, Session* session) const
 {
-   if (session->joinGame(comm) == 0)
-      return changeMenu(session, INGAME);
-   return 1;
+   return session->joinGame(comm);
 }
 
 int GameListMenu::backCommand(CommandTok* comm, Session* session) const
@@ -51,7 +49,5 @@ int GameListMenu::createCommand(CommandTok* comm, Session* session) const
       return 1;
    }
 
-   if (session->createGame() == 0)
-      return changeMenu(session, INGAME);
-   return 1;
+   return session->createGame();
 }

@@ -54,21 +54,20 @@ bool GameSession::connectPlayer(Session* player)
    if (players[0] == nullptr) {
       players[0] = player;
       player->setGame(this);
-      player->send("Joining Game " + to_string(gameID) + " as player 0");
+      player->send("Joining Game " + to_string(gameID) + " as player 1");
+
       tryToStartGame();
       pthread_rwlock_unlock(&lock);
-
       return true;
    }
    // Check player two slot, if empty, add and set ingame to true
    if (players[1] == nullptr) {
       players[1] = player;
       player->setGame(this);
-      player->send("Joining Game " + to_string(gameID) + " as player 1");
-      // upon game-start, reset the game state
+      player->send("Joining Game " + to_string(gameID) + " as player 2");
+
       tryToStartGame();
       pthread_rwlock_unlock(&lock);
-
       return true;
    }
    // in case session get past inGame and then preempted, unlock and exit
@@ -95,8 +94,10 @@ void GameSession::announceUpdate() const
        "'s turn.\nPlease enter the column you'd like to drop into.\n";
    toAnnounce += printBoard();
 
-   players[0]->send(toAnnounce);
-   players[1]->send(toAnnounce);
+   if (players[0] != nullptr)
+      players[0]->send(toAnnounce);
+   if (players[1] != nullptr)
+      players[1]->send(toAnnounce);
 }
 
 string GameSession::getCurTurnName() const
@@ -111,7 +112,6 @@ bool GameSession::leaveLobby(Session* player)
 {
    if (players[0] != nullptr) {
       if (players[0]->getSessionID() == player->getSessionID()) {
-         // Player 0 leave
          players[0]->leaveGame(MAIN);
          players[0] = nullptr;
          return true;
@@ -119,7 +119,6 @@ bool GameSession::leaveLobby(Session* player)
    }
    if (players[1] != nullptr) {
       if (players[1]->getSessionID() == player->getSessionID()) {
-         // Player 1 leave
          players[1]->leaveGame(MAIN);
          players[1] = nullptr;
          return true;
@@ -167,8 +166,8 @@ bool GameSession::disconnectPlayer(Session* player)
    players[thisPlayer] = nullptr;
 
    if (players[otherPlayer] != nullptr) {
-      players[otherPlayer]->send(
-          "Other player has left the game, you win! Disconnecting you now.");
+      players[otherPlayer]->send("Other player has left the game, meaning you "
+                                 "win! Disconnecting you now.");
 
       players[otherPlayer]->getRecord()->winGame();
       players[otherPlayer]->updateLB();
@@ -177,9 +176,9 @@ bool GameSession::disconnectPlayer(Session* player)
    }
 
    inGame = false;
-   player->send("\nSuccessfully disconnected from game\n");
-
    pthread_rwlock_unlock(&lock);
+
+   player->send("\nSuccessfully disconnected from game\n");
    return true;
 }
 
@@ -278,6 +277,8 @@ void GameSession::announceWinner()
    // winner, null if tie
    Owner winner = EMPTY;
 
+   pthread_rwlock_wrlock(&lock);
+
    // records
    Record* p1 = players[0]->getRecord();
    Record* p2 = players[1]->getRecord();
@@ -288,17 +289,14 @@ void GameSession::announceWinner()
 
    // Update winner records
    if (winner == PLAYER1) {
-      // p1 win
       toAnnounce = "Game Over : P1 (" + getCurTurnName() + ") Wins!\n";
       p1->winGame();
       p2->loseGame();
    } else if (winner == PLAYER2) {
-      // p2 win
       toAnnounce = "Game Over : P2 (" + getCurTurnName() + ") Wins!\n";
       p2->winGame();
       p1->loseGame();
    } else if (winner == EMPTY) {
-      // tie
       toAnnounce = "Game Over : Game was a tie!\n";
       p1->tieGame();
       p2->tieGame();
@@ -307,9 +305,10 @@ void GameSession::announceWinner()
    players[0]->send(toAnnounce);
    players[1]->send(toAnnounce);
 
-   // updates the leaderboards
    players[0]->updateLB();
    players[1]->updateLB();
+
+   pthread_rwlock_unlock(&lock);
 
    inGame = false;
 

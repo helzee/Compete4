@@ -32,6 +32,11 @@ int GameSession::getNumPlayers() const
 // Connect Player
 bool GameSession::connectPlayer(Session* player)
 {
+   if (player->getRecord() == nullptr) {
+      player->send("You cannot join a game without being signed in.");
+      return false;
+   }
+
    // read lock
    pthread_rwlock_rdlock(&lock);
    // if ingame, two players already connected
@@ -41,8 +46,10 @@ bool GameSession::connectPlayer(Session* player)
       return false;
    }
    pthread_rwlock_unlock(&lock);
+
    // unlock read, lock write
    pthread_rwlock_wrlock(&lock);
+
    // Check player one slot
    if (players[0] == nullptr) {
       players[0] = player;
@@ -100,9 +107,38 @@ string GameSession::getCurTurnName() const
       return players[0]->getUserName();
 }
 
+bool GameSession::leaveLobby(Session* player)
+{
+   if (players[0] != nullptr) {
+      if (players[0]->getSessionID() == player->getSessionID()) {
+         // Player 0 leave
+         players[0]->leaveGame(MAIN);
+         players[0] = nullptr;
+         return true;
+      }
+   }
+   if (players[1] != nullptr) {
+      if (players[1]->getSessionID() == player->getSessionID()) {
+         // Player 1 leave
+         players[1]->leaveGame(MAIN);
+         players[1] = nullptr;
+         return true;
+      }
+   }
+   return false;
+}
+
 // Disconnect Player
 bool GameSession::disconnectPlayer(Session* player)
 {
+   pthread_rwlock_wrlock(&lock);
+   // If in the lobby, just let them quit, or if the other person left
+   if (players[0] == nullptr || players[1] == nullptr || !inGame) {
+      bool temp = leaveLobby(player);
+      pthread_rwlock_unlock(&lock);
+      return temp;
+   }
+
    int thisPlayer, otherPlayer;
    if (players[0]->getSessionID() == player->getSessionID()) {
       thisPlayer = 0;
@@ -112,38 +148,38 @@ bool GameSession::disconnectPlayer(Session* player)
       otherPlayer = 0;
    } else {
       player->send("\nError Disconnecting: Not player not in target game\n");
+      pthread_rwlock_unlock(&lock);
       return false;
    }
 
    if (!player->allowedToExit) {
       player->askToLeave();
+      pthread_rwlock_unlock(&lock);
       return false;
    }
 
    // change commands menu for player from ingame to menu
    // disconnect players and player's current game
-   pthread_rwlock_wrlock(&lock);
 
-   players[thisPlayer]->leaveGame(MAIN);
    players[thisPlayer]->getRecord()->loseGame();
+   players[thisPlayer]->updateLB();
+   players[thisPlayer]->leaveGame(MAIN);
    players[thisPlayer] = nullptr;
 
    if (players[otherPlayer] != nullptr) {
       players[otherPlayer]->send(
           "Other player has left the game, you win! Disconnecting you now.");
+
       players[otherPlayer]->getRecord()->winGame();
+      players[otherPlayer]->updateLB();
       players[otherPlayer]->leaveGame(MAIN);
       players[otherPlayer] = nullptr;
    }
 
-   pthread_rwlock_unlock(&lock);
-
-   // updates the leaderboard (in theory for both players)
-   players[thisPlayer]->updateLB();
-
    inGame = false;
-
    player->send("\nSuccessfully disconnected from game\n");
+
+   pthread_rwlock_unlock(&lock);
    return true;
 }
 
@@ -226,7 +262,7 @@ bool GameSession::dropPiece(Session* player, int col)
 void GameSession::announceWinner()
 {
    // end condition message
-   string toAnnounce;
+   string toAnnounce = "ERROR ENDING GAME";
 
    // winner, null if tie
    Owner winner = EMPTY;
@@ -245,23 +281,20 @@ void GameSession::announceWinner()
       toAnnounce = "Game Over : P1 (" + getCurTurnName() + ") Wins!\n";
       p1->winGame();
       p2->loseGame();
-      players[0]->send(toAnnounce);
-      players[1]->send(toAnnounce);
    } else if (winner == PLAYER2) {
       // p2 win
       toAnnounce = "Game Over : P2 (" + getCurTurnName() + ") Wins!\n";
       p2->winGame();
       p1->loseGame();
-      players[0]->send(toAnnounce);
-      players[1]->send(toAnnounce);
    } else if (winner == EMPTY) {
       // tie
       toAnnounce = "Game Over : Game was a tie!\n";
       p1->tieGame();
       p2->tieGame();
-      players[0]->send(toAnnounce);
-      players[1]->send(toAnnounce);
    }
+
+   players[0]->send(toAnnounce);
+   players[1]->send(toAnnounce);
 
    // updates the leaderboards
    players[0]->updateLB();

@@ -16,6 +16,7 @@ protected:
    virtual int printCommand(CommandTok* comm, Session* session) const;
    virtual int helpCommand(CommandTok* comm, Session* session) const;
    virtual int backCommand(CommandTok* comm, Session* session) const;
+   virtual int exitCommand(CommandTok* comm, Session* session) const;
    virtual int badCommand(CommandTok* comm, Session* session) const;
 
    const char* GAME_HELP_TEXT =

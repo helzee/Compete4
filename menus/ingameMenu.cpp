@@ -32,6 +32,11 @@ int InGameMenu::helpCommand(CommandTok* comm, Session* session) const
    return session->send(GAME_HELP_TEXT);
 }
 
+int InGameMenu::exitCommand(CommandTok* comm, Session* session) const
+{
+   return backCommand(comm, session);
+}
+
 int InGameMenu::backCommand(CommandTok* comm, Session* session) const
 {
    // Need to update at some point to require confirmation and accept losing

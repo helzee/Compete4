@@ -67,6 +67,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return makeAcctCommand(comm, session);
    case TOKLBOARD:
       return lBoardCommand(comm, session);
+   case TOKSTATS:
+      return statsCommand(comm, session);
    case TOKMAIN:
       return mainCommand(comm, session);
    case TOKGUEST:
@@ -77,6 +79,8 @@ int Menu::navigate(CommandTok* comm, Session* session) const
       return createCommand(comm, session);
    case TOKJOIN:
       return joinCommand(comm, session);
+   case TOKQUICK:
+      return quickCommand(comm, session);
    case TOKDP:
       return dropPieceCommand(comm, session);
    case TOKCHAT:
@@ -238,6 +242,11 @@ int Menu::createCommand(CommandTok* comm, Session* session) const
 }
 
 int Menu::joinCommand(CommandTok* comm, Session* session) const
+{
+   return sendBadCommand(session);
+}
+
+int Menu::quickCommand(CommandTok* comm, Session* session) const
 {
    return sendBadCommand(session);
 }

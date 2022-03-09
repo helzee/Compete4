@@ -17,6 +17,7 @@ public:
    GameSession* getGame(int);
 
    bool joinGame(int, Session*);
+   bool quickJoin(Session*);
 
    // Create a new gamesession
    // Add to the database/list

@@ -36,6 +36,7 @@
 #define REGGUEST "(g(uest)?)"
 #define REGLIST "((list)|(ls))"
 #define REGCREATE "((c(reate)?))"
+#define REGQUICK "((qj)|(quickjoin))"
 #define REGJOIN "(j(oin)? [[:digit:]]+)"
 #define REGDP "([[:digit:]]+)"
 #define REGCHAT "(>[[:print:]]*)"
@@ -61,6 +62,7 @@ enum TokType {
    TOKLIST,
    TOKCREATE,
    TOKJOIN,
+   TOKQUICK,
    TOKDP,
    TOKCHAT,
 };
@@ -124,6 +126,7 @@ private:
    regex* regList;
    regex* regCreate;
    regex* regJoin;
+   regex* regQuick;
    regex* regDP;
    regex* regChat;
 

@@ -34,7 +34,7 @@ protected:
 
        "help (h): self explanatory\n"
        "exit (quit, q) : quit the game\n"
-       "leaderboard (lb) : view leaderboard"
+       "leaderboard (lb) : view leaderboard\n"
        "print (p) : re-print the current menu\n"
        "name (n) : print your username\n"
        "back (b) : go back to previous menu";

@@ -23,15 +23,15 @@ protected:
        "\n---List of In-Game commands---\n"
        "Format is \"name (valid other ways to type it): explanation\"\n\n"
 
-       "send chat (>): sends message following \">\" character to opponent\n"
-       "to drop a piece : when it's your turn, simply enter in the desired "
-       "drop "
-       "column\n\n"
+       ">message (to send chat): sends message following \">\" character to "
+       "opponent\n"
+       "# (to drop a piece): when it's your turn, simply enter in the desired "
+       "drop column\n\n"
 
        "help (h): self explanatory\n"
        "exit (quit, q) : quit the game\n"
-       "leaderboard (lb) : view leaderboard"
-       "stats (st) : view personal statistics"
+       "leaderboard (lb) : view leaderboard\n"
+       "stats (st) : view personal statistics\n"
        "print (p) : re-print the current game-board\n"
        "name (n) : print your username\n"
        "back (b) : go back to previous menu";

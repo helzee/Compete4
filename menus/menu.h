@@ -80,6 +80,7 @@ protected:
    virtual int listCommand(CommandTok* comm, Session* session) const;
    virtual int createCommand(CommandTok* comm, Session* session) const;
    virtual int joinCommand(CommandTok* comm, Session* session) const;
+   virtual int quickCommand(CommandTok* comm, Session* session) const;
    virtual int dropPieceCommand(CommandTok* comm, Session* session) const;
    virtual int chatCommand(CommandTok* comm, Session* session) const;
 
@@ -95,8 +96,8 @@ protected:
 
        "help (h): self explanatory\n"
        "exit (quit, q) : quit the game\n"
-       "leaderboard (lb) : view leaderboard"
-       "stats (st) : view personal statistics"
+       "leaderboard (lb) : view leaderboard\n"
+       "stats (st) : view personal statistics\n"
        "print (p) : re-print the current menu\n"
        "name (n) : print your username\n"
        "back (b) : go back to previous menu";

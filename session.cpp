@@ -190,6 +190,9 @@ bool Session::checkIfRecord(string username) const
 
 string Session::printStats() const
 {
+   if (record == nullptr)
+      return "You are not logged in.\n";
+
    return "You have won " + to_string(record->getGamesWon()) +
           " games and lost " + to_string(record->getGamesLost()) +
           " games in total.\nAcross all of your " +
@@ -234,6 +237,17 @@ int Session::joinGame(CommandTok* comm)
       joinIndex = atoi(command + 2);
 
    if (gameDB->joinGame(joinIndex, this)) {
+      this->changeMenu(INGAME);
+      return 0;
+   }
+
+   this->send("Failed to join game, try again");
+   return 1;
+}
+
+int Session::quickJoin()
+{
+   if (gameDB->quickJoin(this)) {
       this->changeMenu(INGAME);
       return 0;
    }

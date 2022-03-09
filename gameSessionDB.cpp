@@ -39,6 +39,43 @@ bool GameSessionDB::joinGame(int id, Session* session)
    return game->connectPlayer(session);
 }
 
+bool GameSessionDB::quickJoin(Session* session)
+{
+   GameSession* game;
+
+   // Try to join a game with 1 player
+   for (int i = 0; i < gameList.size(); i++) {
+      game = this->getGame(i);
+      if (game == nullptr)
+         continue;
+
+      if (game->getNumPlayers() == 1)
+         break;
+      if (game->connectPlayer(session))
+         return true;
+   }
+
+   // Try to join an empty game if it fails
+   for (int i = 0; i < gameList.size(); i++) {
+      game = this->getGame(i);
+      if (game == nullptr)
+         continue;
+
+      if (game->getNumPlayers() == 0)
+         break;
+      if (game->connectPlayer(session))
+         return true;
+   }
+
+   // Try to make a new game
+   int newGame = makeGame();
+   if (newGame != -1)
+      return joinGame(newGame, session);
+
+   // Every game was full, and no more games can be made
+   return 1;
+}
+
 bool GameSessionDB::removeGame(int id) { return false; }
 
 GameSessionDB::GameSessionDB()

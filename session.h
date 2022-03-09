@@ -56,6 +56,7 @@ public:
    void listGames() const;
    int createGame();
    int joinGame(CommandTok*);
+   int quickJoin();
    bool dropPiece(CommandTok*);
    int printBoard() const;
    int sendChat(CommandTok*);

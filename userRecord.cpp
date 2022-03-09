@@ -53,7 +53,12 @@ void Record::loseGame()
 
 void Record::tieGame() { gamesPlayed++; }
 
-float Record::getRatio() { return ((float)gamesWon) / gamesLost; }
+float Record::getRatio()
+{
+   if (gamesLost == 0)
+      return -1.0f;
+   return ((float)gamesWon) / gamesLost;
+}
 
 int Record::getGamesWon() { return gamesWon; }
 

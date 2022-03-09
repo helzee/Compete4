@@ -114,8 +114,10 @@ void* clientSession(void* ptr)
            << "]: Command= " << command << endl;
 
       // Returns false if the command was exit/quit
-      if (parseCommand(command, session) < 0)
+      if (parseCommand(command, session) < 0) {
+         session->signOut();
          break;
+      }
    }
 
    cerr << "Closing Client Connection" << endl;

@@ -36,9 +36,11 @@ int InGameMenu::backCommand(CommandTok* comm, Session* session) const
 {
    // Need to update at some point to require confirmation and accept losing
    // game
-   if (session->allowedToExit)
-      return changeMenu(session, MAIN);
-   else {
+   if (session->allowedToExit) {
+      if (session->changeMenu(MAIN))
+         return 0;
+      return 1;
+   } else {
       session->askToLeave();
       return 0;
    }

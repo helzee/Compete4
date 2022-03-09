@@ -57,6 +57,8 @@ float Record::getRatio() { return ((float)gamesWon) / gamesLost; }
 
 int Record::getGamesWon() { return gamesWon; }
 
+int Record::getGamesLost() { return gamesLost; }
+
 int Record::getGamesPlayed() { return gamesPlayed; }
 
 bool Record::isUsernameValid(string username)

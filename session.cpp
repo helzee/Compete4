@@ -274,4 +274,4 @@ int Session::sendChat(CommandTok* comm)
    }
 }
 
-void Session::updateLB() { recordDB->updateLeaderboard(); }
+void Session::updateLB() { recordDB->updateLeaderboard(record); }

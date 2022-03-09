@@ -205,6 +205,25 @@ void RecordDB::updateLeaderboard(Record* record)
 
    // If the leaderboard isn't full, just place it on
    if (filledSlotsInLB < LEADERBOARDSIZE) {
+
+      for (int i = 0; i < filledSlotsInLB; i++) {
+         if (leaderboard[i] == record) {
+
+            int nextPosUp = i - 1;
+
+            // While record is better than the next one up, swap upwards
+            while (nextPosUp >= 0 &&
+                   compareRecord(record, leaderboard[nextPosUp])) {
+               leaderboard[nextPosUp + 1] = leaderboard[nextPosUp];
+               leaderboard[nextPosUp] = record;
+               nextPosUp--;
+            }
+
+            pthread_rwlock_unlock(&lbLock);
+            return;
+         }
+      }
+
       leaderboard[filledSlotsInLB] = record;
       filledSlotsInLB++;
 
@@ -215,6 +234,9 @@ void RecordDB::updateLeaderboard(Record* record)
          leaderboard[nextPosUp] = record;
          nextPosUp--;
       }
+
+      pthread_rwlock_unlock(&lbLock);
+      return;
    }
 
    // Otherwise, if it is doing well enough to belong on the leaderboard

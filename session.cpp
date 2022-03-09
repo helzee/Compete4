@@ -188,15 +188,24 @@ bool Session::checkIfRecord(string username) const
    return recordDB->checkIfRecord(username);
 }
 
-int Session::printLeaderboard() const
+string Session::printStats() const
 {
-   string buffer = recordDB->printLeaderboard();
+   return "You have won " + to_string(record->getGamesWon()) +
+          " games and lost " + to_string(record->getGamesLost()) +
+          " games in total.\nAcross all of your " +
+          to_string(record->getGamesPlayed()) +
+          " games played, you have a win/loss ratio of " +
+          to_string(record->getRatio()) + ".\n";
+}
+
+void Session::printLeaderboard() const
+{
+   string buffer = recordDB->printLeaderboard() + printStats();
+
    int totalBytesSent = buffer.length();
    for (int i = 0; i < totalBytesSent; i += MAX_MSG_SIZE) {
       this->send(buffer.substr(i, MAX_MSG_SIZE));
    }
-
-   return totalBytesSent;
 }
 
 void Session::listGames() const { this->send(gameDB->gamesList()); }
@@ -264,7 +273,4 @@ int Session::sendChat(CommandTok* comm)
    }
 }
 
-void Session::updateLB() 
-{
-   recordDB->updateLeaderboard(this);
-}
+void Session::updateLB() { recordDB->updateLeaderboard(record); }

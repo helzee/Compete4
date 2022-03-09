@@ -214,6 +214,10 @@ void GameSession::resetBoard() { board->reset(); }
  */
 bool GameSession::dropPiece(Session* player, int col)
 {
+   if (!inGame) {
+      player->send("Please wait for the game to start.");
+      return false;
+   }
    // OVERVIEW
    // ------------------------------------------
    // drop piece in board

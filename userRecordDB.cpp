@@ -11,13 +11,14 @@ RecordDB::RecordDB()
    pthread_rwlock_init(&rwLock, NULL);
    pthread_rwlock_init(&fileLock, NULL);
    pthread_rwlock_init(&lbLock, NULL);
-   getRecordFromDisk();
 
    // initialize leaderboard to be empty for now
    filledSlotsInLB = 1;
    for (int i = 1; i < LEADERBOARDSIZE; i++)
       leaderboard[i] = nullptr;
    leaderboard[0] = new Record("John Doe", 0);
+
+   getRecordFromDisk();
 }
 
 int RecordDB::saveRecordToDisk()

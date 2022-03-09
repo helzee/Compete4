@@ -138,6 +138,8 @@ bool GameSession::disconnectPlayer(Session* player)
 
    pthread_rwlock_unlock(&lock);
 
+   inGame = false;
+
    player->send("\nSuccessfully disconnected from game\n");
    return true;
 }

@@ -224,6 +224,7 @@ int Session::joinGame(CommandTok* comm)
 
    if (gameDB->joinGame(joinIndex, this))
       return 0;
+
    this->send("Failed to join game, try again");
    return 1;
 }

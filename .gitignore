@@ -3,3 +3,5 @@ client
 *.json
 *.dat
 server
+records.dat
+data/records.dat

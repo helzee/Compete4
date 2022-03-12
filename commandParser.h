@@ -7,6 +7,7 @@ class CommandTok;
 class Session;
 
 using namespace std;
+
 int parseCommand(string, Session*);
 
 #endif

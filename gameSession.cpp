@@ -1,14 +1,26 @@
+// Game Session functions primarily as the "lobby" of the game. The lobby is
+// simply an interface between the gamestate and the client sessions This means
+// that interact with it. Therefore GameSession handles much of the network 
+// procedure for the functions of the game lobby: connecting, disconnecting, 
+// back-end updates, etc. 
+
+#include <string>
 #include "gameSession.h"
 #include "board.h"
 #include "session.h"
 #include "userRecord.h"
-#include <string>
 
 // ----------------------------------------------------------------------------
 //  Public Methods
 // ----------------------------------------------------------------------------
 
-// Constructor
+/**
+ * @brief Construct a new Game Session:: Game Session object and initialize all 
+ * of the members of the gamesession. Player-slots are empty by default and a
+ * new board object that tracks the state of this gameSession is created.
+ * 
+ * @param id The assigned game id sent from gameSessionDB
+ */
 GameSession::GameSession(int id)
 {
    // Sets the fed gameid from gameDB into this game's identifier
@@ -24,12 +36,34 @@ GameSession::GameSession(int id)
    pthread_rwlock_init(&lock, NULL);
 }
 
+/**
+ * @brief Get num players is a method that quickly determines the number of 
+ * players in the game and sends it to the calling function. It does this by
+ * quickly counting based on the state of the playerslots that gameSession 
+ * stores.
+ * 
+ * @return int number of players in the current gameSession
+ */
 int GameSession::getNumPlayers() const
 {
    return ((players[0] != nullptr) ? 1 : 0) + ((players[1] != nullptr) ? 1 : 0);
 }
 
-// Connect Player
+/**
+ * @brief Connect player does what it's named. It is fed a pointer to the 
+ * session attempting to connect to this particular instance of gameSession
+ * and it (safely, using locks) connects the incoming player to the first 
+ * available player slot in the game. If both player slots are full and/or
+ * the flag inGame is set, the incoming request to join is rejected and a 
+ * failure message is sent to the player attempting to connect. Incoming 
+ * players without a player-record are also rejected. Each time a player is
+ * successfully a check to start the game is made, if successful the game
+ * begins.
+ * 
+ * @param player pointer to incoming player session
+ * @return true if player is connected
+ * @return false if player unable to connect
+ */
 bool GameSession::connectPlayer(Session* player)
 {
    if (player->getRecord() == nullptr) {
@@ -77,37 +111,14 @@ bool GameSession::connectPlayer(Session* player)
    return false;
 }
 
-void GameSession::tryToStartGame()
-{
-   if (getNumPlayers() != 2 || inGame)
-      return;
-
-   inGame = true;
-   resetBoard();
-   announceUpdate();
-}
-
-void GameSession::announceUpdate() const
-{
-   string toAnnounce =
-       "It is " + getCurTurnName() +
-       "'s turn.\nPlease enter the column you'd like to drop into.\n";
-   toAnnounce += printBoard();
-
-   if (players[0] != nullptr)
-      players[0]->send(toAnnounce);
-   if (players[1] != nullptr)
-      players[1]->send(toAnnounce);
-}
-
-string GameSession::getCurTurnName() const
-{
-   if (turn)
-      return players[1]->getUserName();
-   else
-      return players[0]->getUserName();
-}
-
+/**
+ * @brief The leaveLobby method allows sessions in a game that hasn't started
+ * to gracefully disconnect from the lobby they are connected to.
+ * 
+ * @param player session attempting to back
+ * @return true if successful
+ * @return false if unsuccessful
+ */
 bool GameSession::leaveLobby(Session* player)
 {
    if (players[0] != nullptr) {
@@ -127,7 +138,20 @@ bool GameSession::leaveLobby(Session* player)
    return false;
 }
 
-// Disconnect Player
+/**
+ * @brief Disconnect player is a method used when a player is needed to be 
+ * removed from the game. In addition to clearing the target player from the
+ * player slots, this method also updates records of the disconnecting player
+ * as well as the remaining player (as a wincondition has been satisfied). 
+ * Due to the game being complete once someone leaves. The remaining player is
+ * also removed from the current game. A method called in each of the sessions
+ * disconnects it from the game on it's own end, and both sessions are removed
+ * from the player slots. Once all of this is done, the leaderboard is updated.
+ * 
+ * @param player 
+ * @return true 
+ * @return false 
+ */
 bool GameSession::disconnectPlayer(Session* player)
 {
    pthread_rwlock_wrlock(&lock);
@@ -182,31 +206,21 @@ bool GameSession::disconnectPlayer(Session* player)
    return true;
 }
 
-// Resets board when both players have connected to the game
+// calls the board's reset function
 void GameSession::resetBoard() { board->reset(); }
 
-// Drop piece
-// This method is the core of the game
-// It is responsible for:
-//  1. Dropping pieces into directed column
-//  2. Checking for wincondition
-//  2b.      announce win
-//  2c.      terminate game (disconnect players), set inGame
-//  3. Switch turns
-//  4. Print out board
 /**
  * @brief
- *
- * NOTE: This function is hard to predict, as we have not planned out what
- * the menu for the game session will look like yet. if this function is
- * responsible for dropping a piece, it may be called multiple times (if
- * improper rows are given) so we have to be ready to call this function again
- * and again from the same player before changing the turn or checking for wins
- * or printing the board. -Josh
- *
- * NOTE: I changed return to int as this function
- * may return different ints based on wheter drop piece was successful or not OR
- * a win happened.
+ * 
+ * Drop piece
+ * This method is the core of the game
+ * It is responsible for:
+ *  1. Dropping pieces into desired column
+ *  2. Checking for wincondition
+ *  2b.      announce win
+ *  2c.      terminate game 
+ *  3. Switch turns
+ *  4. Announce the updated board
  *
  * @param player
  * @param row
@@ -218,20 +232,6 @@ bool GameSession::dropPiece(Session* player, int col)
       player->send("Please wait for the game to start.");
       return false;
    }
-   // OVERVIEW
-   // ------------------------------------------
-   // drop piece in board
-   // check for win or tie
-   // announce the winner/tie
-   // update player records
-   // change player menus
-   // end by disconnecting users
-   // ------------------------------------------
-
-   // if (col > NUMCOLS || col <= 0) {
-   //    player->send("Error: Invalid column number indicated to drop piece\n");
-   //    return false;
-   // }
 
    bool completed;
 
@@ -273,6 +273,88 @@ bool GameSession::dropPiece(Session* player, int col)
    return completed;
 }
 
+// if in a game calls the board's print method and returns the board's string
+string GameSession::printBoard() const
+{
+   if (!inGame)
+      return "The game has not started.";
+   return board->print();
+}
+
+/**
+ * @brief Chat is a method that uses the information stored in the gameSession
+ * to take a message provided by a requesting clientsession and sends it to their
+ * opponent, if there is one, in the game. The method appends the senders name
+ * to the message before sending.
+ * 
+ * @param player pointer to the session sending the chat message
+ * @param message the message to be sent
+ * @return true if chat sent successfully
+ * @return false if chat not sent
+ */
+bool GameSession::chat(Session* player, string message)
+{
+   if (!inGame) {
+      player->send("The game has not started.");
+      return false;
+   }
+
+   string toSend = "[" + player->getUserName() + "]: " + message.substr(1);
+
+   // is sending player in the game?
+   // is sender player one?
+   if (player == players[0]) {
+      // does game have a recipient?
+      if (getNumPlayers() == 2) {
+         players[1]->send(toSend);
+         return true;
+      }
+   }
+
+   // is sending player in the game?
+   // is sender player two?
+   else if (player == players[1]) {
+      // does game have a recipient?
+      if (getNumPlayers() == 2) {
+         players[0]->send(toSend);
+         return true;
+      }
+   }
+
+   // if not full send message to player that game empty
+   toSend = "Error: No Opponent In-Game\n";
+   player->send(toSend);
+
+   // necessary return value to session->ingamemenu
+   return false;
+}
+
+// ----------------------------------------------------------------------------
+//  Private  Methods
+// ----------------------------------------------------------------------------
+
+/**
+ * @brief This method attempts to start a game, and is called within connectPlayer
+ * it simply makes sure that two players are connected to the game. It then clears
+ * the board to make it new for the players and announces an update.
+ * 
+ */
+void GameSession::tryToStartGame()
+{
+   if (getNumPlayers() != 2 || inGame)
+      return;
+
+   inGame = true;
+   resetBoard();
+   announceUpdate();
+}
+
+/**
+ * @brief This method is called once the game determines if the win-condition is
+ * is satisfied in dropPiece. It sends out the end of game message to both players,
+ * updates their records, and updates the leaderboard.
+ * 
+ */
 void GameSession::announceWinner()
 {
    // end condition message
@@ -323,60 +405,30 @@ void GameSession::announceWinner()
    players[1] = nullptr;
 }
 
-// Print Board
-// prints out the matrix that represents the connect 4 board
-// ASCII border around characters and within frame to make state clear
-/*
-    Example string:
-    |_._._._._._._|
-    | T T T T T T |
-    | T T T T T T |
-    | T T T T T T |
-    | T T TxT T T |
-    | T ToToT T T |
-    | TxTxToT T T |
-    /‾‾‾‾‾‾‾‾‾‾‾‾‾/
-*/
-string GameSession::printBoard() const
+/**
+ * @brief Sends out a message containing who's turn it is to drop a piece, and an
+ * ascii representaiton of the gamestate to both players with a message prompting
+ * a move.
+ * 
+ */
+void GameSession::announceUpdate() const
 {
-   if (!inGame)
-      return "The game has not started.";
-   return board->print();
+   string toAnnounce =
+       "It is " + getCurTurnName() +
+       "'s turn.\nPlease enter the column you'd like to drop into.\n";
+   toAnnounce += printBoard();
+
+   if (players[0] != nullptr)
+      players[0]->send(toAnnounce);
+   if (players[1] != nullptr)
+      players[1]->send(toAnnounce);
 }
 
-bool GameSession::chat(Session* player, string message)
+// returns the string of name belonging to the session who's turn it is
+string GameSession::getCurTurnName() const
 {
-   if (!inGame) {
-      player->send("The game has not started.");
-      return false;
-   }
-
-   string toSend = "[" + player->getUserName() + "]: " + message.substr(1);
-
-   // is sending player in the game?
-   // is sender player one?
-   if (player == players[0]) {
-      // does game have a recipient?
-      if (getNumPlayers() == 2) {
-         players[1]->send(toSend);
-         return true;
-      }
-   }
-
-   // is sending player in the game?
-   // is sender player two?
-   else if (player == players[1]) {
-      // does game have a recipient?
-      if (getNumPlayers() == 2) {
-         players[0]->send(toSend);
-         return true;
-      }
-   }
-
-   // if not full send message to player that game empty
-   toSend = "Error: No Opponent In-Game\n";
-   player->send(toSend);
-
-   // necessary return value to session->ingamemenu
-   return false;
+   if (turn)
+      return players[1]->getUserName();
+   else
+      return players[0]->getUserName();
 }

@@ -20,7 +20,6 @@ public:
    bool quickJoin(Session*);
 
    int makeGame();
-   bool removeGame(int);
 
    string gamesList() const;
 

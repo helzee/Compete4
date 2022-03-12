@@ -21,6 +21,7 @@
 #define REGPREFIX "(^"
 #define REGSUFFIX "(\\s)*)"
 
+// Command regex definitions
 #define REGHELP "(h(elp)?)"
 #define REGEXIT "(exit|(q(uit)?))"
 #define REGPRINT "(p(rint)?)"
@@ -101,7 +102,8 @@ private:
  * your token Then, be sure to implement the command's function in he menu you
  * want it to be used.
  *
- * The command lexer can also be seen as a builder of CommandToks*/
+ * The command lexer can also be seen as a builder of CommandToks
+ * */
 
 class CommandLexer
 {

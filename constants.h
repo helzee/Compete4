@@ -19,7 +19,7 @@
 #include <unistd.h>     // read, write, close
 #include <unordered_map>
 
-#define DEFAULT_SERVER "csslab7.uwb.edu"
+#define DEFAULT_SERVER "54.200.163.196"
 #define DEFAULT_PORT "13337"
 #define MAX_MSG_SIZE 512
 #define BACKLOG 20

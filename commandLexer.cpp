@@ -1,8 +1,8 @@
-// Command lexer is responsible for parsing our ASCII network protocol messages
-// and producing a token represenitive of a desired command from a client. This
-// token is then used in commandparser to branch to the appropreate handler for 
-// the recieved command. Within this cpp also exists the definitions for 
-// the command CommandTOK class (also found wihtin the corresponding header)
+// Command lexer (static) is responsible for parsing our ASCII network protocol 
+// messages and producing a token represenitive of a desired command from a 
+// client. This token is then used in commandparser to branch to the appropreate 
+// handler for the recieved command. Within this cpp also exists the definitions 
+// for the command CommandTOK class (also found wihtin the corresponding header)
 // which is simply the literal token object that is sent back.
 
 #include "commandLexer.h"

@@ -1,5 +1,10 @@
 /** @file constants.h
  * @authors Josh Helzerman, Alex Lambert, Joseph Collora
+ * 
+ * @brief Constants serves as a psuedofile to create greater expandability
+ * and organization of the project. This file enables easy adding and tweaking of
+ * the various constant values used throughout the code.
+ * 
  */
 
 #ifndef CONSTANTS_H
@@ -38,8 +43,8 @@
 // Prime 7879 * Prime 6949 = 54,751,171
 #define HASH_NUMBER 54751171
 
-// menu enums. Last enum is not a menu, but is used to keep track of number of
-// menus
+// menu enums. 
+// Last enum used to track the number of menus
 enum MenuType {
    MENU = 0,
    MAIN,

@@ -1,20 +1,38 @@
-/** @file client.cpp
- * @authors Josh Helzerman, Alex Lambert, Joseph Collora
- */
+// Client serves as just that, a client, that is responsible for sending and 
+// recieving messages from the server. Messages/commands sent to the server
+// follow our HTTP-Like network protocol that uses ASCII.
 
 #include "constants.h"
 #include "globalFuncs.h"
 
 using namespace std;
 
+// Declarations for helper functions
+// -----------------------------------------------------------------------------
+// Establishes a connection to the server using network sockets
 int establishConnection(const char* serverName, const char* serverPort);
+
+// Allows for a multi-threaded client that enables simultaneous sending and
+// recieving from the game server. Full definition above method.
 void* serverListen(void* ptr);
+
+// Quick use function that enables quick error throwing
 void throwError(const char* message, int value);
 
+// Contains socket descriptor
 struct thread_data {
    int sd;
 };
 
+/**
+ * @brief Main function of the client, parses the arguments passed at compile 
+ * (server port and name/IP), establishes a connection using the helper. If 
+ * no port is specified by client, the connection is made on default port.
+ * 
+ * @param argc count of arguments, should be 3 - 1
+ * @param argv arguments, argument1 = name, argument2 = port
+ * @return int 
+ */
 int main(int argc, char** argv)
 {
    const char* serverName = DEFAULT_SERVER;
@@ -62,6 +80,13 @@ int main(int argc, char** argv)
    exit(EXIT_SUCCESS);
 }
 
+/**
+ * @brief Thread for the client meant for listening for messages from the server
+ * handles the exit conditions for the program within it's listen loop.
+ * 
+ * @param ptr pointer to the socket descriptor "data"
+ * @return void* 
+ */
 void* serverListen(void* ptr)
 {
    int clientSd = ((thread_data*)ptr)->sd;
@@ -78,6 +103,16 @@ void* serverListen(void* ptr)
    exit(EXIT_SUCCESS);
 }
 
+/**
+ * @brief Using the arguments passed to the client (parsed in main) and subsequently 
+ * to this method, establish a TCP connection to the gameserver and return the socket 
+ * descriptor to main. The sd will then be used to recieve and send messages to the 
+ * connect4 game-server.
+ * 
+ * @param serverName argv defined servername/IP
+ * @param serverPort argv defined serverport
+ * @return int socket descriptor
+ */
 int establishConnection(const char* serverName, const char* serverPort)
 {
    // create server info structure
@@ -108,6 +143,13 @@ int establishConnection(const char* serverName, const char* serverPort)
    return clientSd;
 }
 
+/**
+ * @brief Helper method that quickly allows us to throw errors to the user and 
+ * gracefully terminate the client application.
+ * 
+ * @param message specified error message to send
+ * @param value value associated with error message
+ */
 void throwError(const char* message, int value)
 {
    cerr << message << " : " << value << endl;

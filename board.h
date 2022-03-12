@@ -8,18 +8,14 @@ using namespace std;
 
 #define NUMROWS 6
 #define NUMCOLS 7
-
+#define FOUR 4
 #define SYMBOL_EMPTY " "
 #define SYMBOL_P1 "o"
 #define SYMBOL_P2 "x"
-#define FOUR 4
-
-// NONE, P1, P2
-const char slotSymbols[]{' ', 'o', 'x'};
 
 enum Symbol { SYMEMPTY, SYMP1, SYMP2 };
+const char slotSymbols[]{' ', 'o', 'x'};
 
-// player 1, 2, or neither
 enum Owner { EMPTY, P1, P2 };
 
 enum Direction {
@@ -40,10 +36,9 @@ public:
    Board();
    bool dropPiece(int, Owner);
    bool getIsFinished() const;
-   string print() const;
-
-   Owner getWinner() const;
    bool haveWinner() const;
+   Owner getWinner() const;
+   string print() const;
    void reset();
 
 private:
@@ -69,8 +64,8 @@ private:
       Symbol symbol;
    };
    Slot board[NUMROWS][NUMCOLS];
-   bool isFinished;
    Owner winner;
+   bool isFinished;
    int turnCount;
 };
 

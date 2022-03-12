@@ -1,4 +1,19 @@
+// Board serves as the state of the game played by sessions connected to the 
+// owning gameSession 
+
+#include <iostream>
 #include "board.h"
+
+// -----------------------------------------------------------------------------
+// BOARD METHODS
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Construct a new Board:: Board object. Initialize it.
+ *
+ */
+Board::Board() { reset(); }
+
 /**
  * @brief If valid move, drop token into slot, increment turn counter,
  * and check for win
@@ -13,10 +28,6 @@
  * @return true if valid move
  * @return false if invalid move
  */
-
-#include <iostream>
-
-// TIE HOTFIX: returns int, -1 for failure, 0 for successful drop,
 
 bool Board::dropPiece(int col, Owner player)
 {
@@ -37,17 +48,28 @@ bool Board::dropPiece(int col, Owner player)
          return true;
       }
    }
-
    return false;
 }
 
-bool Board::getIsFinished() const { return isFinished; }
-
 /**
- * @brief Construct a new Board:: Board object. Initialize it.
+ * @brief increments the total turn counter. checks if the game is finished. if
+ * it is, change the state of the game: set isfinished to true
+ * @pre game should not be finished and a successful move should have been
+ * completed
+ * @post turnCount is incremented and isFinished is possibly set to true
  *
+ * @return true if game is not finished
+ * @return false if game is finished
  */
-Board::Board() { reset(); }
+bool Board::incrementTurn()
+{
+   turnCount++;
+   if (turnCount > NUMROWS * NUMCOLS - 1) {
+      isFinished = true;
+      return false;
+   }
+   return true;
+}
 
 /**
  * @brief checks to see if the given player has won the game. this function
@@ -76,48 +98,6 @@ bool Board::checkWin(Owner player, int row, int col) const
               checkWinHelper(player, -1, SOUTHEAST, row, col);
    return NWSE >= FOUR || NESW >= FOUR || EastWest >= FOUR ||
           NorthSouth >= FOUR;
-}
-
-/**
- * @brief Determine the next slot to finished (based on the direction we are
- * heading)
- *
- * @param row current row we are at
- * @param col current collumn we are at
- * @param dir the direction we want to go
- */
-void Board::determineRowCol(int &row, int &col, Direction dir) const
-{
-   switch (dir) {
-   case NORTH:
-      row--;
-      return;
-   case NORTHEAST:
-      col++;
-      row--;
-      return;
-   case EAST:
-      col++;
-      return;
-   case SOUTHEAST:
-      col++;
-      row++;
-      return;
-   case SOUTH:
-      row++;
-      return;
-   case SOUTHWEST:
-      row++;
-      col--;
-      return;
-   case WEST:
-      col--;
-      return;
-   case NORTHWEST:
-      col--;
-      row--;
-      return;
-   }
 }
 
 /**
@@ -163,60 +143,71 @@ int Board::checkWinHelper(Owner player, int connected, Direction dir, int row,
 }
 
 /**
- * @brief increments the total turn counter. checks if the game is finished. if
- * it is, change the state of the game: set isfinished to true
- * @pre game should not be finished and a successful move should have been
- * completed
- * @post turnCount is incremented and isFinished is possibly set to true
+ * @brief Determine the next slot to finished (based on the direction we are
+ * heading)
  *
- * @return true if game is not finished
- * @return false if game is finished
+ * @param row current row we are at
+ * @param col current collumn we are at
+ * @param dir the direction we want to go
  */
-bool Board::incrementTurn()
+void Board::determineRowCol(int &row, int &col, Direction dir) const
 {
-   turnCount++;
-   if (turnCount > NUMROWS * NUMCOLS - 1) {
-      isFinished = true;
-      return false;
+   switch (dir) {
+   case NORTH:
+      row--;
+      return;
+   case NORTHEAST:
+      col++;
+      row--;
+      return;
+   case EAST:
+      col++;
+      return;
+   case SOUTHEAST:
+      col++;
+      row++;
+      return;
+   case SOUTH:
+      row++;
+      return;
+   case SOUTHWEST:
+      row++;
+      col--;
+      return;
+   case WEST:
+      col--;
+      return;
+   case NORTHWEST:
+      col--;
+      row--;
+      return;
    }
-   return true;
 }
 
-Owner Board::getWinner() const { return winner; }
+// Returns gamestate: Finished or not
+bool Board::getIsFinished() const { return isFinished; }
 
-// do we have a winner?
+// Returns winnerstate: Winner exists or not
 bool Board::haveWinner() const { return winner != EMPTY; }
 
-/**
- * @brief Reset the board and game logic
- *
- */
-void Board::reset()
-{
-   for (int i = 0; i < NUMROWS; i++) {
-      for (int j = 0; j < NUMCOLS; j++) {
-         board[i][j].reset();
-      }
-   }
-   turnCount = 0;
-   isFinished = false;
-   winner = EMPTY;
-}
+// Returns winner
+Owner Board::getWinner() const { return winner; }
 
-// Print Board
-// prints out the matrix that represents the connect 4 board
-// ASCII border around characters and within frame to make state clear
-/*
-    Example string:
-    |_._._._._._._|
-    | T T T T T T |
-    | T T T T T T |
-    | T T T T T T |
-    | T T TxT T T |
-    | T ToToT T T |
-    | TxTxToT T T |
-    /‾‾‾‾‾‾‾‾‾‾‾‾‾/
-*/
+/**
+ * @brief Prints out the state of the board in ascii, follows our layout for 
+ * the board. Shown as:
+ * 
+ * |1|2|3|4|5|6|7|
+ * |_._._._._._._|
+ * | : : : : : : |
+ * | : : : : : : |
+ * | : : : : : : |
+ * | : : : : : : |
+ * | : : : : : : |
+ * /‾‾‾‾‾‾‾‾‾‾‾‾‾/
+ * 
+ * @return string containing the state of the board in its entirety
+ */
 string Board::print() const
 {
    string connectBoard = "";
@@ -245,20 +236,63 @@ string Board::print() const
    return connectBoard;
 }
 
+/**
+ * @brief Resets the board and game logic
+ *
+ */
+void Board::reset()
+{
+   for (int i = 0; i < NUMROWS; i++) {
+      for (int j = 0; j < NUMCOLS; j++) {
+         board[i][j].reset();
+      }
+   }
+   turnCount = 0;
+   isFinished = false;
+   winner = EMPTY;
+}
+
+// -----------------------------------------------------------------------------
+// SLOT METHODS
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Construct a new Slot:: Slot object. Initialize it
+ *
+ */
 Board::Slot::Slot()
 {
    owner = EMPTY;
    symbol = SYMEMPTY;
 }
 
+/**
+ * @brief Empties current instance of a slot on the game board
+ * 
+ */
 void Board::Slot::reset()
 {
    owner = EMPTY;
    symbol = SYMEMPTY;
 }
 
+// Returns slotstate: Is slot occupied or not
 bool Board::Slot::isOccupied() const { return owner != EMPTY; }
+
+/**
+ * @brief Determines if thee slot is occupied by the player parameter
+ * 
+ * @param player player that owns the slot?
+ * @return true if the player parameter owns the slot
+ * @return false if the player parameter does not own the slot
+ */
 bool Board::Slot::isOccupied(Owner player) const { return player == owner; }
+
+/**
+ * @brief Sets the calling slot's owner and symbol to that of the target player's
+ * 
+ * @param player target player attempting to own the slot
+ */
 void Board::Slot::setOwner(Owner player)
 {
    owner = player;

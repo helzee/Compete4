@@ -1,19 +1,47 @@
-/**
- * @file commandLexer.cpp
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-02-17
- *
- * @copyright Copyright (c) 2022
- *
- */
+// Command lexer (static) is responsible for parsing our ASCII network protocol 
+// messages and producing a token represenitive of a desired command from a 
+// client. This token is then used in commandparser to branch to the appropreate 
+// handler for the recieved command. Within this cpp also exists the definitions 
+// for the command CommandTOK class (also found wihtin the corresponding header)
+// which is simply the literal token object that is sent back.
 
 #include "commandLexer.h"
 #include "constants.h"
 #include <regex>
 #include <string>
+
 using namespace std;
+
+// -----------------------------------------------------------------------------
+// COMMANDTOK METHODS
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Construct a new Command Tok:: Command Tok object
+ * 
+ */
+CommandTok::CommandTok()
+{
+   type = TOKBAD;
+   lex = "";
+}
+
+// Returns the token type label
+TokType CommandTok::getType() const { return type; }
+
+// Returns the "lex" or literal string value of the command
+string CommandTok::getLex() const { return lex; }
+
+// -----------------------------------------------------------------------------
+// COMMANDLEXER METHODS
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Construct a new Command Lexer. Using the definitions within the header
+ * file, instantiate all of the regex objects that will be used to determine the
+ * command and produce the token corresponding to the command.
+ * 
+ */
 
 // regex objects. icase = ignore case. match_continuous = only match from first
 // char
@@ -57,15 +85,14 @@ CommandTok* CommandLexer::lexCommand(string command) const
    tok->lex = command.substr(0, command.size() - 1);
    return tok;
 }
-CommandTok::CommandTok()
-{
-   type = TOKBAD;
-   lex = "";
-}
 
-TokType CommandTok::getType() const { return type; }
-string CommandTok::getLex() const { return lex; }
-
+/**
+ * @brief Determines and returns the appropriate token that matches the regex of 
+ * the command string.
+ * 
+ * @param command literal string value of the recieved command
+ * @return TokType of the recieved command
+ */
 TokType CommandLexer::determineTok(string command) const
 {
    if (regex_match(command, *regHelp)) { // HELP

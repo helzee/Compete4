@@ -19,20 +19,12 @@ public:
    bool joinGame(int, Session*);
    bool quickJoin(Session*);
 
-   // Create a new gamesession
-   // Add to the database/list
-   // When scalable, return gameSession* for users making games
    int makeGame();
-
-   // When scalable add
-   // Ensure deletion of pointers/heap clear
    bool removeGame(int);
 
    string gamesList() const;
 
 private:
-   // Game List
-   // When scalable, change to an odered map or vector
    vector<GameSession*> gameList;
    pthread_rwlock_t listLock;
 };
